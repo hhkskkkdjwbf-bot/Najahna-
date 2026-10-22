@@ -43,6 +43,7 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 │   ├── calculators/average.js
 │   ├── data/
 │   │   ├── curriculum.js
+│   │   ├── resource-filters.js
 │   │   └── resources.js
 │   ├── i18n/{ar,fr,en}.js
 │   └── utils/{collections,history,notes,storage}.js

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#116b52">
+  <meta name="description" content="نجاحنا — منصة تعليمية جزائرية تجمع الدروس والملخصات والتمارين والمواضيع لمراحل الابتدائي والمتوسط والثانوي.">
+  <title>نجاحنا — Najahna | نتعلم اليوم لننجح غداً</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <script type="module" src="assets/js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">تجاوز إلى المحتوى</a>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="نجاحنا الصفحة الرئيسية"><span class="brand-mark">ن</span><span><strong>نجاحنا</strong><small>Najahna</small></span></a>
+    <nav class="main-nav" aria-label="التنقل الرئيسي">
+      <a href="#resources" data-i18n="navResources">المكتبة</a><a href="#levels" data-i18n="navLevels">المراحل الدراسية</a><a href="#tools" data-i18n="navTools">أدوات التلميذ</a>
+    </nav>
+    <div class="header-actions">
+      <label class="sr-only" for="language" data-i18n="languageLabel">اللغة</label>
+      <select id="language" aria-label="Language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select>
+      <button id="theme-toggle" class="icon-button" type="button" aria-label="تبديل الوضع" title="الوضع الليلي">☾</button>
+      <a class="button button-small button-outline" href="#tools" data-i18n="start">ابدأ الآن</a>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="live-dot"></span><span data-i18n="eyebrow">منصة تعليمية جزائرية لكل تلميذ</span></span>
+        <h1 data-i18n="heroTitle">طريق نجاحك يبدأ <span>من هنا.</span></h1>
+        <p data-i18n="heroText">دروس، ملخصات، تمارين ومواضيع امتحانات المنهاج الجزائري، في مكان واحد وبطريقة أسهل.</p>
+        <div class="hero-actions"><a class="button button-primary" href="#resources" data-i18n="explore">اكتشف المكتبة <span aria-hidden="true">←</span></a><a class="button button-quiet" href="#tools" data-i18n="calculate">احسب معدلك</a></div>
+        <div class="trust-row"><span>✓ <span data-i18n="curriculum">المنهاج الجزائري</span></span><span>✓ <span data-i18n="languages">3 لغات</span></span><span>✓ <span data-i18n="freeStart">بداية مجانية</span></span></div>
+      </div>
+      <div class="hero-art" aria-label="بطاقات تعليمية توضيحية">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="study-card card-main"><span class="card-icon">✦</span><small data-i18n="dailyGoal">هدف اليوم</small><strong data-i18n="studyBetter">تعلّم بذكاء</strong><div class="progress"><span></span></div><small data-i18n="progressText">خطوة صغيرة كل يوم</small></div>
+        <div class="study-card card-note"><span class="note-icon">▤</span><div><strong data-i18n="summary">ملخصات</strong><small data-i18n="reviewQuick">راجع بسرعة</small></div></div>
+        <div class="study-card card-check"><span>✓</span><div><strong data-i18n="practice">تمارين</strong><small data-i18n="testKnowledge">اختبر فهمك</small></div></div>
+        <div class="hero-spark spark-one">✳</div><div class="hero-spark spark-two">✦</div>
+      </div>
+    </section>
+    <section class="stats-strip" aria-label="مميزات المنصة"><div><strong>3</strong><span data-i18n="schoolStages">مراحل دراسية</span></div><div><strong>3</strong><span data-i18n="siteLanguages">لغات للواجهة</span></div><div><strong>∞</strong><span data-i18n="learnAtPace">تعلّم حسب وتيرتك</span></div><div><strong>♡</strong><span data-i18n="saveFavorites">احفظ مواردك المفضلة</span></div></section>
+    <section id="levels" class="section section-levels">
+      <div class="section-heading"><div><span class="eyebrow" data-i18n="yourJourney">رحلتك الدراسية</span><h2 data-i18n="chooseLevel">كل مرحلة، أقرب إلى النجاح</h2></div><p data-i18n="chooseLevelText">اختر مرحلتك للوصول إلى الموارد المناسبة لمستواك.</p></div>
+      <div class="level-grid">
+        <button class="level-card" data-level="primary" type="button"><span class="level-symbol symbol-sun">✿</span><span class="level-meta" data-i18n="primaryMeta">السنة الأولى إلى الخامسة</span><strong data-i18n="primary">التعليم الابتدائي</strong><span class="level-link" data-i18n="browse">تصفّح الموارد ←</span></button>
+        <button class="level-card level-featured" data-level="middle" type="button"><span class="level-symbol symbol-blue">⌘</span><span class="level-meta" data-i18n="middleMeta">السنة الأولى إلى الرابعة متوسط</span><strong data-i18n="middle">التعليم المتوسط</strong><span class="level-link" data-i18n="browse">تصفّح الموارد ←</span></button>
+        <button class="level-card" data-level="secondary" type="button"><span class="level-symbol symbol-violet">✧</span><span class="level-meta" data-i18n="secondaryMeta">الجذع المشترك وشعب البكالوريا</span><strong data-i18n="secondary">التعليم الثانوي</strong><span class="level-link" data-i18n="browse">تصفّح الموارد ←</span></button>
+      </div>
+    </section>
+    <section id="resources" class="section resource-section">
+      <div class="section-heading"><div><span class="eyebrow" data-i18n="libraryLabel">مكتبة النجاح</span><h2 data-i18n="resourceTitle">ما تحتاجه للمراجعة</h2></div><a class="text-link" href="#resources" data-i18n="seeAll">اكتشف المكتبة ←</a></div>
+      <div class="resource-toolbar"><div class="search-box"><span aria-hidden="true">⌕</span><input id="resource-search" type="search" data-i18n-placeholder="searchPlaceholder" placeholder="ابحث عن درس، مادة أو موضوع..." autocomplete="off"></div><label class="sr-only" for="level-filter" data-i18n="filterLevel">المرحلة</label><select id="level-filter"><option value="all" data-i18n="allLevels">كل المراحل</option><option value="primary" data-i18n="primary">الابتدائي</option><option value="middle" data-i18n="middle">المتوسط</option><option value="secondary" data-i18n="secondary">الثانوي</option></select><label class="sr-only" for="type-filter" data-i18n="filterType">نوع المورد</label><select id="type-filter"><option value="all" data-i18n="allTypes">كل الأنواع</option><option value="lesson" data-i18n="lessons">دروس</option><option value="summary" data-i18n="summaries">ملخصات</option><option value="exercise" data-i18n="exercises">تمارين</option><option value="exam" data-i18n="exams">مواضيع امتحانات</option><option value="book" data-i18n="books">كتب</option></select></div>
+      <div id="resource-grid" class="resource-grid" aria-live="polite"></div><p id="empty-state" class="empty-state" hidden data-i18n="empty">لا توجد موارد مطابقة. جرّب تغيير البحث أو المرشحات.</p>
+      <p class="content-note" data-i18n="contentNote">هذه نسخة أولية توضيحية. ستُضاف الموارد التعليمية الموثقة تدريجياً؛ الروابط لا تُعرض كتحميلات حقيقية ما لم يتوفر ملف فعلي.</p>
+    </section>
+    <section id="tools" class="section tools-section">
+      <div class="section-heading"><div><span class="eyebrow" data-i18n="studentTools">أدوات التلميذ</span><h2 data-i18n="toolsTitle">نظّم مراجعتك بذكاء</h2></div><p data-i18n="toolsIntro">أدوات عملية تساعدك على التخطيط ومتابعة تقدمك.</p></div>
+      <div class="tools-grid">
+        <article class="tool-panel calculator-panel"><div class="tool-heading"><span class="tool-icon">∑</span><div><h3 data-i18n="averageTitle">حاسبة المعدل</h3><p data-i18n="averageIntro">أدخل العلامات والمعاملات لحساب معدل تقريبي.</p></div></div>
+          <form id="average-form"><div id="grade-rows" class="grade-rows"><div class="grade-row"><label><span data-i18n="subject">المادة</span><input name="subject" required maxlength="50" data-i18n-placeholder="subjectExample" placeholder="مثلاً: الرياضيات"></label><label><span data-i18n="grade">العلامة /20</span><input name="grade" type="number" min="0" max="20" step="0.25" required placeholder="15"></label><label><span data-i18n="coefficient">المعامل</span><input name="coefficient" type="number" min="1" max="20" step="1" value="1" required></label><button class="remove-grade" type="button" aria-label="حذف المادة" disabled>×</button></div></div><div class="form-actions"><button id="add-grade" class="button button-outline button-small" type="button" data-i18n="addSubject">+ أضف مادة</button><button class="button button-primary button-small" type="submit" data-i18n="calculateAverage">احسب المعدل</button></div></form><div id="average-result" class="average-result" aria-live="polite" hidden></div><p class="small-note" data-i18n="averageDisclaimer">الحساب تقديري؛ قد تختلف طريقة حساب المعدل الرسمي حسب المستوى والفصل الدراسي.</p>
+        </article>
+        <article class="tool-panel favorites-panel"><div class="tool-heading"><span class="tool-icon">♡</span><div><h3 data-i18n="favoritesTitle">مواردي المحفوظة</h3><p data-i18n="favoritesIntro">احتفظ بالموارد التي تريد الرجوع إليها.</p></div></div><div id="favorites-list" class="favorites-list"><p data-i18n="noFavorites">لم تحفظ أي مورد بعد. اضغط على رمز القلب في المكتبة.</p></div><button id="clear-favorites" class="button button-quiet button-small" type="button" data-i18n="clearFavorites">مسح المحفوظات</button><p class="small-note" data-i18n="localStorageNote">تُحفظ هذه القائمة محلياً في هذا المتصفح فقط، وليست مزامنة مع حساب.</p></article>
+      </div>
+    </section>
+    <section class="closing-banner"><div><span class="eyebrow" data-i18n="oneStep">كل يوم فرصة جديدة</span><h2 data-i18n="closingTitle">مستقبلك يستحق أفضل بداية.</h2><p data-i18n="closingText">ابدأ بخطوة بسيطة اليوم، وواصل التقدم نحو أهدافك.</p></div><a class="button button-light" href="#levels" data-i18n="chooseMyLevel">اختر مرحلتك <span aria-hidden="true">←</span></a></section>
+  </main>
+  <footer class="site-footer"><a class="brand footer-brand" href="#"><span class="brand-mark">ن</span><span><strong>نجاحنا</strong><small>Najahna</small></span></a><p data-i18n="footerText">نجاحنا — نتعلم اليوم لننجح غداً.</p><span>© <span id="year"></span> Najahna</span></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

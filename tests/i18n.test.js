@@ -10,7 +10,9 @@ const detailKeys = [
   "detailYears",
   "detailAvailability",
   "sampleOnly",
-  "sampleDetailNote"
+  "sampleDetailNote",
+  "resetFilters",
+  "resourceCount"
 ];
 
 test("resource detail labels are available in Arabic, French, and English", () => {

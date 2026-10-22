@@ -9,7 +9,7 @@
 - Arabic-first responsive interface, with French and English translations.
 - Right-to-left Arabic layout and left-to-right French/English layout.
 - Light/dark theme preference stored in the browser.
-- Search and combined filters for school level, school year, subject, and resource type; filtering logic has dedicated automated tests.
+- Search and combined filters for school level, school year, subject, and resource type, with a live result count and one-click filter reset; filtering logic has dedicated automated tests.
 - Accessible resource detail dialog with translated level, year, subject, and explicit sample-only content status.
 - Browser-local favorites, revision history, personal notes, and revision collections.
 - Weighted-average calculator (grades out of 20 and coefficients) with input validation.

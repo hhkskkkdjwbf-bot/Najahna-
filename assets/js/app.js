@@ -154,7 +154,7 @@ function renderStudyPlan() {
   const minutes = tasks.filter(task => !task.completed).reduce((total, task) => total + Number(task.minutes || 0), 0);
   $("#study-plan-summary").textContent = t("studyPlanSummary").replace("{done}", String(completed)).replace("{total}", String(tasks.length)).replace("{minutes}", String(minutes));
   list.innerHTML = tasks.length ? tasks.map(task => {
-    const dateLabel = /^\\d{4}-\\d{2}-\\d{2}$/.test(task.date) ? new Date(task.date + "T12:00:00").toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { dateStyle: "medium" }) : task.date;
+    const dateLabel = /^\d{4}-\d{2}-\d{2}$/.test(task.date) ? new Date(task.date + "T12:00:00").toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { dateStyle: "medium" }) : task.date;
     return `<article class="study-task ${task.completed ? "is-complete" : ""}"><label class="study-task-check"><input type="checkbox" data-study-toggle="${escapeHTML(task.id)}" ${task.completed ? "checked" : ""}><span class="sr-only">${escapeHTML(t("markStudyTaskDone"))}</span></label><div class="study-task-content"><strong>${escapeHTML(task.subject)}</strong><span>${escapeHTML(dateLabel)} · ${escapeHTML(String(task.minutes))} ${escapeHTML(t("minutesShort"))}</span></div><button type="button" class="study-task-delete" data-study-delete="${escapeHTML(task.id)}" aria-label="${escapeHTML(t("deleteStudyTask"))}">×</button></article>`;
   }).join("") : `<p class="small-note">${escapeHTML(t("studyPlanEmpty"))}</p>`;
 }

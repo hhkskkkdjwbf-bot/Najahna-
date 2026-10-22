@@ -12,10 +12,19 @@ const detailKeys = [
   "sampleOnly",
   "sampleDetailNote",
   "resetFilters",
-  "resourceCount"
+  "resourceCount",
+  "studyPlanTitle",
+  "studyPlanIntro",
+  "studySubjectLabel",
+  "studyDateLabel",
+  "studyDurationLabel",
+  "addStudyTask",
+  "studyPlanSummary",
+  "studyPlanEmpty",
+  "studyPlanLocalNote"
 ];
 
-test("resource detail labels are available in Arabic, French, and English", () => {
+test("resource detail and study planner labels are available in Arabic, French, and English", () => {
   for (const [language, dictionary] of Object.entries({ ar, fr, en })) {
     for (const key of detailKeys) {
       assert.equal(typeof dictionary[key], "string", `${language} is missing ${key}`);

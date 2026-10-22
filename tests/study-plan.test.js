@@ -12,6 +12,8 @@ test("creates a clean study task with a supported duration", () => {
 test("rejects empty subjects, invalid dates, and unsupported durations", () => {
   assert.throws(() => createStudyTask({ id: "1", subject: " ", date: "2026-10-23", minutes: 25 }));
   assert.throws(() => createStudyTask({ id: "1", subject: "Math", date: "not-a-date", minutes: 25 }));
+  assert.throws(() => createStudyTask({ id: "1", subject: "Math", date: "2026-02-31", minutes: 25 }));
+  assert.throws(() => createStudyTask({ id: "1", subject: "Math", date: "2026-13-01", minutes: 25 }));
   assert.throws(() => createStudyTask({ id: "1", subject: "Math", date: "2026-10-23", minutes: 17 }));
 });
 

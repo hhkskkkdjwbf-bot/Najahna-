@@ -1,4 +1,5 @@
 import { resources } from "../../src/data/resources.js";
+import { schoolYears, subjectCatalog } from "../../src/data/curriculum.js";
 import { getCollections, createCollection, moveResourceToCollection } from "../../src/utils/collections.js";
 import { getNotes, saveNote } from "../../src/utils/notes.js";
 import { recordResourceView, getResourceHistory } from "../../src/utils/history.js";
@@ -27,7 +28,8 @@ function setLanguage(next) {
     else node.textContent = value;
   });
   $$("[data-i18n-placeholder]").forEach(node => node.placeholder = t(node.dataset.i18nPlaceholder));
-  $$("#level-filter option, #type-filter option").forEach(option => { if (option.dataset.i18n) option.textContent = t(option.dataset.i18n); });
+  $("#level-filter option, #type-filter option").forEach(option => { if (option.dataset.i18n) option.textContent = t(option.dataset.i18n); });
+  renderCatalogFilters();
   renderResources();
   renderFavorites();
   updateRemoveButtons();
@@ -42,14 +44,32 @@ function getFavorites() {
 }
 function saveFavorites(ids) { localStorage.setItem("najahna-favorites", JSON.stringify([...new Set(ids)])); }
 function typeLabel(type) { return t(({lesson:"typeLesson",summary:"typeSummary",exercise:"typeExercise",exam:"typeExam",book:"typeBook",flashcard:"typeFlashcard",mindmap:"typeMindmap"})[type]); }
+function renderCatalogFilters() {
+  const level = $("#level-filter")?.value || "all";
+  const yearSelect = $("#year-filter");
+  const subjectSelect = $("#subject-filter");
+  if (!yearSelect || !subjectSelect) return;
+  const years = level === "all" ? schoolYears : schoolYears.filter(item => item.level === level);
+  const subjects = level === "all" ? subjectCatalog : subjectCatalog.filter(item => item.levels.includes(level));
+  const previousYear = yearSelect.value;
+  const previousSubject = subjectSelect.value;
+  yearSelect.innerHTML = `<option value="all">${escapeHTML(t("allYears"))}</option>` + years.map(item => `<option value="${item.year}" data-level="${item.level}">${escapeHTML(item.label[language])}</option>`).join("");
+  // Year numbers repeat across levels, so use a level/year composite value.
+  yearSelect.innerHTML = `<option value="all">${escapeHTML(t("allYears"))}</option>` + years.map(item => `<option value="${item.level}:${item.year}">${escapeHTML(item.label[language])}</option>`).join("");
+  subjectSelect.innerHTML = `<option value="all">${escapeHTML(t("allSubjects"))}</option>` + subjects.map(item => `<option value="${item.id}">${escapeHTML(item.label[language])}</option>`).join("");
+  if ([...yearSelect.options].some(option => option.value === previousYear)) yearSelect.value = previousYear;
+  if ([...subjectSelect.options].some(option => option.value === previousSubject)) subjectSelect.value = previousSubject;
+}
 function renderResources() {
   const query = $("#resource-search").value.trim().toLocaleLowerCase();
   const level = $("#level-filter").value;
   const type = $("#type-filter").value;
+  const year = $("#year-filter")?.value || "all";
+  const subject = $("#subject-filter")?.value || "all";
   const favorites = getFavorites();
   const filtered = resources.filter(item => {
     const searchable = [item.title[language], item.description[language], item.subject, item.grade[language]].join(" ").toLocaleLowerCase();
-    return (level === "all" || item.level === level) && (type === "all" || item.type === type) && (!query || searchable.includes(query));
+    return (level === "all" || item.level === level) && (type === "all" || item.type === type) && (year === "all" || year === `${item.level}:${(item.grades || [])[0]}` || year.startsWith(item.level + ":") && (item.grades || []).includes(year.split(":")[1])) && (subject === "all" || item.subject === subject) && (!query || searchable.includes(query));
   });
   $("#resource-grid").innerHTML = filtered.map(item => `<article class="resource-card">
     <div class="resource-card-top"><span class="resource-icon" aria-hidden="true">${item.icon}</span><button class="favorite-button ${favorites.includes(item.id) ? "saved" : ""}" type="button" data-favorite="${item.id}" aria-label="${favorites.includes(item.id) ? t("removed") : t("saved")}" aria-pressed="${favorites.includes(item.id)}">${favorites.includes(item.id) ? "♥" : "♡"}</button></div>
@@ -123,7 +143,9 @@ $("#theme-toggle").addEventListener("click", () => {
   $("#theme-toggle").title = dark ? "Light mode" : "Dark mode";
 });
 $("#resource-search").addEventListener("input", renderResources);
-$("#level-filter").addEventListener("change", () => { selectedLevel = $("#level-filter").value; renderResources(); });
+$("#level-filter").addEventListener("change", () => { selectedLevel = $("#level-filter").value; renderCatalogFilters(); renderResources(); });
+$("#year-filter")?.addEventListener("change", renderResources);
+$("#subject-filter")?.addEventListener("change", renderResources);
 $("#type-filter").addEventListener("change", renderResources);
 $("#resource-grid").addEventListener("click", event => {
   const viewed = event.target.closest("[data-view-resource]");
@@ -172,6 +194,7 @@ document.body.classList.toggle("dark", localStorage.getItem("najahna-theme") ===
 $("#theme-toggle").textContent = document.body.classList.contains("dark") ? "☀" : "☾";
 $("#year").textContent = new Date().getFullYear();
 setLanguage(language);
+renderCatalogFilters();
 renderCollections();
 renderNotes();
 renderHistory();

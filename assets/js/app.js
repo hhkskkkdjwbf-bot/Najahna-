@@ -75,6 +75,7 @@ function renderResources() {
     <span class="resource-type">${escapeHTML(typeLabel(item.type))} · ${escapeHTML(t("sample"))}</span><h3>${escapeHTML(item.title[language])}</h3><p>${escapeHTML(item.description[language])}</p>
     <div class="resource-meta"><span>${escapeHTML(item.grade[language])}</span><span>${escapeHTML(item.subject.toUpperCase())}</span></div><div class="resource-actions"><button type="button" class="button button-outline button-small" data-details-resource="${item.id}">${t("viewDetails")}</button><button type="button" class="button button-outline button-small" data-view-resource="${item.id}">${t("markViewed")}</button><button type="button" class="button button-quiet button-small" data-collect-resource="${item.id}">${t("addToCollection")}</button></div></article>`).join("");
   $("#empty-state").hidden = filtered.length !== 0;
+  $("#resource-count").textContent = t("resourceCount").replace("{count}", String(filtered.length));
 }
 function renderResourceDetails(id) {
   const item = resources.find(resource => resource.id === id);
@@ -174,6 +175,17 @@ $("#theme-toggle").addEventListener("click", () => {
   $("#theme-toggle").title = dark ? "Light mode" : "Dark mode";
 });
 $("#resource-dialog-close").addEventListener("click", () => $("#resource-dialog").close());
+$("#reset-resource-filters").addEventListener("click", () => {
+  $("#resource-search").value = "";
+  $("#level-filter").value = "all";
+  $("#year-filter").value = "all";
+  $("#subject-filter").value = "all";
+  $("#type-filter").value = "all";
+  selectedLevel = "all";
+  $(".level-card").forEach(card => card.classList.remove("active"));
+  renderCatalogFilters();
+  renderResources();
+});
 $("#resource-search").addEventListener("input", renderResources);
 $("#level-filter").addEventListener("change", () => { selectedLevel = $("#level-filter").value; renderCatalogFilters(); renderResources(); });
 $("#year-filter")?.addEventListener("change", renderResources);

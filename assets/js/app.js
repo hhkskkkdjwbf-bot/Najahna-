@@ -53,7 +53,6 @@ function renderCatalogFilters() {
   const subjects = level === "all" ? subjectCatalog : subjectCatalog.filter(item => item.levels.includes(level));
   const previousYear = yearSelect.value;
   const previousSubject = subjectSelect.value;
-  yearSelect.innerHTML = `<option value="all">${escapeHTML(t("allYears"))}</option>` + years.map(item => `<option value="${item.year}" data-level="${item.level}">${escapeHTML(item.label[language])}</option>`).join("");
   // Year numbers repeat across levels, so use a level/year composite value.
   yearSelect.innerHTML = `<option value="all">${escapeHTML(t("allYears"))}</option>` + years.map(item => `<option value="${item.level}:${item.year}">${escapeHTML(item.label[language])}</option>`).join("");
   subjectSelect.innerHTML = `<option value="all">${escapeHTML(t("allSubjects"))}</option>` + subjects.map(item => `<option value="${item.id}">${escapeHTML(item.label[language])}</option>`).join("");
@@ -68,7 +67,8 @@ function renderResources() {
   const subject = $("#subject-filter")?.value || "all";
   const favorites = getFavorites();
   const filtered = resources.filter(item => {
-    const searchable = [item.title[language], item.description[language], item.subject, item.grade[language]].join(" ").toLocaleLowerCase();
+    const subjectName = subjectCatalog.find(subjectItem => subjectItem.id === item.subject)?.label[language] || item.subject;
+    const searchable = [item.title[language], item.description[language], item.subject, subjectName, item.grade[language]].join(" ").toLocaleLowerCase();
     return (level === "all" || item.level === level) && (type === "all" || item.type === type) && (year === "all" || year === `${item.level}:${(item.grades || [])[0]}` || year.startsWith(item.level + ":") && (item.grades || []).includes(year.split(":")[1])) && (subject === "all" || item.subject === subject) && (!query || searchable.includes(query));
   });
   $("#resource-grid").innerHTML = filtered.map(item => `<article class="resource-card">
@@ -186,8 +186,8 @@ $("#note-form")?.addEventListener("submit", event => {
   catch { showToast(t("saveFailed")); }
 });
 $$("[data-level]").forEach(button => button.addEventListener("click", () => {
-  selectedLevel = button.dataset.level; $("#level-filter").value = selectedLevel;
-  $$(".level-card").forEach(card => card.classList.toggle("active", card === button));
+  selectedLevel = button.dataset.level; $("#level-filter").value = selectedLevel; renderCatalogFilters();
+  $(".level-card").forEach(card => card.classList.toggle("active", card === button));
   renderResources(); $("#resources").scrollIntoView({ behavior: "smooth" }); showToast(t("levelSelected"));
 }));
 document.body.classList.toggle("dark", localStorage.getItem("najahna-theme") === "dark");

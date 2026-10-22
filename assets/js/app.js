@@ -1,4 +1,7 @@
 import { resources } from "../../src/data/resources.js";
+import { getCollections, createCollection, moveResourceToCollection } from "../../src/utils/collections.js";
+import { getNotes, saveNote } from "../../src/utils/notes.js";
+import { recordResourceView, getResourceHistory } from "../../src/utils/history.js";
 import ar from "../../src/i18n/ar.js";
 import fr from "../../src/i18n/fr.js";
 import en from "../../src/i18n/en.js";
@@ -38,7 +41,7 @@ function getFavorites() {
   catch { return []; }
 }
 function saveFavorites(ids) { localStorage.setItem("najahna-favorites", JSON.stringify([...new Set(ids)])); }
-function typeLabel(type) { return t(({lesson:"typeLesson",summary:"typeSummary",exercise:"typeExercise",exam:"typeExam",book:"typeBook"})[type]); }
+function typeLabel(type) { return t(({lesson:"typeLesson",summary:"typeSummary",exercise:"typeExercise",exam:"typeExam",book:"typeBook",flashcard:"typeFlashcard",mindmap:"typeMindmap"})[type]); }
 function renderResources() {
   const query = $("#resource-search").value.trim().toLocaleLowerCase();
   const level = $("#level-filter").value;
@@ -51,8 +54,23 @@ function renderResources() {
   $("#resource-grid").innerHTML = filtered.map(item => `<article class="resource-card">
     <div class="resource-card-top"><span class="resource-icon" aria-hidden="true">${item.icon}</span><button class="favorite-button ${favorites.includes(item.id) ? "saved" : ""}" type="button" data-favorite="${item.id}" aria-label="${favorites.includes(item.id) ? t("removed") : t("saved")}" aria-pressed="${favorites.includes(item.id)}">${favorites.includes(item.id) ? "♥" : "♡"}</button></div>
     <span class="resource-type">${escapeHTML(typeLabel(item.type))} · ${escapeHTML(t("sample"))}</span><h3>${escapeHTML(item.title[language])}</h3><p>${escapeHTML(item.description[language])}</p>
-    <div class="resource-meta"><span>${escapeHTML(item.grade[language])}</span><span>${escapeHTML(item.subject.toUpperCase())}</span></div></article>`).join("");
+    <div class="resource-meta"><span>${escapeHTML(item.grade[language])}</span><span>${escapeHTML(item.subject.toUpperCase())}</span></div><div class="resource-actions"><button type="button" class="button button-outline button-small" data-view-resource="${item.id}">${t("markViewed")}</button><button type="button" class="button button-quiet button-small" data-collect-resource="${item.id}">${t("addToCollection")}</button></div></article>`).join("");
   $("#empty-state").hidden = filtered.length !== 0;
+}
+function renderCollections() {
+  const root = $("#collections-list");
+  if (!root) return;
+  const collections = getCollections();
+  root.innerHTML = collections.map(collection => {
+    const titles = collection.resourceIds.map(id => resources.find(item => item.id === id)).filter(Boolean).map(item => item.title[language]);
+    return `<div class="collection-item"><strong>${escapeHTML(collection.name)}</strong><span>${collection.resourceIds.length} · ${escapeHTML(t("resourcesCount"))}</span>${titles.length ? `<small>${titles.map(escapeHTML).join("، ")}</small>` : ""}</div>`;
+  }).join("");
+}
+function renderNotes() {
+  const root = $("#notes-list");
+  if (!root) return;
+  const notes = getNotes();
+  root.innerHTML = notes.length ? notes.slice(0, 8).map(note => `<article class="note-item"><strong>${escapeHTML(note.title)}</strong><p>${escapeHTML(note.body)}</p><small>${escapeHTML(new Date(note.updatedAt).toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en"))}</small></article>`).join("") : `<p class="small-note">${t("noNotes")}</p>`;
 }
 function renderFavorites() {
   const ids = getFavorites();
@@ -111,6 +129,16 @@ $("#clear-favorites").addEventListener("click", () => { saveFavorites([]); rende
 $("#grade-rows").addEventListener("click", event => { const button = event.target.closest(".remove-grade"); if (button && $$(".grade-row").length > 1) { button.closest(".grade-row").remove(); updateRemoveButtons(); } });
 $("#add-grade").addEventListener("click", addGradeRow);
 $("#average-form").addEventListener("submit", calculateAverage);
+$("#collection-form")?.addEventListener("submit", event => {
+  event.preventDefault();
+  try { createCollection($("#collection-name").value); $("#collection-name").value = ""; renderCollections(); showToast(t("collectionCreated")); }
+  catch { showToast(t("saveFailed")); }
+});
+$("#note-form")?.addEventListener("submit", event => {
+  event.preventDefault();
+  try { saveNote({ title: $("#note-title").value, body: $("#note-body").value }); $("#note-title").value = ""; $("#note-body").value = ""; renderNotes(); showToast(t("noteSaved")); }
+  catch { showToast(t("saveFailed")); }
+});
 $$("[data-level]").forEach(button => button.addEventListener("click", () => {
   selectedLevel = button.dataset.level; $("#level-filter").value = selectedLevel;
   $$(".level-card").forEach(card => card.classList.toggle("active", card === button));

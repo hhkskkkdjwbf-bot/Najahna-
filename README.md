@@ -13,10 +13,11 @@
 - Accessible resource detail dialog with translated level, year, subject, and explicit sample-only content status.
 - Browser-local favorites, revision history, personal notes, and revision collections.
 - Weighted-average calculator (grades out of 20 and coefficients) with input validation.
+- Local study planner with dates, 15–90 minute sessions, completion tracking, deletion, and a remaining-minutes summary; it is stored only in the current browser.
 - Starter school-year catalog covering 5 primary, 4 middle-school, and 3 secondary years.
 - Subject catalog with level-aware filtering and Arabic, French, and English labels.
 - Accessible skip link, semantic labels, and reduced-motion support.
-- Automated Node.js tests and a GitHub Actions quality workflow.
+- Automated Node.js tests, including study-plan validation and resource-catalog integrity, and a GitHub Actions quality workflow.
 
 ## Run locally
 

@@ -3,6 +3,8 @@ import { schoolYears, subjectCatalog } from "../../src/data/curriculum.js";
 import { filterResources } from "../../src/data/resource-filters.js";
 import { getCollections, createCollection, moveResourceToCollection } from "../../src/utils/collections.js";
 import { getNotes, saveNote } from "../../src/utils/notes.js";
+import { createStudyTask, toggleStudyTask, removeStudyTask } from "../../src/utils/study-plan.js";
+import { readJSON, writeJSON } from "../../src/utils/storage.js";
 import { recordResourceView, getResourceHistory } from "../../src/utils/history.js";
 import ar from "../../src/i18n/ar.js";
 import fr from "../../src/i18n/fr.js";
@@ -34,6 +36,7 @@ function setLanguage(next) {
   renderCatalogFilters();
   renderResources();
   renderFavorites();
+  renderStudyPlan();
   if (activeResourceId && $("#resource-dialog").open) renderResourceDetails(activeResourceId);
   updateRemoveButtons();
 }
@@ -139,6 +142,22 @@ function renderFavorites() {
   const saved = ids.map(id => resources.find(item => item.id === id)).filter(Boolean);
   $("#favorites-list").innerHTML = saved.length ? saved.map(item => `<div class="favorite-item"><span>${escapeHTML(item.title[language])}</span><button type="button" data-remove-favorite="${item.id}" aria-label="${t("removed")}">×</button></div>`).join("") : `<p>${t("noFavorites")}</p>`;
 }
+function getStudyTasks() {
+  const value = readJSON("study-plan", []);
+  return Array.isArray(value) ? value.filter(task => task && typeof task.id === "string" && typeof task.subject === "string") : [];
+}
+function renderStudyPlan() {
+  const list = $("#study-plan-list");
+  if (!list) return;
+  const tasks = getStudyTasks().sort((a, b) => a.date.localeCompare(b.date) || Number(a.completed) - Number(b.completed));
+  const completed = tasks.filter(task => task.completed).length;
+  const minutes = tasks.filter(task => !task.completed).reduce((total, task) => total + Number(task.minutes || 0), 0);
+  $("#study-plan-summary").textContent = t("studyPlanSummary").replace("{done}", String(completed)).replace("{total}", String(tasks.length)).replace("{minutes}", String(minutes));
+  list.innerHTML = tasks.length ? tasks.map(task => {
+    const dateLabel = /^\\d{4}-\\d{2}-\\d{2}$/.test(task.date) ? new Date(task.date + "T12:00:00").toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { dateStyle: "medium" }) : task.date;
+    return `<article class="study-task ${task.completed ? "is-complete" : ""}"><label class="study-task-check"><input type="checkbox" data-study-toggle="${escapeHTML(task.id)}" ${task.completed ? "checked" : ""}><span class="sr-only">${escapeHTML(t("markStudyTaskDone"))}</span></label><div class="study-task-content"><strong>${escapeHTML(task.subject)}</strong><span>${escapeHTML(dateLabel)} · ${escapeHTML(String(task.minutes))} ${escapeHTML(t("minutesShort"))}</span></div><button type="button" class="study-task-delete" data-study-delete="${escapeHTML(task.id)}" aria-label="${escapeHTML(t("deleteStudyTask"))}">×</button></article>`;
+  }).join("") : `<p class="small-note">${escapeHTML(t("studyPlanEmpty"))}</p>`;
+}
 function updateRemoveButtons() {
   $$(".remove-grade").forEach(button => button.disabled = $$(".grade-row").length === 1);
 }
@@ -221,6 +240,30 @@ $("#clear-favorites").addEventListener("click", () => { saveFavorites([]); rende
 $("#grade-rows").addEventListener("click", event => { const button = event.target.closest(".remove-grade"); if (button && $$(".grade-row").length > 1) { button.closest(".grade-row").remove(); updateRemoveButtons(); } });
 $("#add-grade").addEventListener("click", addGradeRow);
 $("#average-form").addEventListener("submit", calculateAverage);
+$("#study-plan-form")?.addEventListener("submit", event => {
+  event.preventDefault();
+  try {
+    const tasks = getStudyTasks();
+    const task = createStudyTask({ id: globalThis.crypto?.randomUUID?.() || `study-${Date.now()}`, subject: $("#study-subject").value, date: $("#study-date").value, minutes: $("#study-duration").value });
+    if (tasks.length >= 100) { showToast(t("studyPlanLimit")); return; }
+    if (!writeJSON("study-plan", [...tasks, task])) { showToast(t("saveFailed")); return; }
+    $("#study-subject").value = "";
+    renderStudyPlan();
+    showToast(t("studyTaskAdded"));
+  } catch { showToast(t("studyPlanInvalid")); }
+});
+$("#study-plan-list")?.addEventListener("change", event => {
+  const checkbox = event.target.closest("[data-study-toggle]");
+  if (!checkbox) return;
+  if (!writeJSON("study-plan", toggleStudyTask(getStudyTasks(), checkbox.dataset.studyToggle))) { showToast(t("saveFailed")); return; }
+  renderStudyPlan();
+});
+$("#study-plan-list")?.addEventListener("click", event => {
+  const button = event.target.closest("[data-study-delete]");
+  if (!button) return;
+  if (!writeJSON("study-plan", removeStudyTask(getStudyTasks(), button.dataset.studyDelete))) { showToast(t("saveFailed")); return; }
+  renderStudyPlan();
+});
 $("#collection-form")?.addEventListener("submit", event => {
   event.preventDefault();
   try { createCollection($("#collection-name").value); $("#collection-name").value = ""; renderCollections(); showToast(t("collectionCreated")); }
@@ -244,4 +287,5 @@ renderCatalogFilters();
 renderCollections();
 renderNotes();
 renderHistory();
+renderStudyPlan();
 updateRemoveButtons();

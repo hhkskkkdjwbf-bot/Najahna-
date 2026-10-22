@@ -1,5 +1,6 @@
 import { resources } from "../../src/data/resources.js";
 import { schoolYears, subjectCatalog } from "../../src/data/curriculum.js";
+import { filterResources } from "../../src/data/resource-filters.js";
 import { getCollections, createCollection, moveResourceToCollection } from "../../src/utils/collections.js";
 import { getNotes, saveNote } from "../../src/utils/notes.js";
 import { recordResourceView, getResourceHistory } from "../../src/utils/history.js";
@@ -66,11 +67,7 @@ function renderResources() {
   const year = $("#year-filter")?.value || "all";
   const subject = $("#subject-filter")?.value || "all";
   const favorites = getFavorites();
-  const filtered = resources.filter(item => {
-    const subjectName = subjectCatalog.find(subjectItem => subjectItem.id === item.subject)?.label[language] || item.subject;
-    const searchable = [item.title[language], item.description[language], item.subject, subjectName, item.grade[language]].join(" ").toLocaleLowerCase();
-    return (level === "all" || item.level === level) && (type === "all" || item.type === type) && (year === "all" || year === `${item.level}:${(item.grades || [])[0]}` || year.startsWith(item.level + ":") && (item.grades || []).includes(year.split(":")[1])) && (subject === "all" || item.subject === subject) && (!query || searchable.includes(query));
-  });
+  const filtered = filterResources(resources, { query, level, type, year, subject, language, subjectCatalog });
   $("#resource-grid").innerHTML = filtered.map(item => `<article class="resource-card">
     <div class="resource-card-top"><span class="resource-icon" aria-hidden="true">${item.icon}</span><button class="favorite-button ${favorites.includes(item.id) ? "saved" : ""}" type="button" data-favorite="${item.id}" aria-label="${favorites.includes(item.id) ? t("removed") : t("saved")}" aria-pressed="${favorites.includes(item.id)}">${favorites.includes(item.id) ? "♥" : "♡"}</button></div>
     <span class="resource-type">${escapeHTML(typeLabel(item.type))} · ${escapeHTML(t("sample"))}</span><h3>${escapeHTML(item.title[language])}</h3><p>${escapeHTML(item.description[language])}</p>

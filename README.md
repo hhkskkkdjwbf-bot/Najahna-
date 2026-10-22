@@ -9,7 +9,7 @@
 - Arabic-first responsive interface, with French and English translations.
 - Right-to-left Arabic layout and left-to-right French/English layout.
 - Light/dark theme preference stored in the browser.
-- Search and filters for school level and resource type.
+- Search and combined filters for school level, school year, subject, and resource type; filtering logic has dedicated automated tests.
 - Browser-local favorites, revision history, personal notes, and revision collections.
 - Weighted-average calculator (grades out of 20 and coefficients) with input validation.
 - Starter school-year catalog covering 5 primary, 4 middle-school, and 3 secondary years.
@@ -46,7 +46,7 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 │   │   └── resources.js
 │   ├── i18n/{ar,fr,en}.js
 │   └── utils/{collections,history,notes,storage}.js
-└── tests/{average,curriculum}.test.js
+└── tests/{average,curriculum,resource-filters}.test.js
 ```
 
 ## Important limitations

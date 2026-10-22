@@ -32,7 +32,7 @@ function setLanguage(next) {
     else node.textContent = value;
   });
   $$("[data-i18n-placeholder]").forEach(node => node.placeholder = t(node.dataset.i18nPlaceholder));
-  $("#level-filter option, #type-filter option").forEach(option => { if (option.dataset.i18n) option.textContent = t(option.dataset.i18n); });
+  $("#level-filter option, #type-filter option, #study-plan-filter option").forEach(option => { if (option.dataset.i18n) option.textContent = t(option.dataset.i18n); });
   renderCatalogFilters();
   renderResources();
   renderFavorites();
@@ -149,10 +149,12 @@ function getStudyTasks() {
 function renderStudyPlan() {
   const list = $("#study-plan-list");
   if (!list) return;
-  const tasks = getStudyTasks().sort((a, b) => a.date.localeCompare(b.date) || Number(a.completed) - Number(b.completed));
-  const completed = tasks.filter(task => task.completed).length;
-  const minutes = tasks.filter(task => !task.completed).reduce((total, task) => total + Number(task.minutes || 0), 0);
-  $("#study-plan-summary").textContent = t("studyPlanSummary").replace("{done}", String(completed)).replace("{total}", String(tasks.length)).replace("{minutes}", String(minutes));
+  const allTasks = getStudyTasks().sort((a, b) => a.date.localeCompare(b.date) || Number(a.completed) - Number(b.completed));
+  const completed = allTasks.filter(task => task.completed).length;
+  const minutes = allTasks.filter(task => !task.completed).reduce((total, task) => total + Number(task.minutes || 0), 0);
+  $("#study-plan-summary").textContent = t("studyPlanSummary").replace("{done}", String(completed)).replace("{total}", String(allTasks.length)).replace("{minutes}", String(minutes));
+  const filter = $("#study-plan-filter")?.value || "all";
+  const tasks = allTasks.filter(task => filter === "completed" ? task.completed : filter === "pending" ? !task.completed : true);
   list.innerHTML = tasks.length ? tasks.map(task => {
     const dateLabel = /^\d{4}-\d{2}-\d{2}$/.test(task.date) ? new Date(task.date + "T12:00:00").toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { dateStyle: "medium" }) : task.date;
     return `<article class="study-task ${task.completed ? "is-complete" : ""}"><label class="study-task-check"><input type="checkbox" data-study-toggle="${escapeHTML(task.id)}" ${task.completed ? "checked" : ""}><span class="sr-only">${escapeHTML(t("markStudyTaskDone"))}</span></label><div class="study-task-content"><strong>${escapeHTML(task.subject)}</strong><span>${escapeHTML(dateLabel)} · ${escapeHTML(String(task.minutes))} ${escapeHTML(t("minutesShort"))}</span></div><button type="button" class="study-task-delete" data-study-delete="${escapeHTML(task.id)}" aria-label="${escapeHTML(t("deleteStudyTask"))}">×</button></article>`;
@@ -252,6 +254,7 @@ $("#study-plan-form")?.addEventListener("submit", event => {
     showToast(t("studyTaskAdded"));
   } catch { showToast(t("studyPlanInvalid")); }
 });
+$("#study-plan-filter")?.addEventListener("change", renderStudyPlan);
 $("#study-plan-list")?.addEventListener("change", event => {
   const checkbox = event.target.closest("[data-study-toggle]");
   if (!checkbox) return;

@@ -21,7 +21,11 @@ const detailKeys = [
   "addStudyTask",
   "studyPlanSummary",
   "studyPlanEmpty",
-  "studyPlanLocalNote"
+  "studyPlanLocalNote",
+  "studyPlanFilterLabel",
+  "studyPlanFilterAll",
+  "studyPlanFilterPending",
+  "studyPlanFilterCompleted"
 ];
 
 test("resource detail and study planner labels are available in Arabic, French, and English", () => {

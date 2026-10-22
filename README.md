@@ -10,6 +10,7 @@
 - Right-to-left Arabic layout and left-to-right French/English layout.
 - Light/dark theme preference stored in the browser.
 - Search and combined filters for school level, school year, subject, and resource type; filtering logic has dedicated automated tests.
+- Accessible resource detail dialog with translated level, year, subject, and explicit sample-only content status.
 - Browser-local favorites, revision history, personal notes, and revision collections.
 - Weighted-average calculator (grades out of 20 and coefficients) with input validation.
 - Starter school-year catalog covering 5 primary, 4 middle-school, and 3 secondary years.
@@ -47,7 +48,7 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 │   │   └── resources.js
 │   ├── i18n/{ar,fr,en}.js
 │   └── utils/{collections,history,notes,storage}.js
-└── tests/{average,curriculum,resource-filters}.test.js
+└── tests/{average,curriculum,i18n,resource-filters}.test.js
 ```
 
 ## Important limitations
@@ -65,7 +66,7 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 2. Add real PDF metadata, source attribution, file validation, and broken-link checks.
 3. Build secure account authentication and database-backed folders, history, notes, and favorites.
 4. Add grade- and stream-specific semester/annual average rules with tests.
-5. Add resource detail pages, accessible document previews, and clear reporting for broken or incorrect content.
+5. Add accessible document previews and clear reporting for broken or incorrect content.
 6. Add SEO metadata, sitemap, robots policy, analytics with privacy controls, and performance budgets.
 7. Plan backend hosting, database backups, moderation, and security before collecting user data.
 

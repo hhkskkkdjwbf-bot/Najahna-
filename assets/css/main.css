@@ -13,3 +13,8 @@
 .resource-dialog-note{padding:13px 15px;border-radius:12px;background:var(--surface-soft);color:var(--muted);font-size:12px;line-height:1.9;margin:16px 0}
 .resource-dialog-actions{display:flex;flex-wrap:wrap;gap:9px}
 @media(max-width:480px){.resource-dialog{padding:20px}.resource-detail-list{grid-template-columns:1fr}.resource-dialog-actions .button{flex:1}}
+
+.resource-results-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0 18px}
+.resource-count{margin:0;color:var(--muted);font-size:13px;font-weight:600}
+#reset-resource-filters{flex-shrink:0}
+@media(max-width:520px){.resource-results-bar{align-items:flex-start;flex-direction:column;gap:6px}}

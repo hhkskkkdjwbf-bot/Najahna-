@@ -116,6 +116,20 @@ $("#resource-search").addEventListener("input", renderResources);
 $("#level-filter").addEventListener("change", () => { selectedLevel = $("#level-filter").value; renderResources(); });
 $("#type-filter").addEventListener("change", renderResources);
 $("#resource-grid").addEventListener("click", event => {
+  const viewed = event.target.closest("[data-view-resource]");
+  if (viewed) { recordResourceView(viewed.dataset.viewResource); showToast(t("viewRecorded")); return; }
+  const collect = event.target.closest("[data-collect-resource]");
+  if (collect) {
+    const collections = getCollections();
+    if (!collections.length) { showToast(t("createCollectionFirst")); return; }
+    const chosen = window.prompt(t("chooseCollection") + "\\n" + collections.map((item, i) => `${i + 1}. ${item.name}`).join("\\n"));
+    const index = Number(chosen) - 1;
+    if (chosen && Number.isInteger(index) && collections[index]) {
+      try { moveResourceToCollection(collect.dataset.collectResource, collections[index].id); renderCollections(); showToast(t("addedToCollection")); }
+      catch { showToast(t("saveFailed")); }
+    }
+    return;
+  }
   const button = event.target.closest("[data-favorite]"); if (!button) return;
   const id = button.dataset.favorite; const favorites = getFavorites(); const exists = favorites.includes(id);
   saveFavorites(exists ? favorites.filter(item => item !== id) : [...favorites, id]);
@@ -148,4 +162,6 @@ document.body.classList.toggle("dark", localStorage.getItem("najahna-theme") ===
 $("#theme-toggle").textContent = document.body.classList.contains("dark") ? "☀" : "☾";
 $("#year").textContent = new Date().getFullYear();
 setLanguage(language);
+renderCollections();
+renderNotes();
 updateRemoveButtons();

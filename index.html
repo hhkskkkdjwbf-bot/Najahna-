@@ -75,6 +75,21 @@
     <section class="closing-banner"><div><span class="eyebrow" data-i18n="oneStep">كل يوم فرصة جديدة</span><h2 data-i18n="closingTitle">مستقبلك يستحق أفضل بداية.</h2><p data-i18n="closingText">ابدأ بخطوة بسيطة اليوم، وواصل التقدم نحو أهدافك.</p></div><a class="button button-light" href="#levels" data-i18n="chooseMyLevel">اختر مرحلتك <span aria-hidden="true">←</span></a></section>
   </main>
   <footer class="site-footer"><a class="brand footer-brand" href="#"><span class="brand-mark">ن</span><span><strong>نجاحنا</strong><small>Najahna</small></span></a><p data-i18n="footerText">نجاحنا — نتعلم اليوم لننجح غداً.</p><span>© <span id="year"></span> Najahna</span></footer>
+  <dialog id="resource-dialog" class="resource-dialog" aria-labelledby="resource-dialog-title">
+    <div class="resource-dialog-header">
+      <div><span id="resource-dialog-type" class="resource-type"></span><h2 id="resource-dialog-title"></h2></div>
+      <button id="resource-dialog-close" class="icon-button" type="button" aria-label="Close">×</button>
+    </div>
+    <p id="resource-dialog-description" class="resource-dialog-description"></p>
+    <dl class="resource-detail-list">
+      <div><dt data-i18n="detailLevel">المستوى</dt><dd id="resource-dialog-level"></dd></div>
+      <div><dt data-i18n="detailYears">السنوات الدراسية</dt><dd id="resource-dialog-years"></dd></div>
+      <div><dt data-i18n="filterSubject">المادة</dt><dd id="resource-dialog-subject"></dd></div>
+      <div><dt data-i18n="detailAvailability">حالة المحتوى</dt><dd id="resource-dialog-availability"></dd></div>
+    </dl>
+    <p id="resource-dialog-note" class="resource-dialog-note"></p>
+    <div class="resource-dialog-actions"><button id="resource-dialog-reviewed" class="button button-primary button-small" type="button"></button><button id="resource-dialog-add" class="button button-outline button-small" type="button"></button></div>
+  </dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </body>
 </html>

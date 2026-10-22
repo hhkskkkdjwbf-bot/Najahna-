@@ -95,7 +95,7 @@ function renderResourceDetails(id) {
   $("#resource-dialog-add").onclick = () => {
     const collections = getCollections();
     if (!collections.length) { showToast(t("createCollectionFirst")); return; }
-    const chosen = window.prompt(t("chooseCollection") + "\\n" + collections.map((entry, index) => `${index + 1}. ${entry.name}`).join("\\n"));
+    const chosen = window.prompt(t("chooseCollection") + "\n" + collections.map((entry, index) => `${index + 1}. ${entry.name}`).join("\n"));
     const index = Number(chosen) - 1;
     if (chosen && Number.isInteger(index) && collections[index]) {
       try { moveResourceToCollection(item.id, collections[index].id); renderCollections(); showToast(t("addedToCollection")); }
@@ -200,7 +200,7 @@ $("#resource-grid").addEventListener("click", event => {
   if (collect) {
     const collections = getCollections();
     if (!collections.length) { showToast(t("createCollectionFirst")); return; }
-    const chosen = window.prompt(t("chooseCollection") + "\\n" + collections.map((item, i) => `${i + 1}. ${item.name}`).join("\\n"));
+    const chosen = window.prompt(t("chooseCollection") + "\n" + collections.map((item, i) => `${i + 1}. ${item.name}`).join("\n"));
     const index = Number(chosen) - 1;
     if (chosen && Number.isInteger(index) && collections[index]) {
       try { moveResourceToCollection(collect.dataset.collectResource, collections[index].id); renderCollections(); showToast(t("addedToCollection")); }

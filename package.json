@@ -1,0 +1,11 @@
+{
+  "name": "najahna-educational-platform",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Arabic-first Algerian educational platform prototype",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "check": "node --check assets/js/app.js"
+  }
+}

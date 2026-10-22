@@ -25,7 +25,8 @@ const detailKeys = [
   "studyPlanFilterLabel",
   "studyPlanFilterAll",
   "studyPlanFilterPending",
-  "studyPlanFilterCompleted"
+  "studyPlanFilterCompleted",
+  "studyPlanFilterEmpty"
 ];
 
 test("resource detail and study planner labels are available in Arabic, French, and English", () => {

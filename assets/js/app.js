@@ -13,6 +13,7 @@ const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 let language = localStorage.getItem("najahna-language") || "ar";
 let selectedLevel = "all";
+let activeResourceId = null;
 let toastTimer;
 
 function t(key) { return translations[language]?.[key] ?? translations.ar[key] ?? key; }
@@ -33,6 +34,7 @@ function setLanguage(next) {
   renderCatalogFilters();
   renderResources();
   renderFavorites();
+  if (activeResourceId && $("#resource-dialog").open) renderResourceDetails(activeResourceId);
   updateRemoveButtons();
 }
 function showToast(message) {
@@ -71,8 +73,40 @@ function renderResources() {
   $("#resource-grid").innerHTML = filtered.map(item => `<article class="resource-card">
     <div class="resource-card-top"><span class="resource-icon" aria-hidden="true">${item.icon}</span><button class="favorite-button ${favorites.includes(item.id) ? "saved" : ""}" type="button" data-favorite="${item.id}" aria-label="${favorites.includes(item.id) ? t("removed") : t("saved")}" aria-pressed="${favorites.includes(item.id)}">${favorites.includes(item.id) ? "♥" : "♡"}</button></div>
     <span class="resource-type">${escapeHTML(typeLabel(item.type))} · ${escapeHTML(t("sample"))}</span><h3>${escapeHTML(item.title[language])}</h3><p>${escapeHTML(item.description[language])}</p>
-    <div class="resource-meta"><span>${escapeHTML(item.grade[language])}</span><span>${escapeHTML(item.subject.toUpperCase())}</span></div><div class="resource-actions"><button type="button" class="button button-outline button-small" data-view-resource="${item.id}">${t("markViewed")}</button><button type="button" class="button button-quiet button-small" data-collect-resource="${item.id}">${t("addToCollection")}</button></div></article>`).join("");
+    <div class="resource-meta"><span>${escapeHTML(item.grade[language])}</span><span>${escapeHTML(item.subject.toUpperCase())}</span></div><div class="resource-actions"><button type="button" class="button button-outline button-small" data-details-resource="${item.id}">${t("viewDetails")}</button><button type="button" class="button button-outline button-small" data-view-resource="${item.id}">${t("markViewed")}</button><button type="button" class="button button-quiet button-small" data-collect-resource="${item.id}">${t("addToCollection")}</button></div></article>`).join("");
   $("#empty-state").hidden = filtered.length !== 0;
+}
+function renderResourceDetails(id) {
+  const item = resources.find(resource => resource.id === id);
+  if (!item) return;
+  activeResourceId = item.id;
+  $("#resource-dialog-type").textContent = `${typeLabel(item.type)} · ${t("sample")}`;
+  $("#resource-dialog-title").textContent = item.title[language];
+  $("#resource-dialog-description").textContent = item.description[language];
+  $("#resource-dialog-level").textContent = item.grade[language];
+  const years = schoolYears.filter(year => year.level === item.level && (item.grades || []).includes(year.year));
+  $("#resource-dialog-years").textContent = years.map(year => year.label[language]).join("، ") || "—";
+  $("#resource-dialog-subject").textContent = subjectCatalog.find(subject => subject.id === item.subject)?.label?.[language] || item.subject;
+  $("#resource-dialog-availability").textContent = t("sampleOnly");
+  $("#resource-dialog-note").textContent = t("sampleDetailNote");
+  $("#resource-dialog-reviewed").textContent = t("markViewed");
+  $("#resource-dialog-add").textContent = t("addToCollection");
+  $("#resource-dialog-add").onclick = () => {
+    const collections = getCollections();
+    if (!collections.length) { showToast(t("createCollectionFirst")); return; }
+    const chosen = window.prompt(t("chooseCollection") + "\\n" + collections.map((entry, index) => `${index + 1}. ${entry.name}`).join("\\n"));
+    const index = Number(chosen) - 1;
+    if (chosen && Number.isInteger(index) && collections[index]) {
+      try { moveResourceToCollection(item.id, collections[index].id); renderCollections(); showToast(t("addedToCollection")); }
+      catch { showToast(t("saveFailed")); }
+    }
+  };
+  $("#resource-dialog-reviewed").onclick = () => {
+    recordResourceView(item.id);
+    renderHistory();
+    $("#resource-dialog").close();
+    showToast(t("viewRecorded"));
+  };
 }
 function renderCollections() {
   const root = $("#collections-list");
@@ -139,12 +173,15 @@ $("#theme-toggle").addEventListener("click", () => {
   $("#theme-toggle").setAttribute("aria-pressed", String(dark));
   $("#theme-toggle").title = dark ? "Light mode" : "Dark mode";
 });
+$("#resource-dialog-close").addEventListener("click", () => $("#resource-dialog").close());
 $("#resource-search").addEventListener("input", renderResources);
 $("#level-filter").addEventListener("change", () => { selectedLevel = $("#level-filter").value; renderCatalogFilters(); renderResources(); });
 $("#year-filter")?.addEventListener("change", renderResources);
 $("#subject-filter")?.addEventListener("change", renderResources);
 $("#type-filter").addEventListener("change", renderResources);
 $("#resource-grid").addEventListener("click", event => {
+  const details = event.target.closest("[data-details-resource]");
+  if (details) { renderResourceDetails(details.dataset.detailsResource); $("#resource-dialog").showModal(); return; }
   const viewed = event.target.closest("[data-view-resource]");
   if (viewed) { recordResourceView(viewed.dataset.viewResource); renderHistory(); showToast(t("viewRecorded")); return; }
   const collect = event.target.closest("[data-collect-resource]");

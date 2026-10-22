@@ -66,6 +66,16 @@ function renderCollections() {
     return `<div class="collection-item"><strong>${escapeHTML(collection.name)}</strong><span>${collection.resourceIds.length} · ${escapeHTML(t("resourcesCount"))}</span>${titles.length ? `<small>${titles.map(escapeHTML).join("، ")}</small>` : ""}</div>`;
   }).join("");
 }
+function renderHistory() {
+  const root = $("#history-list");
+  if (!root) return;
+  const history = getResourceHistory();
+  root.innerHTML = history.length ? history.slice(0, 10).map(entry => {
+    const resource = resources.find(item => item.id === entry.resourceId);
+    if (!resource) return "";
+    return `<div class="history-item"><span>${escapeHTML(resource.title[language])}</span><small>${escapeHTML(new Date(entry.viewedAt).toLocaleString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { dateStyle:"medium", timeStyle:"short" }))}</small></div>`;
+  }).join("") : `<p class="small-note">${t("historyEmpty")}</p>`;
+}
 function renderNotes() {
   const root = $("#notes-list");
   if (!root) return;
@@ -117,7 +127,7 @@ $("#level-filter").addEventListener("change", () => { selectedLevel = $("#level-
 $("#type-filter").addEventListener("change", renderResources);
 $("#resource-grid").addEventListener("click", event => {
   const viewed = event.target.closest("[data-view-resource]");
-  if (viewed) { recordResourceView(viewed.dataset.viewResource); showToast(t("viewRecorded")); return; }
+  if (viewed) { recordResourceView(viewed.dataset.viewResource); renderHistory(); showToast(t("viewRecorded")); return; }
   const collect = event.target.closest("[data-collect-resource]");
   if (collect) {
     const collections = getCollections();
@@ -164,4 +174,5 @@ $("#year").textContent = new Date().getFullYear();
 setLanguage(language);
 renderCollections();
 renderNotes();
+renderHistory();
 updateRemoveButtons();

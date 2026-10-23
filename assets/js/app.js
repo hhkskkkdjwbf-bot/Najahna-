@@ -40,7 +40,7 @@ function setLanguage(next) {
     else node.textContent = value;
   });
   $$("[data-i18n-placeholder]").forEach(node => node.placeholder = t(node.dataset.i18nPlaceholder));
-  $("#level-filter option, #type-filter option, #study-plan-filter option, #official-source-level option, #official-source-kind option").forEach(option => { if (option.dataset.i18n) option.textContent = t(option.dataset.i18n); });
+  $("#level-filter option, #type-filter option, #study-plan-filter option, #official-source-level option, #official-source-kind option, #official-source-grade option, #official-source-subject option").forEach(option => { if (option.dataset.i18n) option.textContent = t(option.dataset.i18n); });
   renderLevelCounts();
   renderCatalogFilters();
   renderQuiz();
@@ -71,15 +71,22 @@ function renderOfficialSources() {
   const query = ($("#official-source-search")?.value || "").trim().toLocaleLowerCase();
   const level = $("#official-source-level")?.value || "all";
   const kind = $("#official-source-kind")?.value || "all";
+  const grade = $("#official-source-grade")?.value || "all";
+  const subject = $("#official-source-subject")?.value || "all";
   const normalize = value => String(value ?? "").normalize("NFD").replace(/\p{M}/gu, "").replace(/ـ/g, "").toLocaleLowerCase();
   const matches = officialSources.filter(source => {
-    const searchable = [source.title[language], source.description[language], source.publisher, source.kind].join(" ");
+    const searchable = [source.title[language], source.description[language], source.publisher, source.kind, source.grade, source.subject].join(" ");
     return (level === "all" || source.levels.includes(level)) &&
       (kind === "all" || source.kind === kind) &&
+      (grade === "all" || source.grade === grade) &&
+      (subject === "all" || source.subject === subject) &&
       (!query || normalize(searchable).includes(normalize(query)));
   });
   const kindLabel = kind => t(({books:"officialSourceBooks", "exam-papers":"officialSourceExamPapers", "pedagogical-docs":"officialSourcePedagogical"})[kind] || "officialSourceBooks");
   const levelLabel = levels => levels.map(item => t(({primary:"primary",middle:"middle",secondary:"secondary"})[item])).join(" · ");
+  const gradeLabel = value => t(({ "primary-3":"gradePrimary3", "primary-4":"gradePrimary4", "primary-5":"gradePrimary5", "middle-4":"gradeMiddle4", "secondary-1":"gradeSecondary1" })[value] || "officialSourceAllGrades");
+  const subjectLabel = value => t(({arabic:"subjectArabic",english:"subjectEnglish",french:"subjectFrench",physics:"subjectPhysics","islamic-studies":"subjectIslamicStudies",history:"subjectHistory"})[value] || "officialSourceAllSubjects");
+  const pageTypeLabel = source => t(({catalog:"officialSourceCatalogPage",publication:"officialSourcePublicationPage",archive:"officialSourceArchivePage"})[source.pageType] || "officialSourceCatalogPage");
   const dateLabel = date => {
     const parsed = new Date(`${date}T12:00:00`);
     return Number.isNaN(parsed.getTime()) ? date : parsed.toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { year:"numeric", month:"short", day:"numeric" });
@@ -88,6 +95,7 @@ function renderOfficialSources() {
     <div class="official-source-card-top"><span class="official-source-icon" aria-hidden="true">${source.kind === "books" ? "▤" : source.kind === "exam-papers" ? "✎" : "✓"}</span><span class="source-verified-label">${escapeHTML(t("officialSourceChecked"))}</span></div>
     <span class="official-source-kind">${escapeHTML(kindLabel(source.kind))} · ${escapeHTML(levelLabel(source.levels))}</span>
     <h3>${escapeHTML(source.title[language])}</h3><p>${escapeHTML(source.description[language])}</p>
+    <div class="official-source-tags">${source.grade ? `<span>${escapeHTML(gradeLabel(source.grade))}</span>` : ""}${source.subject ? `<span>${escapeHTML(subjectLabel(source.subject))}</span>` : ""}<span>${escapeHTML(pageTypeLabel(source))}</span></div>
     <div class="official-source-meta"><span>${escapeHTML(source.publisher)}</span><span>${escapeHTML(t("officialSourceCheckedOn"))}: ${escapeHTML(dateLabel(source.checkedOn))}</span></div>
     <a href="${escapeHTML(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(t("openOfficialSource"))} ↗</a>
   </article>`).join("");
@@ -494,7 +502,9 @@ $("#quiz-level")?.addEventListener("change", event => resetQuiz(event.target.val
 $("#official-source-search")?.addEventListener("input", renderOfficialSources);
 $("#official-source-level")?.addEventListener("change", renderOfficialSources);
 $("#official-source-kind")?.addEventListener("change", renderOfficialSources);
-$("#reset-official-source-filters")?.addEventListener("click", () => { $("#official-source-search").value = ""; $("#official-source-level").value = "all"; $("#official-source-kind").value = "all"; renderOfficialSources(); });
+$("#official-source-grade")?.addEventListener("change", renderOfficialSources);
+$("#official-source-subject")?.addEventListener("change", renderOfficialSources);
+$("#reset-official-source-filters")?.addEventListener("click", () => { $("#official-source-search").value = ""; $("#official-source-level").value = "all"; $("#official-source-kind").value = "all"; $("#official-source-grade").value = "all"; $("#official-source-subject").value = "all"; renderOfficialSources(); });
 $("#quiz-content")?.addEventListener("click", event => {
   const answer = event.target.closest("[data-quiz-answer]");
   if (answer && !quizState.submitted) { quizState.answers[quizState.index] = Number(answer.dataset.quizAnswer); renderQuiz(); return; }

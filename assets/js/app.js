@@ -2,7 +2,7 @@ import { resources } from "../../src/data/resources.js";
 import { schoolYears, subjectCatalog } from "../../src/data/curriculum.js";
 import { filterResources } from "../../src/data/resource-filters.js";
 import { getCollections, createCollection, moveResourceToCollection } from "../../src/utils/collections.js";
-import { getNotes, saveNote } from "../../src/utils/notes.js";
+import { getNotes, saveNote, deleteNote } from "../../src/utils/notes.js";
 import { createStudyTask, toggleStudyTask, removeStudyTask } from "../../src/utils/study-plan.js";
 import { readJSON, writeJSON } from "../../src/utils/storage.js";
 import { recordResourceView, getResourceHistory } from "../../src/utils/history.js";
@@ -136,7 +136,7 @@ function renderNotes() {
   const root = $("#notes-list");
   if (!root) return;
   const notes = getNotes();
-  root.innerHTML = notes.length ? notes.slice(0, 8).map(note => `<article class="note-item"><strong>${escapeHTML(note.title)}</strong><p>${escapeHTML(note.body)}</p><small>${escapeHTML(new Date(note.updatedAt).toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en"))}</small></article>`).join("") : `<p class="small-note">${t("noNotes")}</p>`;
+  root.innerHTML = notes.length ? notes.slice(0, 8).map(note => \`<article class="note-item"><strong>\${escapeHTML(note.title)}</strong><p>\${escapeHTML(note.body)}</p><div class="note-item-footer"><small>\${escapeHTML(new Date(note.updatedAt).toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en"))}</small><button type="button" class="button button-quiet button-small note-delete" data-delete-note="\${escapeHTML(note.id)}" aria-label="\${t("deleteNote")}">\${t("deleteNote")}</button></div></article>\`).join("") : \`<p class="small-note">\${t("noNotes")}</p>\`;
 }
 function renderFavorites() {
   const ids = getFavorites();
@@ -298,6 +298,16 @@ $("#collection-form")?.addEventListener("submit", event => {
   event.preventDefault();
   try { createCollection($("#collection-name").value); $("#collection-name").value = ""; renderCollections(); showToast(t("collectionCreated")); }
   catch { showToast(t("saveFailed")); }
+});
+$("#notes-list")?.addEventListener("click", event => {
+  const button = event.target.closest("[data-delete-note]");
+  if (!button) return;
+  try {
+    if (deleteNote(button.dataset.deleteNote)) {
+      renderNotes();
+      showToast(t("noteDeleted"));
+    }
+  } catch { showToast(t("saveFailed")); }
 });
 $("#note-form")?.addEventListener("submit", event => {
   event.preventDefault();

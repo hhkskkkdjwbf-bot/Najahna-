@@ -29,6 +29,7 @@ test("calendar validation rejects duplicate IDs, bad categories, invalid dates a
     { ...sample },
     { ...sample, id:"bad-category", category:"party" },
     { ...sample, id:"bad-date", startDate:"not-a-date" },
+    { ...sample, id:"impossible-date", startDate:"2026-02-31" },
     { ...sample, id:"missing-translation", title:{ ar:"عنوان", fr:"", en:"Title" } }
   ]);
   assert.equal(result.valid, false);

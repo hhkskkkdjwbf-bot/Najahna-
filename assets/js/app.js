@@ -36,6 +36,7 @@ function setLanguage(next) {
   });
   $$("[data-i18n-placeholder]").forEach(node => node.placeholder = t(node.dataset.i18nPlaceholder));
   $("#level-filter option, #type-filter option, #study-plan-filter option").forEach(option => { if (option.dataset.i18n) option.textContent = t(option.dataset.i18n); });
+  renderLevelCounts();
   renderCatalogFilters();
   renderResources();
   renderFavorites();
@@ -56,6 +57,12 @@ function getFavorites() {
 }
 function saveFavorites(ids) { localStorage.setItem("najahna-favorites", JSON.stringify([...new Set(ids)])); }
 function typeLabel(type) { return t(({lesson:"typeLesson",summary:"typeSummary",exercise:"typeExercise",exam:"typeExam",book:"typeBook",flashcard:"typeFlashcard",mindmap:"typeMindmap"})[type]); }
+function renderLevelCounts() {
+  $("[data-level-count]").forEach(node => {
+    const count = resources.filter(item => item.level === node.dataset.levelCount).length;
+    node.textContent = t("sampleCount").replace("{count}", String(count));
+  });
+}
 function renderCatalogFilters() {
   const level = $("#level-filter")?.value || "all";
   const yearSelect = $("#year-filter");
@@ -392,7 +399,11 @@ $("#note-form")?.addEventListener("submit", event => {
 });
 $$("[data-level]").forEach(button => button.addEventListener("click", () => {
   selectedLevel = button.dataset.level; $("#level-filter").value = selectedLevel; renderCatalogFilters();
-  $(".level-card").forEach(card => card.classList.toggle("active", card === button));
+  $(".level-card").forEach(card => {
+    const active = card === button;
+    card.classList.toggle("active", active);
+    card.setAttribute("aria-pressed", String(active));
+  });
   renderResources(); $("#resources").scrollIntoView({ behavior: "smooth" }); showToast(t("levelSelected"));
 }));
 document.body.classList.toggle("dark", localStorage.getItem("najahna-theme") === "dark");

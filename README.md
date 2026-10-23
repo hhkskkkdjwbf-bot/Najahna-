@@ -89,3 +89,5 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 ## Contributing and content quality
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Never publish copyrighted books or student data without appropriate permission. Avoid collecting personal data from minors unnecessarily.
+
+- The document-catalog validator checks metadata consistency, requires a real review date for verified documents, rejects exam-only fields on other resource types, and can validate whole catalogs for duplicate IDs before import or publication.

@@ -1,0 +1,26 @@
+name: Official source link audit
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/data/official-sources.js"
+      - "scripts/audit-official-sources.js"
+      - ".github/workflows/source-audit.yml"
+  schedule:
+    - cron: "23 8 * * 1"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Audit official source URLs
+        run: node scripts/audit-official-sources.js

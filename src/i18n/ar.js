@@ -10,5 +10,6 @@ historyTitle:"سجل المراجعة",historyIntro:"آخر الموارد ال�
  backupConfirm:"ستستبدل الاستعادة بيانات نجاحنا الحالية في هذا المتصفح. هل تريد المتابعة؟",
  backupTitle:"نسخة احتياطية لبياناتك",backupIntro:"صدّر ملاحظاتك ومجلداتك وخطتك وسجلّك لاستعادتها لاحقاً.",backupExport:"تصدير نسخة احتياطية",backupImport:"استعادة نسخة احتياطية",backupWarning:"النسخة تحتوي على بياناتك المحلية. احفظها في مكان آمن؛ الاستعادة تستبدل بيانات نجاحنا المحفوظة في هذا المتصفح.",backupExported:"تم تجهيز النسخة الاحتياطية.",backupImported:"تمت الاستعادة؛ جارٍ تحديث الصفحة.",backupFailed:"تعذّر إنشاء النسخة الاحتياطية.",backupInvalid:"الملف غير صالح أو تعذّرت استعادته.",
  deleteNote:"حذف الملاحظة",noteDeleted:"تم حذف الملاحظة.",
-  clearHistory:"مسح سجل المراجعة",historyCleared:"تم مسح سجل المراجعة."
+  clearHistory:"مسح سجل المراجعة",historyCleared:"تم مسح سجل المراجعة.",
+  deleteCollection:"حذف المجلد",confirmDeleteCollection:"هل تريد حذف هذا المجلد وارتباطاته المحلية؟",collectionDeleted:"تم حذف المجلد.",removeFromCollection:"إزالة المورد من المجلد",removedFromCollection:"تمت إزالة المورد من المجلد.",collectionEmpty:"هذا المجلد فارغ.",noCollections:"لا توجد مجلدات حالياً."
 };

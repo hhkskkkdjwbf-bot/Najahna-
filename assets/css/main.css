@@ -49,3 +49,5 @@
 .official-source-card a{margin-top:auto;color:var(--green);font-size:12px;font-weight:700;text-underline-offset:4px}
 .official-source-card a:hover{text-decoration:underline}
 @media(max-width:760px){.official-source-grid{grid-template-columns:1fr}.official-source-card{min-height:0}.official-sources-section{padding-top:22px}}
+
+.note-item-footer{display:flex;align-items:center;justify-content:space-between;gap:10px}.note-delete{padding:5px 8px;color:var(--muted)}.note-delete:hover{color:var(--danger,#b42318)}

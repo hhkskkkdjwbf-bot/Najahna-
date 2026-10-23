@@ -37,6 +37,9 @@ function setLanguage(next) {
   renderCatalogFilters();
   renderResources();
   renderFavorites();
+  renderCollections();
+  renderNotes();
+  renderHistory();
   renderStudyPlan();
   if (activeResourceId && $("#resource-dialog").open) renderResourceDetails(activeResourceId);
   updateRemoveButtons();
@@ -237,6 +240,7 @@ $("#resource-grid").addEventListener("click", event => {
   renderResources(); renderFavorites(); showToast(t(exists ? "removed" : "saved"));
 });
 $("#clear-history")?.addEventListener("click", () => {
+  if (!window.confirm(t("confirmClearHistory"))) return;
   try {
     if (!clearResourceHistory()) throw new Error("Could not clear history");
     renderHistory();
@@ -247,7 +251,10 @@ $("#favorites-list").addEventListener("click", event => {
   const button = event.target.closest("[data-remove-favorite]"); if (!button) return;
   saveFavorites(getFavorites().filter(id => id !== button.dataset.removeFavorite)); renderResources(); renderFavorites(); showToast(t("removed"));
 });
-$("#clear-favorites").addEventListener("click", () => { saveFavorites([]); renderResources(); renderFavorites(); showToast(t("cleared")); });
+$("#clear-favorites").addEventListener("click", () => {
+  if (!window.confirm(t("confirmClearFavorites"))) return;
+  saveFavorites([]); renderResources(); renderFavorites(); showToast(t("cleared"));
+});
 $("#grade-rows").addEventListener("click", event => { const button = event.target.closest(".remove-grade"); if (button && $$(".grade-row").length > 1) { button.closest(".grade-row").remove(); updateRemoveButtons(); } });
 $("#add-grade").addEventListener("click", addGradeRow);
 $("#average-form").addEventListener("submit", calculateAverage);

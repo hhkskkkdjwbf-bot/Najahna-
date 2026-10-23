@@ -26,3 +26,22 @@ export function moveResourceToCollection(resourceId, collectionId) {
   if (!writeJSON(KEY, collections)) throw new Error("Could not save collection in this browser.");
   return collections;
 }
+
+export function removeResourceFromCollection(resourceId, collectionId) {
+  const collections = getCollections();
+  const target = collections.find(item => item.id === String(collectionId));
+  if (!target) return false;
+  const nextIds = target.resourceIds.filter(id => id !== String(resourceId));
+  if (nextIds.length === target.resourceIds.length) return false;
+  target.resourceIds = nextIds;
+  if (!writeJSON(KEY, collections)) throw new Error("Could not save collection in this browser.");
+  return true;
+}
+
+export function deleteCollection(collectionId) {
+  const collections = getCollections();
+  const next = collections.filter(item => item.id !== String(collectionId));
+  if (next.length === collections.length) return false;
+  if (!writeJSON(KEY, next)) throw new Error("Could not save collection in this browser.");
+  return true;
+}

@@ -43,7 +43,9 @@ const detailKeys = [
   "officialUpdatesTitle",
   "officialUpdatesText",
   "officialCalendarTitle",
-  "officialCalendarText"
+  "officialCalendarText",
+  "backupTitle", "backupIntro", "backupExport", "backupImport", "backupWarning",
+  "backupExported", "backupImported", "backupFailed", "backupInvalid"
 ];
 
 test("resource detail and study planner labels are available in Arabic, French, and English", () => {

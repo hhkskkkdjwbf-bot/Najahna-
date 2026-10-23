@@ -136,7 +136,7 @@ function renderNotes() {
   const root = $("#notes-list");
   if (!root) return;
   const notes = getNotes();
-  root.innerHTML = notes.length ? notes.slice(0, 8).map(note => \`<article class="note-item"><strong>\${escapeHTML(note.title)}</strong><p>\${escapeHTML(note.body)}</p><div class="note-item-footer"><small>\${escapeHTML(new Date(note.updatedAt).toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en"))}</small><button type="button" class="button button-quiet button-small note-delete" data-delete-note="\${escapeHTML(note.id)}" aria-label="\${t("deleteNote")}">\${t("deleteNote")}</button></div></article>\`).join("") : \`<p class="small-note">\${t("noNotes")}</p>\`;
+  root.innerHTML = notes.length ? notes.slice(0, 8).map(note => `<article class="note-item"><strong>${escapeHTML(note.title)}</strong><p>${escapeHTML(note.body)}</p><div class="note-item-footer"><small>${escapeHTML(new Date(note.updatedAt).toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en"))}</small><button type="button" class="button button-quiet button-small note-delete" data-delete-note="${escapeHTML(note.id)}" aria-label="${t("deleteNote")}">${t("deleteNote")}</button></div></article>`).join("") : `<p class="small-note">${t("noNotes")}</p>`;
 }
 function renderFavorites() {
   const ids = getFavorites();

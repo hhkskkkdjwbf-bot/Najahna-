@@ -60,13 +60,14 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 │   │   └── resources.js
 │   ├── i18n/{ar,fr,en}.js
 │   └── utils/{collections,history,notes,storage}.js
-└── tests/{average,curriculum,document-catalog,i18n,resource-filters,resources,study-plan}.test.js
+└── tests/{average,backup,curriculum,document-catalog,i18n,resource-filters,resources,study-plan}.test.js
 ```
 
 ## Important limitations
 
 - No verified server-backed account authentication, database, cloud synchronization, upload service, or production admin system is available yet.
-- Favorites, notes, history, collections, and preferences are stored in the current browser using `localStorage`; they do not sync between devices and may be lost when browser data is cleared.
+- Favorites, notes, history, collections, study plans, and preferences are stored in the current browser using `localStorage`; they do not sync between devices and may be lost when browser data is cleared.
+- A local JSON backup can export and restore Najahna-owned browser data. Restoring replaces existing Najahna local data in that browser; keep backup files private.
 - Learning resources are illustrative samples. Real exam papers and courses must be sourced, checked, and added separately. Do not describe a sample as an official downloadable document.
 - The school-year and subject catalog is a useful starting taxonomy, not a guarantee that every subject applies to every stream or current official program.
 - The average calculator is an estimate; official calculation rules can vary by grade, stream, subject coefficients, and term.

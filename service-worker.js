@@ -7,6 +7,7 @@ const APP_SHELL = [
   "./assets/css/main.css",
   "./assets/js/app.js",
   "./src/data/resources.js",
+  "./src/data/official-sources.js",
   "./src/data/curriculum.js",
   "./src/data/resource-filters.js",
   "./src/data/quiz.js",

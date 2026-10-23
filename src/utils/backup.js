@@ -54,10 +54,12 @@ export function restoreBackup(json, storage = globalThis.localStorage) {
     for (const [key, value] of backup.entries) storage.setItem(key, value);
   } catch {
     try {
+      const rollbackKeys = [];
       for (let index = 0; index < storage.length; index += 1) {
         const key = storage.key(index);
-        if (isOwnedKey(key)) storage.removeItem(key);
+        if (isOwnedKey(key)) rollbackKeys.push(key);
       }
+      for (const key of rollbackKeys) storage.removeItem(key);
       for (const [key, value] of previous) storage.setItem(key, value);
     } catch { /* Best-effort rollback if browser storage is itself failing. */ }
     throw new Error("Could not restore the backup. Check available browser storage.");

@@ -10,6 +10,7 @@ import { serializeBackup, restoreBackup } from "../../src/utils/backup.js";
 import { toLocalDateISO, parseLocalCalendarDate } from "../../src/utils/dates.js";
 import { calculateWeightedAverage } from "../../src/calculators/average.js";
 import { getQuizQuestions, gradeQuiz } from "../../src/data/quiz.js";
+import { getQuizHistory, recordQuizAttempt, clearQuizHistory } from "../../src/utils/quiz-history.js";
 import ar from "../../src/i18n/ar.js";
 import fr from "../../src/i18n/fr.js";
 import en from "../../src/i18n/en.js";
@@ -22,7 +23,7 @@ let selectedLevel = "all";
 let activeResourceId = null;
 let toastTimer;
 let pendingInstallPrompt = null;
-let quizState = { level: "primary", questions: [], index: 0, answers: [], submitted: false };
+let quizState = { level: "primary", questions: [], index: 0, answers: [], submitted: false, resultSaved: false };
 
 function t(key) { return translations[language]?.[key] ?? translations.ar[key] ?? key; }
 function escapeHTML(value) { return String(value).replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" })[char]); }
@@ -42,6 +43,7 @@ function setLanguage(next) {
   renderLevelCounts();
   renderCatalogFilters();
   renderQuiz();
+  renderQuizHistory();
   renderResources();
   renderFavorites();
   renderCollections();
@@ -61,6 +63,24 @@ function getFavorites() {
 }
 function saveFavorites(ids) { localStorage.setItem("najahna-favorites", JSON.stringify([...new Set(ids)])); }
 function typeLabel(type) { return t(({lesson:"typeLesson",summary:"typeSummary",exercise:"typeExercise",exam:"typeExam",book:"typeBook",flashcard:"typeFlashcard",mindmap:"typeMindmap"})[type]); }
+function renderQuizHistory() {
+  const root = $("#quiz-history");
+  if (!root) return;
+  const attempts = getQuizHistory();
+  if (!attempts.length) {
+    root.innerHTML = `<div class="quiz-history-empty"><h3>${escapeHTML(t("quizHistoryTitle"))}</h3><p>${escapeHTML(t("quizHistoryEmpty"))}</p></div>`;
+    return;
+  }
+  const average = Math.round(attempts.reduce((sum, item) => sum + item.percentage, 0) / attempts.length);
+  const best = Math.max(...attempts.map(item => item.percentage));
+  const levelName = level => t(({primary:"primary",middle:"middle",secondary:"secondary",all:"quizHistoryMixed"})[level] || "primary");
+  const recent = attempts.slice(0, 5).map(item => {
+    const date = new Date(item.completedAt);
+    const dateLabel = Number.isNaN(date.getTime()) ? "" : date.toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { day:"numeric", month:"short", year:"numeric" });
+    return `<li class="quiz-attempt"><span><strong>${escapeHTML(levelName(item.level))}</strong><small>${escapeHTML(dateLabel)}</small></span><span class="quiz-attempt-score">${item.score}/${item.total}<small>${item.percentage}%</small></span></li>`;
+  }).join("");
+  root.innerHTML = `<div class="quiz-history-heading"><div><h3>${escapeHTML(t("quizHistoryTitle"))}</h3><p>${escapeHTML(t("quizHistoryRecent"))}</p></div><button type="button" class="button button-quiet button-small" data-clear-quiz-history>${escapeHTML(t("quizHistoryClear"))}</button></div><div class="quiz-history-metrics"><div><span>${escapeHTML(t("quizHistoryAttempts"))}</span><strong>${attempts.length}</strong></div><div><span>${escapeHTML(t("quizHistoryBest"))}</span><strong>${best}%</strong></div><div><span>${escapeHTML(t("quizHistoryAverage"))}</span><strong>${average}%</strong></div></div><ol class="quiz-attempt-list">${recent}</ol><p class="small-note">${escapeHTML(t("quizHistoryLocal"))}</p>`;
+}
 function renderQuiz() {
   const levelSelect = $("#quiz-level");
   const container = $("#quiz-content");
@@ -84,7 +104,7 @@ function renderQuiz() {
   container.innerHTML = `<div class="quiz-question"><span class="quiz-question-number">${t("quizQuestionLabel")} ${quizState.index + 1}</span><h3>${prompt}</h3><div class="quiz-choices">${choices}</div>${explanation}<div class="quiz-actions">${final}${next}</div></div>`;
 }
 function resetQuiz(level = $("#quiz-level")?.value || "primary") {
-  quizState = { level, questions: getQuizQuestions(level), index: 0, answers: [], submitted: false };
+  quizState = { level, questions: getQuizQuestions(level), index: 0, answers: [], submitted: false, resultSaved: false };
   renderQuiz();
 }
 function renderLevelCounts() {
@@ -443,10 +463,11 @@ $("#quiz-level")?.addEventListener("change", event => resetQuiz(event.target.val
 $("#quiz-content")?.addEventListener("click", event => {
   const answer = event.target.closest("[data-quiz-answer]");
   if (answer && !quizState.submitted) { quizState.answers[quizState.index] = Number(answer.dataset.quizAnswer); renderQuiz(); return; }
-  if (event.target.closest("[data-quiz-check]")) { if (quizState.answers[quizState.index] === undefined) return; quizState.submitted = true; renderQuiz(); return; }
+  if (event.target.closest("[data-quiz-check]")) { if (quizState.answers[quizState.index] === undefined) return; quizState.submitted = true; if (quizState.index === quizState.questions.length - 1 && !quizState.resultSaved) { try { const result = gradeQuiz(quizState.questions, quizState.answers); recordQuizAttempt({ level: quizState.level, score: result.score, total: result.total }); quizState.resultSaved = true; renderQuizHistory(); } catch { showToast(t("quizHistorySaveFailed")); } } renderQuiz(); return; }
   if (event.target.closest("[data-quiz-next]")) { quizState.index += 1; quizState.submitted = false; renderQuiz(); return; }
   if (event.target.closest("[data-quiz-previous]")) { quizState.index = Math.max(0, quizState.index - 1); quizState.submitted = false; renderQuiz(); return; }
   if (event.target.closest("[data-quiz-restart]")) resetQuiz();
+  if (event.target.closest("[data-clear-quiz-history]")) { if (!window.confirm(t("quizHistoryClearConfirm"))) return; if (clearQuizHistory()) { renderQuizHistory(); showToast(t("quizHistoryCleared")); } else showToast(t("quizHistorySaveFailed")); }
 });
 
 const installButton = $("#install-app");
@@ -476,6 +497,7 @@ if ("serviceWorker" in navigator && (location.protocol === "https:" || location.
 }
 
 setLanguage(language);
+renderQuizHistory();
 renderCatalogFilters();
 renderCollections();
 renderNotes();

@@ -39,7 +39,9 @@ const detailKeys = [
   "openOfficialSource",
   "officialSourcesDisclaimer",
   "officialBacTitle",
-  "officialBacText"
+  "officialBacText",
+  "officialUpdatesTitle",
+  "officialUpdatesText"
 ];
 
 test("resource detail and study planner labels are available in Arabic, French, and English", () => {

@@ -71,7 +71,7 @@ function renderOfficialSources() {
   const query = ($("#official-source-search")?.value || "").trim().toLocaleLowerCase();
   const level = $("#official-source-level")?.value || "all";
   const kind = $("#official-source-kind")?.value || "all";
-  const normalize = value => String(value ?? "").normalize("NFD").replace(/\\p{M}/gu, "").replace(/ـ/g, "").toLocaleLowerCase();
+  const normalize = value => String(value ?? "").normalize("NFD").replace(/\p{M}/gu, "").replace(/ـ/g, "").toLocaleLowerCase();
   const matches = officialSources.filter(source => {
     const searchable = [source.title[language], source.description[language], source.publisher, source.kind].join(" ");
     return (level === "all" || source.levels.includes(level)) &&

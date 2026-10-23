@@ -2,8 +2,8 @@ import { resources } from "../../src/data/resources.js";
 import { schoolYears, subjectCatalog } from "../../src/data/curriculum.js";
 import { filterResources } from "../../src/data/resource-filters.js";
 import { getCollections, createCollection, moveResourceToCollection, removeResourceFromCollection, deleteCollection } from "../../src/utils/collections.js";
-import { getNotes, saveNote, deleteNote } from "../../src/utils/notes.js";
-import { createStudyTask, toggleStudyTask, removeStudyTask } from "../../src/utils/study-plan.js";
+import { getNotes, saveNote, deleteNote, clearNotes } from "../../src/utils/notes.js";
+import { createStudyTask, toggleStudyTask, removeStudyTask, clearCompletedStudyTasks } from "../../src/utils/study-plan.js";
 import { readJSON, writeJSON } from "../../src/utils/storage.js";
 import { recordResourceView, getResourceHistory, clearResourceHistory } from "../../src/utils/history.js";
 import { serializeBackup, restoreBackup } from "../../src/utils/backup.js";
@@ -264,6 +264,16 @@ $("#study-plan-form")?.addEventListener("submit", event => {
   } catch { showToast(t("studyPlanInvalid")); }
 });
 $("#study-plan-filter")?.addEventListener("change", renderStudyPlan);
+$("#clear-completed-study")?.addEventListener("click", () => {
+  const tasks = getStudyTasks();
+  const remaining = clearCompletedStudyTasks(tasks);
+  if (remaining.length === tasks.length) { showToast(t("noCompletedStudy")); return; }
+  if (!window.confirm(t("confirmClearCompletedStudy"))) return;
+  if (!writeJSON("study-plan", remaining)) { showToast(t("saveFailed")); return; }
+  renderStudyPlan();
+  showToast(t("completedStudyCleared"));
+});
+
 $("#study-plan-list")?.addEventListener("change", event => {
   const checkbox = event.target.closest("[data-study-toggle]");
   if (!checkbox) return;
@@ -325,6 +335,14 @@ $("#collections-list")?.addEventListener("click", event => {
         showToast(t("collectionDeleted"));
       }
     }
+  } catch { showToast(t("saveFailed")); }
+});
+$("#clear-notes")?.addEventListener("click", () => {
+  if (!window.confirm(t("confirmClearNotes"))) return;
+  try {
+    if (!clearNotes()) throw new Error("Could not clear notes");
+    renderNotes();
+    showToast(t("notesCleared"));
   } catch { showToast(t("saveFailed")); }
 });
 $("#notes-list")?.addEventListener("click", event => {

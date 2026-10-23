@@ -313,7 +313,7 @@ $("#export-backup")?.addEventListener("click", () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `najahna-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    link.download = `najahna-backup-${toLocalDateISO()}.json`;
     document.body.append(link);
     link.click();
     link.remove();

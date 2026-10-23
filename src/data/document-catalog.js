@@ -47,10 +47,6 @@ export function validateDocumentRecord(record) {
   if (record.description !== undefined && (typeof record.description !== "string" || record.description.length > 4000)) {
     errors.push("description must be text of at most 4000 characters");
   }
-  else if (record.title.trim().length > 240) errors.push("title must be 240 characters or fewer");
-  if (record.description !== undefined && (typeof record.description !== "string" || record.description.length > 4000)) {
-    errors.push("description must be text of at most 4000 characters");
-  }
   if (!documentKinds.includes(record.kind)) errors.push("kind must be a supported document kind");
   if (!documentStatuses.includes(record.status)) errors.push("status must be a supported verification status");
 
@@ -65,9 +61,6 @@ export function validateDocumentRecord(record) {
     errors.push("subject is not configured for this school level");
   }
 
-  if (record.kind !== "exam" && (record.examYear !== undefined || record.examType !== undefined)) {
-    errors.push("examYear and examType can only be set for exam documents");
-  }
   if (record.kind !== "exam" && (record.examYear !== undefined || record.examType !== undefined)) {
     errors.push("examYear and examType can only be set for exam documents");
   }

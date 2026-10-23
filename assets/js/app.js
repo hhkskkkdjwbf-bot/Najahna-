@@ -6,6 +6,7 @@ import { getNotes, saveNote } from "../../src/utils/notes.js";
 import { createStudyTask, toggleStudyTask, removeStudyTask } from "../../src/utils/study-plan.js";
 import { readJSON, writeJSON } from "../../src/utils/storage.js";
 import { recordResourceView, getResourceHistory } from "../../src/utils/history.js";
+import { serializeBackup, restoreBackup } from "../../src/utils/backup.js";
 import ar from "../../src/i18n/ar.js";
 import fr from "../../src/i18n/fr.js";
 import en from "../../src/i18n/en.js";
@@ -266,6 +267,31 @@ $("#study-plan-list")?.addEventListener("click", event => {
   if (!button) return;
   if (!writeJSON("study-plan", removeStudyTask(getStudyTasks(), button.dataset.studyDelete))) { showToast(t("saveFailed")); return; }
   renderStudyPlan();
+});
+$("#export-backup")?.addEventListener("click", () => {
+  try {
+    const blob = new Blob([serializeBackup()], { type: "application/json;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `najahna-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    showToast(t("backupExported"));
+  } catch { showToast(t("backupFailed")); }
+});
+$("#import-backup")?.addEventListener("change", async event => {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  try {
+    if (file.size > 5 * 1024 * 1024) throw new Error("Backup too large");
+    restoreBackup(await file.text());
+    showToast(t("backupImported"));
+    window.location.reload();
+  } catch { showToast(t("backupInvalid")); }
+  finally { event.target.value = ""; }
 });
 $("#collection-form")?.addEventListener("submit", event => {
   event.preventDefault();

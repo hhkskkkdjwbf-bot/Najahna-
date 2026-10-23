@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { deleteNote, getNotes, saveNote } from "../src/utils/notes.js";
+import { clearNotes, deleteNote, getNotes, saveNote } from "../src/utils/notes.js";
 
 function installStorage() {
   const values = new Map();
@@ -27,4 +27,11 @@ test("deleting a missing note leaves saved notes unchanged", () => {
   const note = saveNote({ title: "History", body: "Review dates" });
   assert.equal(deleteNote("missing-note"), false);
   assert.deepEqual(getNotes().map(item => item.id), [note.id]);
+});
+
+test("all notes can be cleared without affecting unrelated browser keys", () => {
+  installStorage();
+  saveNote({ title: "Maths", body: "Fractions" });
+  assert.equal(clearNotes(), true);
+  assert.deepEqual(getNotes(), []);
 });

@@ -73,7 +73,7 @@ function renderSchoolCalendar() {
   if (!root) return;
   const today = new Date();
   const todayISO = [today.getFullYear(), String(today.getMonth() + 1).padStart(2, "0"), String(today.getDate()).padStart(2, "0")].join("-");
-  const events = getUpcomingSchoolEvents(todayISO, 6);
+  const events = getUpcomingSchoolEvents(todayISO, 8);
   const locale = language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en";
   const dateLabel = value => new Date(value + "T12:00:00").toLocaleDateString(locale, { day:"numeric", month:"short", year:"numeric" });
   const categoryLabel = category => t(({holiday:"calendarHoliday",exam:"calendarSchoolExam","national-exam":"calendarNationalExam"})[category]);

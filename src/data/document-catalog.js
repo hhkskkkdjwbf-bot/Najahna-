@@ -8,18 +8,18 @@ const yearById = new Map(schoolYears.map((year) => [year.id, year]));
 const subjectById = new Map(subjectCatalog.map((subject) => [subject.id, subject]));
 
 function isValidISODate(value) {
-  if (typeof value !== "string" || !/^\\d{4}-\\d{2}-\\d{2}$/.test(value)) return false;
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const [year, month, day] = value.split("-").map(Number);
   const date = new Date(Date.UTC(year, month - 1, day));
   return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
 }
 
 function normalizeSearchText(value) {
-  return String(value ?? "").normalize("NFD").replace(/\\p{M}/gu, "").replace(/ـ/g, "").toLocaleLowerCase().trim();
+  return String(value ?? "").normalize("NFD").replace(/\p{M}/gu, "").replace(/ـ/g, "").toLocaleLowerCase().trim();
 }
 
 function isHttpUrl(value) {
-  if (typeof value !== "string" || !value.trim()) return false;
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   try {
     const url = new URL(value);
     return url.protocol === "https:" || url.protocol === "http:";
@@ -93,7 +93,7 @@ export function validateDocumentRecord(record) {
   if (record.programReference !== undefined && typeof record.programReference !== "string") {
     errors.push("programReference must be text");
   }
-  if (record.lastChecked !== undefined && (typeof record.lastChecked !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(record.lastChecked) || Number.isNaN(Date.parse(record.lastChecked)))) {
+  if (record.lastChecked !== undefined && !isValidISODate(record.lastChecked)) {
     errors.push("lastChecked must use YYYY-MM-DD");
   }
 

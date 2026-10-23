@@ -1,5 +1,6 @@
 import { appendFileSync } from "node:fs";
 import { officialSources, validateOfficialSources } from "../src/data/official-sources.js";
+import { schoolCalendarSource } from "../src/data/school-calendar.js";
 
 const validation = validateOfficialSources();
 if (!validation.valid) {
@@ -7,7 +8,7 @@ if (!validation.valid) {
   process.exit(1);
 }
 
-const uniqueUrls = [...new Map(officialSources.map(source => [source.url, source])).values()];
+const uniqueUrls = [...new Map([...officialSources.map(source => [source.url, source]), [schoolCalendarSource, { url: schoolCalendarSource, title: { en: "Ministry school calendar" } }]]).values()];
 const results = [];
 for (const source of uniqueUrls) {
   try {

@@ -286,6 +286,7 @@ $("#import-backup")?.addEventListener("change", async event => {
   const file = event.target.files?.[0];
   if (!file) return;
   try {
+    if (!window.confirm(t("backupConfirm"))) return;
     if (file.size > 5 * 1024 * 1024) throw new Error("Backup too large");
     restoreBackup(await file.text());
     showToast(t("backupImported"));

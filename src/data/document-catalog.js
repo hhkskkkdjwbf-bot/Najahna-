@@ -7,6 +7,17 @@ export const examTypes = ["BEM", "BAC"];
 const yearById = new Map(schoolYears.map((year) => [year.id, year]));
 const subjectById = new Map(subjectCatalog.map((subject) => [subject.id, subject]));
 
+function isValidISODate(value) {
+  if (typeof value !== "string" || !/^\\d{4}-\\d{2}-\\d{2}$/.test(value)) return false;
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+}
+
+function normalizeSearchText(value) {
+  return String(value ?? "").normalize("NFD").replace(/\\p{M}/gu, "").replace(/ـ/g, "").toLocaleLowerCase().trim();
+}
+
 function isHttpUrl(value) {
   if (typeof value !== "string" || !value.trim()) return false;
   try {
@@ -100,11 +111,12 @@ export function filterDocumentCatalog(records, {
   status = "all",
   query = ""
 } = {}) {
-  const normalizedQuery = String(query).trim().toLocaleLowerCase();
+  const normalizedQuery = normalizeSearchText(query);
   return records.filter((record) => {
     const year = yearById.get(record.schoolYearId);
     const searchable = [record.title, record.description, record.subjectId, record.examType, record.programReference]
-      .filter(Boolean).join(" ").toLocaleLowerCase();
+      .filter(Boolean).join(" ");
+    const normalizedSearchable = normalizeSearchText(searchable);
     return (level === "all" || year?.level === level) &&
       (schoolYearId === "all" || record.schoolYearId === schoolYearId) &&
       (subjectId === "all" || record.subjectId === subjectId) &&
@@ -112,6 +124,6 @@ export function filterDocumentCatalog(records, {
       (examYear === "all" || String(record.examYear ?? "") === String(examYear)) &&
       (examType === "all" || record.examType === examType) &&
       (status === "all" || record.status === status) &&
-      (!normalizedQuery || searchable.includes(normalizedQuery));
+      (!normalizedQuery || normalizedSearchable.includes(normalizedQuery));
   });
 }

@@ -23,3 +23,7 @@ export function toggleStudyTask(tasks, id) {
 export function removeStudyTask(tasks, id) {
   return tasks.filter((task) => task.id !== id);
 }
+
+export function clearCompletedStudyTasks(tasks) {
+  return tasks.filter(task => !task.completed);
+}

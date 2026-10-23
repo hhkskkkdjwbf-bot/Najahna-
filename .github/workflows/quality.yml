@@ -25,6 +25,7 @@ jobs:
           node --check src/data/curriculum.js
           node --check src/data/resources.js
           node --check src/data/official-sources.js
+          node --check scripts/audit-official-sources.js
           node --check src/utils/quiz-history.js
           node --check service-worker.js
           node --check src/data/resource-filters.js

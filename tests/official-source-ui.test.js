@@ -30,13 +30,25 @@ test("application imports and renders the curated source directory and wires eac
 });
 
 test("offline shell caches every newly imported local data module", () => {
-  assert.match(serviceWorker, /najahna-shell-v3/);
-  assert.match(serviceWorker, /\.\/src\/data\/official-sources\.js/);
+  assert.match(serviceWorker, /najahna-shell-v4/);
+  assert.match(serviceWorker, /\.\/src\/data\/official-sources\.js/);\n  assert.match(serviceWorker, /\.\/src\/data\/school-calendar\.js/);
   assert.match(serviceWorker, /\.\/src\/utils\/quiz-history\.js/);
 });
 
 test("source-directory controls are translated in Arabic, French and English", () => {
   for (const key of ["officialSourceSearchLabel", "officialSourceLevelLabel", "officialSourceKindLabel", "officialSourceGradeLabel", "officialSourceSubjectLabel", "officialSourceRightsUnknown", "officialSourceCheckedOn", "officialSourceEmpty"]) {
+    assert.ok(arabic.includes(key), `Arabic translation missing ${key}`);
+    assert.ok(french.includes(key), `French translation missing ${key}`);
+    assert.ok(english.includes(key), `English translation missing ${key}`);
+  }
+});
+
+test("school calendar section is translated and connected to the official source", () => {
+  assert.match(html, /id="school-calendar-list"/);
+  assert.match(html, /education\.gov\.dz/);
+  assert.match(app, /function renderSchoolCalendar\(\)/);
+  assert.match(app, /getUpcomingSchoolEvents/);
+  for (const key of ["calendarTitle", "calendarIntro", "calendarDaysLeft", "calendarOfficialLink"]) {
     assert.ok(arabic.includes(key), `Arabic translation missing ${key}`);
     assert.ok(french.includes(key), `French translation missing ${key}`);
     assert.ok(english.includes(key), `English translation missing ${key}`);

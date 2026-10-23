@@ -13,3 +13,7 @@ export function getResourceHistory() {
   const history = readJSON(KEY, []);
   return Array.isArray(history) ? history : [];
 }
+
+export function clearResourceHistory() {
+  return writeJSON(KEY, []);
+}

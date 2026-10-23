@@ -60,8 +60,8 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 │   │   ├── resource-filters.js
 │   │   └── resources.js
 │   ├── i18n/{ar,fr,en}.js
-│   └── utils/{collections,history,notes,storage}.js
-└── tests/{average,backup,curriculum,document-catalog,i18n,resource-filters,resources,study-plan}.test.js
+│   └── utils/{collections,dates,history,notes,storage}.js
+└── tests/{average,backup,curriculum,dates,document-catalog,i18n,resource-filters,resources,study-plan}.test.js
 ```
 
 ## Important limitations

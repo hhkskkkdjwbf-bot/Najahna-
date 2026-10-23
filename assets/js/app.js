@@ -5,7 +5,7 @@ import { getCollections, createCollection, moveResourceToCollection } from "../.
 import { getNotes, saveNote, deleteNote } from "../../src/utils/notes.js";
 import { createStudyTask, toggleStudyTask, removeStudyTask } from "../../src/utils/study-plan.js";
 import { readJSON, writeJSON } from "../../src/utils/storage.js";
-import { recordResourceView, getResourceHistory } from "../../src/utils/history.js";
+import { recordResourceView, getResourceHistory, clearResourceHistory } from "../../src/utils/history.js";
 import { serializeBackup, restoreBackup } from "../../src/utils/backup.js";
 import ar from "../../src/i18n/ar.js";
 import fr from "../../src/i18n/fr.js";
@@ -234,6 +234,13 @@ $("#resource-grid").addEventListener("click", event => {
   const id = button.dataset.favorite; const favorites = getFavorites(); const exists = favorites.includes(id);
   saveFavorites(exists ? favorites.filter(item => item !== id) : [...favorites, id]);
   renderResources(); renderFavorites(); showToast(t(exists ? "removed" : "saved"));
+});
+$("#clear-history")?.addEventListener("click", () => {
+  try {
+    if (!clearResourceHistory()) throw new Error("Could not clear history");
+    renderHistory();
+    showToast(t("historyCleared"));
+  } catch { showToast(t("saveFailed")); }
 });
 $("#favorites-list").addEventListener("click", event => {
   const button = event.target.closest("[data-remove-favorite]"); if (!button) return;

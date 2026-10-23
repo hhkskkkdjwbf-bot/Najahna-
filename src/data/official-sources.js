@@ -82,6 +82,8 @@ export const officialSources = [
   },
   {
     id: "onps-primary-english-year-4",
+    grade: "primary-4",
+    subject: "english",
     publisher: "ONPS",
     kind: "books",
     levels: ["primary"],
@@ -101,6 +103,8 @@ export const officialSources = [
   },
   {
     id: "onps-primary-arabic-year-5",
+    grade: "primary-5",
+    subject: "arabic",
     publisher: "ONPS",
     kind: "books",
     levels: ["primary"],
@@ -116,6 +120,121 @@ export const officialSources = [
       ar: "صفحة الكتاب في موقع الديوان الوطني للمطبوعات المدرسية. تحقق من النسخة والبرنامج قبل الاستعمال.",
       fr: "Fiche du manuel sur le site de l’ONPS. Vérifiez l’édition et le programme avant utilisation.",
       en: "The textbook entry on the ONPS website. Check the edition and applicable curriculum before use."
+    }
+  },
+  {
+    "id": "onps-primary-english-year-3",
+    "publisher": "ONPS",
+    "kind": "books",
+    "levels": [
+      "primary"
+    ],
+    "grade": "primary-3",
+    "subject": "english",
+    "pageType": "publication",
+    "checkedOn": "2026-10-23",
+    "url": "https://www.onps.dz/1764",
+    "title": {
+      "ar": "كتابي في اللغة الإنجليزية — السنة الثالثة ابتدائي",
+      "fr": "Manuel d’anglais — 3e année primaire",
+      "en": "English textbook — Primary Year 3"
+    },
+    "description": {
+      "ar": "صفحة منشور لدى الديوان الوطني للمطبوعات المدرسية. الصفحة تعرّف بالكتاب؛ لم يتم تأكيد تنزيل PDF مباشر أو صلاحية النسخة للبرنامج الحالي.",
+      "fr": "Fiche de publication de l’ONPS. Elle identifie le manuel ; le téléchargement PDF direct et l’adéquation au programme actuel ne sont pas confirmés.",
+      "en": "ONPS publication entry. It identifies the textbook; a direct PDF download and applicability to the current curriculum are not confirmed."
+    }
+  },
+  {
+    "id": "onps-middle-french-year-4",
+    "publisher": "ONPS",
+    "kind": "books",
+    "levels": [
+      "middle"
+    ],
+    "grade": "middle-4",
+    "subject": "french",
+    "pageType": "publication",
+    "checkedOn": "2026-10-23",
+    "url": "https://www.onps.dz/521",
+    "title": {
+      "ar": "كتاب اللغة الفرنسية — السنة الرابعة متوسط",
+      "fr": "Manuel de français — 4e année moyenne",
+      "en": "French textbook — Middle School Year 4"
+    },
+    "description": {
+      "ar": "صفحة كتاب رسمية لدى الديوان، تشير إلى غلاف نسخة 2022–2023. تحقق من ملاءمة الطبعة للبرنامج الحالي؛ لا يوجد تأكيد على تنزيل PDF مباشر.",
+      "fr": "Fiche officielle de l’ONPS montrant une couverture de l’édition 2022–2023. Vérifiez l’adéquation au programme actuel ; aucun PDF direct n’est confirmé.",
+      "en": "Official ONPS entry showing a 2022–2023 edition cover. Check current curriculum applicability; a direct PDF download is not confirmed."
+    }
+  },
+  {
+    "id": "onps-middle-physics-year-4",
+    "publisher": "ONPS",
+    "kind": "books",
+    "levels": [
+      "middle"
+    ],
+    "grade": "middle-4",
+    "subject": "physics",
+    "pageType": "publication",
+    "checkedOn": "2026-10-23",
+    "url": "https://www.onps.dz/480",
+    "title": {
+      "ar": "كتاب العلوم الفيزيائية والتكنولوجيا — السنة الرابعة متوسط",
+      "fr": "Manuel de physique et technologie — 4e année moyenne",
+      "en": "Physics and Technology textbook — Middle School Year 4"
+    },
+    "description": {
+      "ar": "صفحة كتاب رسمية لدى الديوان، تشير إلى غلاف نسخة 2022–2023. تحقق من ملاءمة الطبعة للبرنامج الحالي؛ لا يوجد تأكيد على تنزيل PDF مباشر.",
+      "fr": "Fiche officielle de l’ONPS montrant une couverture de l’édition 2022–2023. Vérifiez l’adéquation au programme actuel ; aucun PDF direct n’est confirmé.",
+      "en": "Official ONPS entry showing a 2022–2023 edition cover. Check current curriculum applicability; a direct PDF download is not confirmed."
+    }
+  },
+  {
+    "id": "onps-secondary-islamic-studies-year-1",
+    "publisher": "ONPS",
+    "kind": "books",
+    "levels": [
+      "secondary"
+    ],
+    "grade": "secondary-1",
+    "subject": "islamic-studies",
+    "pageType": "publication",
+    "checkedOn": "2026-10-23",
+    "url": "https://www.onps.dz/598",
+    "title": {
+      "ar": "كتاب العلوم الإسلامية — السنة الأولى ثانوي، جذع مشترك آداب",
+      "fr": "Manuel d’études islamiques — 1re année secondaire, tronc commun lettres",
+      "en": "Islamic Studies textbook — Secondary Year 1, Arts common core"
+    },
+    "description": {
+      "ar": "صفحة منشور رسمية للكتاب في جذع الآداب المشترك. تحقق من الشعبة والطبعة قبل الاستعمال؛ لا يوجد تأكيد على تنزيل PDF مباشر.",
+      "fr": "Fiche officielle du manuel pour le tronc commun lettres. Vérifiez la filière et l’édition avant utilisation ; aucun PDF direct n’est confirmé.",
+      "en": "Official publication entry for the Arts common core. Verify stream and edition before use; a direct PDF download is not confirmed."
+    }
+  },
+  {
+    "id": "onps-secondary-history-year-1",
+    "publisher": "ONPS",
+    "kind": "books",
+    "levels": [
+      "secondary"
+    ],
+    "grade": "secondary-1",
+    "subject": "history",
+    "pageType": "publication",
+    "checkedOn": "2026-10-23",
+    "url": "https://www.onps.dz/596",
+    "title": {
+      "ar": "كتاب التاريخ — السنة الأولى ثانوي، جذع مشترك آداب",
+      "fr": "Manuel d’histoire — 1re année secondaire, tronc commun lettres",
+      "en": "History textbook — Secondary Year 1, Arts common core"
+    },
+    "description": {
+      "ar": "صفحة منشور رسمية للكتاب في جذع الآداب المشترك. تحقق من الشعبة والطبعة قبل الاستعمال؛ لا يوجد تأكيد على تنزيل PDF مباشر.",
+      "fr": "Fiche officielle du manuel pour le tronc commun lettres. Vérifiez la filière et l’édition avant utilisation ; aucun PDF direct n’est confirmé.",
+      "en": "Official publication entry for the Arts common core. Verify stream and edition before use; a direct PDF download is not confirmed."
     }
   },
   {

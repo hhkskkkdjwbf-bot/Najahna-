@@ -9,7 +9,7 @@ const subjects = [
 const resources = [
   { id: "p-math", level: "primary", grades: ["1", "2", "3"], type: "lesson", subject: "math", title: { ar: "الجمع", fr: "Addition", en: "Addition" }, description: { ar: "درس حساب", fr: "Cours de calcul", en: "Arithmetic lesson" }, grade: { ar: "ابتدائي", fr: "Primaire", en: "Primary" } },
   { id: "m-math", level: "middle", grades: ["1", "2", "3", "4"], type: "exercise", subject: "math", title: { ar: "المعادلات", fr: "Équations", en: "Equations" }, description: { ar: "تمارين", fr: "Exercices", en: "Practice" }, grade: { ar: "متوسط", fr: "Moyen", en: "Middle" } },
-  { id: "s-arabic", level: "secondary", grades: ["1", "2", "3"], type: "summary", subject: "arabic", title: { ar: "بلاغة", fr: "Rhétorique", en: "Rhetoric" }, description: { ar: "ملخص", fr: "Résumé", en: "Summary" }, grade: { ar: "ثانوي", fr: "Secondaire", en: "Secondary" } }
+  { id: "s-arabic", level: "secondary", grades: ["1", "2", "3"], type: "summary", subject: "arabic", title: { ar: "بَلاغَة", fr: "Rhétorique", en: "Rhetoric" }, description: { ar: "ملخص", fr: "Résumé", en: "Summary" }, grade: { ar: "ثانوي", fr: "Secondaire", en: "Secondary" } }
 ];
 
 test("filters resources by school level, type, and subject", () => {
@@ -33,4 +33,10 @@ test("searches titles and translated subject labels case-insensitively", () => {
 test("combines filters and treats blank search as no query", () => {
   assert.deepEqual(filterResources(resources, { query: "  ", level: "primary", type: "lesson" }).map((item) => item.id), ["p-math"]);
   assert.deepEqual(filterResources(resources, { level: "primary", subject: "arabic" }), []);
+});
+
+test("search ignores Latin accents and Arabic diacritics", () => {
+  assert.deepEqual(filterResources(resources, { query: "Mathematiques", language: "fr", subjectCatalog: subjects }).map(item => item.id), ["p-math", "m-math"]);
+  assert.deepEqual(filterResources(resources, { query: "بلاغة", language: "ar", subjectCatalog: subjects }).map(item => item.id), ["s-arabic"]);
+  assert.deepEqual(filterResources(resources, { query: "بَلاغَة", language: "ar", subjectCatalog: subjects }).map(item => item.id), ["s-arabic"]);
 });

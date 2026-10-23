@@ -24,3 +24,7 @@ export function deleteNote(noteId) {
   if (!writeJSON(KEY, next)) throw new Error("Could not update notes in this browser.");
   return true;
 }
+
+export function clearNotes() {
+  return writeJSON(KEY, []);
+}

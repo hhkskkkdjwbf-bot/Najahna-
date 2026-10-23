@@ -36,7 +36,7 @@ test("offline shell caches every newly imported local data module", () => {
 });
 
 test("source-directory controls are translated in Arabic, French and English", () => {
-  for (const key of ["officialSourceSearchLabel", "officialSourceLevelLabel", "officialSourceKindLabel", "officialSourceGradeLabel", "officialSourceSubjectLabel", "officialSourceCheckedOn", "officialSourceEmpty"]) {
+  for (const key of ["officialSourceSearchLabel", "officialSourceLevelLabel", "officialSourceKindLabel", "officialSourceGradeLabel", "officialSourceSubjectLabel", "officialSourceRightsUnknown", "officialSourceCheckedOn", "officialSourceEmpty"]) {
     assert.ok(arabic.includes(key), `Arabic translation missing ${key}`);
     assert.ok(french.includes(key), `French translation missing ${key}`);
     assert.ok(english.includes(key), `English translation missing ${key}`);

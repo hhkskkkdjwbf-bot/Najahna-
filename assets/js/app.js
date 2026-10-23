@@ -1,7 +1,7 @@
 import { resources } from "../../src/data/resources.js";
 import { schoolYears, subjectCatalog } from "../../src/data/curriculum.js";
 import { filterResources } from "../../src/data/resource-filters.js";
-import { getCollections, createCollection, moveResourceToCollection } from "../../src/utils/collections.js";
+import { getCollections, createCollection, moveResourceToCollection, removeResourceFromCollection, deleteCollection } from "../../src/utils/collections.js";
 import { getNotes, saveNote, deleteNote } from "../../src/utils/notes.js";
 import { createStudyTask, toggleStudyTask, removeStudyTask } from "../../src/utils/study-plan.js";
 import { readJSON, writeJSON } from "../../src/utils/storage.js";
@@ -117,10 +117,11 @@ function renderCollections() {
   const root = $("#collections-list");
   if (!root) return;
   const collections = getCollections();
-  root.innerHTML = collections.map(collection => {
-    const titles = collection.resourceIds.map(id => resources.find(item => item.id === id)).filter(Boolean).map(item => item.title[language]);
-    return `<div class="collection-item"><strong>${escapeHTML(collection.name)}</strong><span>${collection.resourceIds.length} · ${escapeHTML(t("resourcesCount"))}</span>${titles.length ? `<small>${titles.map(escapeHTML).join("، ")}</small>` : ""}</div>`;
-  }).join("");
+  root.innerHTML = collections.length ? collections.map(collection => {
+    const items = collection.resourceIds.map(id => resources.find(item => item.id === id)).filter(Boolean);
+    const contents = items.length ? `<ul class="collection-resources">${items.map(item => `<li><span>${escapeHTML(item.title[language])}</span><button type="button" class="collection-remove-resource" data-remove-collection-resource="${escapeHTML(item.id)}" data-collection-id="${escapeHTML(collection.id)}" aria-label="${escapeHTML(t("removeFromCollection"))}">×</button></li>`).join("")}</ul>` : `<small>${escapeHTML(t("collectionEmpty"))}</small>`;
+    return `<article class="collection-item"><div class="collection-item-heading"><strong>${escapeHTML(collection.name)}</strong><button type="button" class="collection-delete" data-delete-collection="${escapeHTML(collection.id)}">${escapeHTML(t("deleteCollection"))}</button></div><span>${items.length} · ${escapeHTML(t("resourcesCount"))}</span>${contents}</article>`;
+  }).join("") : `<p class="small-note">${escapeHTML(t("noCollections"))}</p>`;
 }
 function renderHistory() {
   const root = $("#history-list");
@@ -305,6 +306,26 @@ $("#collection-form")?.addEventListener("submit", event => {
   event.preventDefault();
   try { createCollection($("#collection-name").value); $("#collection-name").value = ""; renderCollections(); showToast(t("collectionCreated")); }
   catch { showToast(t("saveFailed")); }
+});
+$("#collections-list")?.addEventListener("click", event => {
+  const removeButton = event.target.closest("[data-remove-collection-resource]");
+  const deleteButton = event.target.closest("[data-delete-collection]");
+  try {
+    if (removeButton) {
+      if (removeResourceFromCollection(removeButton.dataset.removeCollectionResource, removeButton.dataset.collectionId)) {
+        renderCollections();
+        showToast(t("removedFromCollection"));
+      }
+      return;
+    }
+    if (deleteButton) {
+      if (!window.confirm(t("confirmDeleteCollection"))) return;
+      if (deleteCollection(deleteButton.dataset.deleteCollection)) {
+        renderCollections();
+        showToast(t("collectionDeleted"));
+      }
+    }
+  } catch { showToast(t("saveFailed")); }
 });
 $("#notes-list")?.addEventListener("click", event => {
   const button = event.target.closest("[data-delete-note]");

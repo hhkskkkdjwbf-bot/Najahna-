@@ -1,4 +1,17 @@
 /**
+ * Normalize search text across Latin accents and Arabic diacritics.
+ * This keeps search forgiving without changing the text shown to learners.
+ */
+function normalizeSearchText(value) {
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+    .replace(/ـ/g, "")
+    .toLocaleLowerCase()
+    .trim();
+}
+
+/**
  * Pure filtering for the sample resource library.
  * Year values use "level:year" because year numbers repeat across school levels.
  */
@@ -11,7 +24,7 @@ export function filterResources(resources, {
   language = "ar",
   subjectCatalog = []
 } = {}) {
-  const normalizedQuery = String(query).trim().toLocaleLowerCase();
+  const normalizedQuery = normalizeSearchText(query);
   return resources.filter((item) => {
     const subjectName = subjectCatalog.find((entry) => entry.id === item.subject)?.label?.[language] || item.subject;
     const searchable = [
@@ -20,7 +33,8 @@ export function filterResources(resources, {
       item.subject,
       subjectName,
       item.grade?.[language]
-    ].filter(Boolean).join(" ").toLocaleLowerCase();
+    ].filter(Boolean).join(" ");
+    const normalizedSearchable = normalizeSearchText(searchable);
 
     const matchesYear = year === "all" || (
       year.startsWith(item.level + ":") &&
@@ -31,6 +45,6 @@ export function filterResources(resources, {
       (type === "all" || item.type === type) &&
       matchesYear &&
       (subject === "all" || item.subject === subject) &&
-      (!normalizedQuery || searchable.includes(normalizedQuery));
+      (!normalizedQuery || normalizedSearchable.includes(normalizedQuery));
   });
 }

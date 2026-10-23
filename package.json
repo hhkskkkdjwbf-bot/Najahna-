@@ -6,6 +6,7 @@
   "description": "Arabic-first Algerian educational platform prototype",
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "check": "node --check assets/js/app.js"
+    "check": "node --check assets/js/app.js",
+    "audit:sources": "node scripts/audit-official-sources.js"
   }
 }

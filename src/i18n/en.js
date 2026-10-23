@@ -9,6 +9,6 @@ historyTitle:"Revision history",historyIntro:"Recently marked resources on this 
  officialBacTitle:"Baccalaureate past papers",officialBacText:"The ministry page referencing previous baccalaureate papers and solutions organized by subject.",officialUpdatesTitle:"Latest update on education measures",officialUpdatesText:"A 16 September 2026 clarification carried by national television says approved primary-level measures remain in effect, while other measures are suspended pending approval. Check for newer updates.",officialCalendarTitle:"School calendar",officialCalendarText:"Check the ministry’s published dates for tests, exams, and school holidays, and verify the latest update.",
  backupConfirm:"Restoring will replace the current Najahna data in this browser. Continue?",
  backupTitle:"Back up your data",backupIntro:"Export your notes, folders, study plan, and history for later recovery.",backupExport:"Export backup",backupImport:"Restore backup",backupWarning:"The file contains your local data. Keep it somewhere safe; restoring replaces Najahna data stored in this browser.",backupExported:"Backup prepared.",backupImported:"Backup restored; refreshing…",backupFailed:"Could not create the backup.",backupInvalid:"Invalid file or restore failed.",
- deleteNote:"Delete note",noteDeleted:"Note deleted."
+ deleteNote:"Delete note",noteDeleted:"Note deleted.",
   clearHistory:"Clear history",historyCleared:"Revision history cleared."
 };

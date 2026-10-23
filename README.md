@@ -21,7 +21,7 @@
 - Starter school-year catalog covering 5 primary, 4 middle-school, and 3 secondary years.
 - Subject catalog with level-aware filtering and Arabic, French, and English labels.
 - New document-catalog metadata validator and filter functions for building a curated, year-specific Algerian resource library.
-- A searchable official-source directory with filters for school level and resource category. It includes ONPS schoolbook catalogues and selected publication pages, plus Ministry archives for BAC papers and pedagogical documents. The source pages were checked on 2026-10-23; this verifies the source/page index, not every PDF, the current curriculum applicability, or reuse permissions. No catalogue entry is presented as a verified direct PDF download.
+- A searchable official-source directory with filters for school level, school year, subject, and resource category. It includes ONPS catalogues and individually identified textbook entries for Primary Years 3–5, Middle School Year 4, and Secondary Year 1, plus Ministry archives for BAC papers and pedagogical documents. Individual ONPS pages are publication records, not guaranteed PDF downloads; some pages show older editions, so current-program applicability must be checked. The source audit script checks link responses weekly and when source records change; successful HTTP status does not verify the document contents, current curriculum applicability, or reuse permissions.
 - Accessible skip link, semantic labels, and reduced-motion support.
 - Automated Node.js tests and a GitHub Actions quality workflow.
 
@@ -42,13 +42,15 @@ This version uses browser-native ES modules and does not require a framework bui
 3. Start a local static server, for example with Python: `python -m http.server 8000`.
 4. Visit `http://localhost:8000`.
 
+To check official-source page availability, run `npm run audit:sources`. The same audit runs weekly and when the source directory or audit script changes. Temporary blocks and network errors are reported for review; confirmed 404/410 pages fail the audit.
+
 Opening the HTML directly with `file://` may block ES module imports in some browsers; use a local server.
 
 ## Project structure
 
 ```text
 .
-├── .github/workflows/quality.yml
+├── .github/workflows/{quality,source-audit}.yml
 ├── assets/
 │   ├── css/main.css
 │   └── js/app.js
@@ -57,6 +59,7 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 ├── manifest.webmanifest
 ├── service-worker.js
 ├── package.json
+├── scripts/audit-official-sources.js
 ├── src/
 │   ├── calculators/average.js
 │   ├── data/
@@ -68,7 +71,7 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 │   │   └── resources.js
 │   ├── i18n/{ar,fr,en}.js
 │   └── utils/{collections,dates,history,notes,quiz-history,storage}.js
-└── tests/{average,backup,curriculum,dates,document-catalog,official-sources,quiz,quiz-history,i18n,resource-filters,resources,study-plan}.test.js
+└── tests/{average,backup,curriculum,dates,document-catalog,official-source-ui,official-sources,quiz,quiz-history,i18n,resource-filters,resources,study-plan}.test.js
 ```
 
 ## Important limitations

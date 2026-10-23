@@ -17,3 +17,14 @@ test("rejects grades outside 0 to 20", () => {
 test("rejects invalid coefficients", () => {
   assert.throws(() => calculateWeightedAverage([{ grade: 12, coefficient: 0 }]), RangeError);
 });
+
+test("accepts numeric strings from form inputs", () => {
+  assert.equal(calculateWeightedAverage([{ grade: "12.5", coefficient: "2" }]), 12.5);
+});
+
+test("rejects blank or missing grades and coefficients", () => {
+  assert.throws(() => calculateWeightedAverage([{ grade: "", coefficient: 1 }]), RangeError);
+  assert.throws(() => calculateWeightedAverage([{ grade: 12, coefficient: "" }]), RangeError);
+  assert.throws(() => calculateWeightedAverage([{ coefficient: 1 }]), RangeError);
+  assert.throws(() => calculateWeightedAverage([{ grade: 12 }]), RangeError);
+});

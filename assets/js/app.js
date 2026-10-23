@@ -11,6 +11,7 @@ import { toLocalDateISO, parseLocalCalendarDate } from "../../src/utils/dates.js
 import { calculateWeightedAverage } from "../../src/calculators/average.js";
 import { getQuizQuestions, gradeQuiz } from "../../src/data/quiz.js";
 import { getQuizHistory, recordQuizAttempt, clearQuizHistory } from "../../src/utils/quiz-history.js";
+import { officialSources } from "../../src/data/official-sources.js";
 import ar from "../../src/i18n/ar.js";
 import fr from "../../src/i18n/fr.js";
 import en from "../../src/i18n/en.js";
@@ -39,11 +40,12 @@ function setLanguage(next) {
     else node.textContent = value;
   });
   $$("[data-i18n-placeholder]").forEach(node => node.placeholder = t(node.dataset.i18nPlaceholder));
-  $("#level-filter option, #type-filter option, #study-plan-filter option").forEach(option => { if (option.dataset.i18n) option.textContent = t(option.dataset.i18n); });
+  $("#level-filter option, #type-filter option, #study-plan-filter option, #official-source-level option, #official-source-kind option").forEach(option => { if (option.dataset.i18n) option.textContent = t(option.dataset.i18n); });
   renderLevelCounts();
   renderCatalogFilters();
   renderQuiz();
   renderQuizHistory();
+  renderOfficialSources();
   renderResources();
   renderFavorites();
   renderCollections();
@@ -63,6 +65,35 @@ function getFavorites() {
 }
 function saveFavorites(ids) { localStorage.setItem("najahna-favorites", JSON.stringify([...new Set(ids)])); }
 function typeLabel(type) { return t(({lesson:"typeLesson",summary:"typeSummary",exercise:"typeExercise",exam:"typeExam",book:"typeBook",flashcard:"typeFlashcard",mindmap:"typeMindmap"})[type]); }
+function renderOfficialSources() {
+  const root = $("#official-source-grid");
+  if (!root) return;
+  const query = ($("#official-source-search")?.value || "").trim().toLocaleLowerCase();
+  const level = $("#official-source-level")?.value || "all";
+  const kind = $("#official-source-kind")?.value || "all";
+  const normalize = value => String(value ?? "").normalize("NFD").replace(/\\p{M}/gu, "").replace(/ـ/g, "").toLocaleLowerCase();
+  const matches = officialSources.filter(source => {
+    const searchable = [source.title[language], source.description[language], source.publisher, source.kind].join(" ");
+    return (level === "all" || source.levels.includes(level)) &&
+      (kind === "all" || source.kind === kind) &&
+      (!query || normalize(searchable).includes(normalize(query)));
+  });
+  const kindLabel = kind => t(({books:"officialSourceBooks", "exam-papers":"officialSourceExamPapers", "pedagogical-docs":"officialSourcePedagogical"})[kind] || "officialSourceBooks");
+  const levelLabel = levels => levels.map(item => t(({primary:"primary",middle:"middle",secondary:"secondary"})[item])).join(" · ");
+  const dateLabel = date => {
+    const parsed = new Date(`${date}T12:00:00`);
+    return Number.isNaN(parsed.getTime()) ? date : parsed.toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { year:"numeric", month:"short", day:"numeric" });
+  };
+  root.innerHTML = matches.map(source => `<article class="official-source-card">
+    <div class="official-source-card-top"><span class="official-source-icon" aria-hidden="true">${source.kind === "books" ? "▤" : source.kind === "exam-papers" ? "✎" : "✓"}</span><span class="source-verified-label">${escapeHTML(t("officialSourceChecked"))}</span></div>
+    <span class="official-source-kind">${escapeHTML(kindLabel(source.kind))} · ${escapeHTML(levelLabel(source.levels))}</span>
+    <h3>${escapeHTML(source.title[language])}</h3><p>${escapeHTML(source.description[language])}</p>
+    <div class="official-source-meta"><span>${escapeHTML(source.publisher)}</span><span>${escapeHTML(t("officialSourceCheckedOn"))}: ${escapeHTML(dateLabel(source.checkedOn))}</span></div>
+    <a href="${escapeHTML(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(t("openOfficialSource"))} ↗</a>
+  </article>`).join("");
+  $("#official-source-count").textContent = t("officialSourceCount").replace("{count}", String(matches.length));
+  $("#official-source-empty").hidden = matches.length !== 0;
+}
 function renderQuizHistory() {
   const root = $("#quiz-history");
   if (!root) return;
@@ -460,6 +491,10 @@ document.body.classList.toggle("dark", localStorage.getItem("najahna-theme") ===
 $("#theme-toggle").textContent = document.body.classList.contains("dark") ? "☀" : "☾";
 $("#year").textContent = new Date().getFullYear();
 $("#quiz-level")?.addEventListener("change", event => resetQuiz(event.target.value));
+$("#official-source-search")?.addEventListener("input", renderOfficialSources);
+$("#official-source-level")?.addEventListener("change", renderOfficialSources);
+$("#official-source-kind")?.addEventListener("change", renderOfficialSources);
+$("#reset-official-source-filters")?.addEventListener("click", () => { $("#official-source-search").value = ""; $("#official-source-level").value = "all"; $("#official-source-kind").value = "all"; renderOfficialSources(); });
 $("#quiz-content")?.addEventListener("click", event => {
   const answer = event.target.closest("[data-quiz-answer]");
   if (answer && !quizState.submitted) { quizState.answers[quizState.index] = Number(answer.dataset.quizAnswer); renderQuiz(); return; }
@@ -497,6 +532,7 @@ if ("serviceWorker" in navigator && (location.protocol === "https:" || location.
 }
 
 setLanguage(language);
+renderOfficialSources();
 renderQuizHistory();
 renderCatalogFilters();
 renderCollections();

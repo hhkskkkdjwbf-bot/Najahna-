@@ -11,7 +11,8 @@
 - Light/dark theme preference stored in the browser.
 - Search and combined filters for school level, school year, subject, and resource type, with a live result count and one-click filter reset.
 - Accessible resource detail dialog with translated level, year, subject, and explicit sample-only content status.
-- Browser-local favorites, revision history, personal notes, and revision collections.
+- Browser-local favorites, revision history, personal notes, and revision collections, with controls to remove resources from folders and delete folders.
+- Bulk cleanup for saved notes, revision history, favorites, and completed study sessions, with confirmation before destructive actions.
 - Weighted-average calculator (grades out of 20 and coefficients) with input validation.
 - Local study planner with dates, 15–90 minute sessions, completion tracking, deletion, and a remaining-minutes summary; it is stored only in the current browser.
 - Starter school-year catalog covering 5 primary, 4 middle-school, and 3 secondary years.
@@ -67,7 +68,7 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 
 - No verified server-backed account authentication, database, cloud synchronization, upload service, or production admin system is available yet.
 - Favorites, notes, history, collections, study plans, and preferences are stored in the current browser using `localStorage`; they do not sync between devices and may be lost when browser data is cleared.
-- Notes can now be deleted individually. A local JSON backup can export and restore Najahna-owned browser data. Restoring replaces existing Najahna local data in that browser; keep backup files private.
+- Notes can be deleted individually or cleared in bulk. Collections can be deleted or have individual resources removed. History, favorites, and completed study sessions have cleanup controls; destructive bulk actions ask for confirmation. A local JSON backup can export and restore Najahna-owned browser data. Restoring replaces existing Najahna local data in that browser; keep backup files private.
 - Learning resources are illustrative samples. Real exam papers and courses must be sourced, checked, and added separately. Do not describe a sample as an official downloadable document.
 - The school-year and subject catalog is a useful starting taxonomy, not a guarantee that every subject applies to every stream or current official program.
 - The average calculator is an estimate; official calculation rules can vary by grade, stream, subject coefficients, and term.

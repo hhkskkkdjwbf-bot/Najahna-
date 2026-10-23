@@ -10,4 +10,5 @@ historyTitle:"Revision history",historyIntro:"Recently marked resources on this 
  backupConfirm:"Restoring will replace the current Najahna data in this browser. Continue?",
  backupTitle:"Back up your data",backupIntro:"Export your notes, folders, study plan, and history for later recovery.",backupExport:"Export backup",backupImport:"Restore backup",backupWarning:"The file contains your local data. Keep it somewhere safe; restoring replaces Najahna data stored in this browser.",backupExported:"Backup prepared.",backupImported:"Backup restored; refreshing…",backupFailed:"Could not create the backup.",backupInvalid:"Invalid file or restore failed.",
  deleteNote:"Delete note",noteDeleted:"Note deleted."
+  clearHistory:"Clear history",historyCleared:"Revision history cleared."
 };

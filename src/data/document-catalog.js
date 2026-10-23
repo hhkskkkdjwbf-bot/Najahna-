@@ -82,7 +82,7 @@ export function validateDocumentRecord(record) {
   if (record.programReference !== undefined && typeof record.programReference !== "string") {
     errors.push("programReference must be text");
   }
-  if (record.lastChecked !== undefined && (typeof record.lastChecked !== "string" || !/^\\d{4}-\\d{2}-\\d{2}$/.test(record.lastChecked) || Number.isNaN(Date.parse(record.lastChecked)))) {
+  if (record.lastChecked !== undefined && (typeof record.lastChecked !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(record.lastChecked) || Number.isNaN(Date.parse(record.lastChecked)))) {
     errors.push("lastChecked must use YYYY-MM-DD");
   }
 

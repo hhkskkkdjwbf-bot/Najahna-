@@ -1,0 +1,16 @@
+{
+  "id": "./",
+  "name": "نجاحنا — Najahna",
+  "short_name": "نجاحنا",
+  "description": "منصة تعليمية جزائرية للتعلّم والمراجعة",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbfcfa",
+  "theme_color": "#116b52",
+  "icons": [
+    { "src": "./assets/icons/najahna.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

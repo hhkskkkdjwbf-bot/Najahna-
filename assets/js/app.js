@@ -157,7 +157,19 @@ function renderStudyPlan() {
   const allTasks = getStudyTasks().sort((a, b) => a.date.localeCompare(b.date) || Number(a.completed) - Number(b.completed));
   const completed = allTasks.filter(task => task.completed).length;
   const minutes = allTasks.filter(task => !task.completed).reduce((total, task) => total + Number(task.minutes || 0), 0);
+  const completedMinutes = allTasks.filter(task => task.completed).reduce((total, task) => total + Number(task.minutes || 0), 0);
+  const today = new Date().toISOString().slice(0, 10);
+  const todayTasks = allTasks.filter(task => task.date === today);
+  const todayDone = todayTasks.filter(task => task.completed).length;
+  const completionRate = allTasks.length ? Math.round(completed / allTasks.length * 100) : 0;
   $("#study-plan-summary").textContent = t("studyPlanSummary").replace("{done}", String(completed)).replace("{total}", String(allTasks.length)).replace("{minutes}", String(minutes));
+  const progress = $("#study-progress");
+  if (progress) progress.innerHTML = [
+    ["progressRate", `${completionRate}%`],
+    ["progressCompleted", `${completed}/${allTasks.length}`],
+    ["progressMinutes", String(completedMinutes)],
+    ["progressToday", `${todayDone}/${todayTasks.length}`]
+  ].map(([key, value]) => `<div class="progress-metric"><span>${escapeHTML(t(key))}</span><strong>${escapeHTML(value)}</strong></div>`).join("");
   const filter = $("#study-plan-filter")?.value || "all";
   const tasks = allTasks.filter(task => filter === "completed" ? task.completed : filter === "pending" ? !task.completed : true);
   list.innerHTML = tasks.length ? tasks.map(task => {

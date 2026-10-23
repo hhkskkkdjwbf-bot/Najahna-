@@ -40,3 +40,14 @@ test("search ignores Latin accents and Arabic diacritics", () => {
   assert.deepEqual(filterResources(resources, { query: "بلاغة", language: "ar", subjectCatalog: subjects }).map(item => item.id), ["s-arabic"]);
   assert.deepEqual(filterResources(resources, { query: "بَلاغَة", language: "ar", subjectCatalog: subjects }).map(item => item.id), ["s-arabic"]);
 });
+
+test("searches every translation even when another interface language is active", () => {
+  assert.deepEqual(
+    filterResources(resources, { query: "Équations", language: "ar", subjectCatalog: subjects }).map(item => item.id),
+    ["m-math"]
+  );
+  assert.deepEqual(
+    filterResources(resources, { query: "Arithmetic lesson", language: "fr", subjectCatalog: subjects }).map(item => item.id),
+    ["p-math"]
+  );
+});

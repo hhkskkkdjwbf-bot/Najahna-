@@ -7,6 +7,7 @@ import { createStudyTask, toggleStudyTask, removeStudyTask, clearCompletedStudyT
 import { readJSON, writeJSON } from "../../src/utils/storage.js";
 import { recordResourceView, getResourceHistory, clearResourceHistory } from "../../src/utils/history.js";
 import { serializeBackup, restoreBackup } from "../../src/utils/backup.js";
+import { toLocalDateISO, parseLocalCalendarDate } from "../../src/utils/dates.js";
 import ar from "../../src/i18n/ar.js";
 import fr from "../../src/i18n/fr.js";
 import en from "../../src/i18n/en.js";
@@ -158,7 +159,7 @@ function renderStudyPlan() {
   const completed = allTasks.filter(task => task.completed).length;
   const minutes = allTasks.filter(task => !task.completed).reduce((total, task) => total + Number(task.minutes || 0), 0);
   const completedMinutes = allTasks.filter(task => task.completed).reduce((total, task) => total + Number(task.minutes || 0), 0);
-  const today = new Date().toISOString().slice(0, 10);
+  const today = toLocalDateISO();
   const todayTasks = allTasks.filter(task => task.date === today);
   const todayDone = todayTasks.filter(task => task.completed).length;
   const completionRate = allTasks.length ? Math.round(completed / allTasks.length * 100) : 0;

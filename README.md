@@ -17,7 +17,7 @@
 - Starter school-year catalog covering 5 primary, 4 middle-school, and 3 secondary years.
 - Subject catalog with level-aware filtering and Arabic, French, and English labels.
 - New document-catalog metadata validator and filter functions for building a curated, year-specific Algerian resource library.
-- A multilingual official-source section linking to Ministry of Education resource indexes, courses/exercises, pedagogical documents, and the ministry page for BAC past papers. These are external references, not a claim that Najahna has imported or verified every linked file.
+- A multilingual official-source section linking to Ministry of Education resource indexes, courses/exercises, pedagogical documents, the ministry page for BAC past papers, and the ministry announcement about pedagogical arrangements for 2026–2027. These are external references, not a claim that Najahna has imported or verified every linked file.
 - Accessible skip link, semantic labels, and reduced-motion support.
 - Automated Node.js tests and a GitHub Actions quality workflow.
 

@@ -1,6 +1,6 @@
 const BACKUP_VERSION = 1;
 const OWNED_PREFIX = "najahna:";
-const EXPLICIT_KEYS = new Set(["najahna-language", "najahna-theme"]);
+const EXPLICIT_KEYS = new Set(["najahna-language", "najahna-theme", "najahna-favorites"]);
 const MAX_BACKUP_BYTES = 5 * 1024 * 1024;
 
 function isOwnedKey(key) {

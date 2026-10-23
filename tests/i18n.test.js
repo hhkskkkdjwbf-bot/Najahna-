@@ -26,7 +26,18 @@ const detailKeys = [
   "studyPlanFilterAll",
   "studyPlanFilterPending",
   "studyPlanFilterCompleted",
-  "studyPlanFilterEmpty"
+  "studyPlanFilterEmpty",
+  "officialSourcesEyebrow",
+  "officialSourcesTitle",
+  "officialSourcesIntro",
+  "officialGeneralTitle",
+  "officialGeneralText",
+  "officialCoursesTitle",
+  "officialCoursesText",
+  "officialDocsTitle",
+  "officialDocsText",
+  "openOfficialSource",
+  "officialSourcesDisclaimer"
 ];
 
 test("resource detail and study planner labels are available in Arabic, French, and English", () => {

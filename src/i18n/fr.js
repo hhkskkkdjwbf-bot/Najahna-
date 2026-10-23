@@ -14,4 +14,5 @@ historyTitle:"Historique de révision",historyIntro:"Les dernières ressources m
   deleteCollection:"Supprimer le dossier",confirmDeleteCollection:"Supprimer ce dossier et toutes ses associations locales ?",collectionDeleted:"Dossier supprimé.",removeFromCollection:"Retirer cette ressource du dossier",removedFromCollection:"Ressource retirée du dossier.",collectionEmpty:"Ce dossier est vide.",noCollections:"Aucun dossier pour le moment.",
   clearNotes:"Effacer toutes les notes",confirmClearNotes:"Supprimer définitivement toutes les notes enregistrées dans ce navigateur ?",notesCleared:"Toutes les notes ont été supprimées.",clearCompletedStudy:"Effacer les séances terminées",confirmClearCompletedStudy:"Supprimer toutes les séances terminées ?",completedStudyCleared:"Séances terminées supprimées.",noCompletedStudy:"Aucune séance terminée à supprimer.",
   confirmClearHistory:"Effacer tout l’historique de révision ?",confirmClearFavorites:"Effacer toutes les ressources favorites ?"
+  progressRate:"Taux d’avancement",progressCompleted:"Séances terminées",progressMinutes:"Minutes révisées",progressToday:"Séances du jour",
 };

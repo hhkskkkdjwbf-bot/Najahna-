@@ -9,6 +9,7 @@ import { recordResourceView, getResourceHistory, clearResourceHistory } from "..
 import { serializeBackup, restoreBackup } from "../../src/utils/backup.js";
 import { toLocalDateISO, parseLocalCalendarDate } from "../../src/utils/dates.js";
 import { calculateWeightedAverage } from "../../src/calculators/average.js";
+import { getQuizQuestions, gradeQuiz } from "../../src/data/quiz.js";
 import ar from "../../src/i18n/ar.js";
 import fr from "../../src/i18n/fr.js";
 import en from "../../src/i18n/en.js";
@@ -20,6 +21,7 @@ let language = localStorage.getItem("najahna-language") || "ar";
 let selectedLevel = "all";
 let activeResourceId = null;
 let toastTimer;
+let quizState = { level: "primary", questions: [], index: 0, answers: [], submitted: false };
 
 function t(key) { return translations[language]?.[key] ?? translations.ar[key] ?? key; }
 function escapeHTML(value) { return String(value).replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" })[char]); }
@@ -38,6 +40,7 @@ function setLanguage(next) {
   $("#level-filter option, #type-filter option, #study-plan-filter option").forEach(option => { if (option.dataset.i18n) option.textContent = t(option.dataset.i18n); });
   renderLevelCounts();
   renderCatalogFilters();
+  renderQuiz();
   renderResources();
   renderFavorites();
   renderCollections();
@@ -57,6 +60,32 @@ function getFavorites() {
 }
 function saveFavorites(ids) { localStorage.setItem("najahna-favorites", JSON.stringify([...new Set(ids)])); }
 function typeLabel(type) { return t(({lesson:"typeLesson",summary:"typeSummary",exercise:"typeExercise",exam:"typeExam",book:"typeBook",flashcard:"typeFlashcard",mindmap:"typeMindmap"})[type]); }
+function renderQuiz() {
+  const levelSelect = $("#quiz-level");
+  const container = $("#quiz-content");
+  if (!levelSelect || !container) return;
+  quizState.level = levelSelect.value || "primary";
+  quizState.questions = getQuizQuestions(quizState.level);
+  quizState.index = Math.min(quizState.index, Math.max(0, quizState.questions.length - 1));
+  const question = quizState.questions[quizState.index];
+  $("#quiz-progress").textContent = t("quizQuestionProgress").replace("{current}", String(quizState.index + 1)).replace("{total}", String(quizState.questions.length));
+  if (!question) { container.innerHTML = ""; return; }
+  const prompt = escapeHTML(question.prompt[language]);
+  const choices = question.choices[language].map((choice, index) => {
+    const selected = quizState.answers[quizState.index] === index;
+    const correct = quizState.submitted && index === question.answer;
+    const wrong = quizState.submitted && selected && index !== question.answer;
+    return `<button type="button" class="quiz-choice ${selected ? "selected" : ""} ${correct ? "correct" : ""} ${wrong ? "incorrect" : ""}" data-quiz-answer="${index}" ${quizState.submitted ? "disabled" : ""} aria-pressed="${selected}"><span class="quiz-choice-letter">${String.fromCharCode(65 + index)}</span><span>${escapeHTML(choice)}</span><span class="quiz-choice-mark">${correct ? "✓" : wrong ? "×" : ""}</span></button>`;
+  }).join("");
+  const explanation = quizState.submitted ? `<div class="quiz-feedback" role="status"><strong>${t(quizState.answers[quizState.index] === question.answer ? "quizCorrect" : "quizIncorrect")}</strong><p>${escapeHTML(question.explanation[language])}</p></div>` : "";
+  const final = quizState.submitted ? `<div class="quiz-finish"><strong>${t("quizScore").replace("{score}", String(gradeQuiz(quizState.questions, quizState.answers).score)).replace("{total}", String(quizState.questions.length))}</strong><button type="button" class="button button-primary button-small" data-quiz-restart>${t("quizRestart")}</button></div>` : `<div class="quiz-actions"><button type="button" class="button button-primary button-small" data-quiz-check ${quizState.answers[quizState.index] === undefined ? "disabled" : ""}>${t("quizCheck")}</button>${quizState.index > 0 ? `<button type="button" class="button button-quiet button-small" data-quiz-previous>${t("quizPrevious")}</button>` : ""}</div>`;
+  const next = quizState.submitted && quizState.index < quizState.questions.length - 1 ? `<button type="button" class="button button-outline button-small" data-quiz-next>${t("quizNext")}</button>` : "";
+  container.innerHTML = `<div class="quiz-question"><span class="quiz-question-number">${t("quizQuestionLabel")} ${quizState.index + 1}</span><h3>${prompt}</h3><div class="quiz-choices">${choices}</div>${explanation}<div class="quiz-actions">${final}${next}</div></div>`;
+}
+function resetQuiz(level = $("#quiz-level")?.value || "primary") {
+  quizState = { level, questions: getQuizQuestions(level), index: 0, answers: [], submitted: false };
+  renderQuiz();
+}
 function renderLevelCounts() {
   $("[data-level-count]").forEach(node => {
     const count = resources.filter(item => item.level === node.dataset.levelCount).length;
@@ -409,6 +438,15 @@ $$("[data-level]").forEach(button => button.addEventListener("click", () => {
 document.body.classList.toggle("dark", localStorage.getItem("najahna-theme") === "dark");
 $("#theme-toggle").textContent = document.body.classList.contains("dark") ? "☀" : "☾";
 $("#year").textContent = new Date().getFullYear();
+$("#quiz-level")?.addEventListener("change", event => resetQuiz(event.target.value));
+$("#quiz-content")?.addEventListener("click", event => {
+  const answer = event.target.closest("[data-quiz-answer]");
+  if (answer && !quizState.submitted) { quizState.answers[quizState.index] = Number(answer.dataset.quizAnswer); renderQuiz(); return; }
+  if (event.target.closest("[data-quiz-check]")) { if (quizState.answers[quizState.index] === undefined) return; quizState.submitted = true; renderQuiz(); return; }
+  if (event.target.closest("[data-quiz-next]")) { quizState.index += 1; quizState.submitted = false; renderQuiz(); return; }
+  if (event.target.closest("[data-quiz-previous]")) { quizState.index = Math.max(0, quizState.index - 1); quizState.submitted = false; renderQuiz(); return; }
+  if (event.target.closest("[data-quiz-restart]")) resetQuiz();
+});
 setLanguage(language);
 renderCatalogFilters();
 renderCollections();

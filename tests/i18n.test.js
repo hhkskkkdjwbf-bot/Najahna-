@@ -41,7 +41,9 @@ const detailKeys = [
   "officialBacTitle",
   "officialBacText",
   "officialUpdatesTitle",
-  "officialUpdatesText"
+  "officialUpdatesText",
+  "officialCalendarTitle",
+  "officialCalendarText"
 ];
 
 test("resource detail and study planner labels are available in Arabic, French, and English", () => {

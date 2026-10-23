@@ -44,7 +44,7 @@ const detailKeys = [
   "officialUpdatesText",
   "officialCalendarTitle",
   "officialCalendarText",
-  "deleteNote", "noteDeleted", "backupConfirm", "backupTitle", "backupIntro", "backupExport", "backupImport", "backupWarning",
+  "deleteNote", "noteDeleted", "clearHistory", "historyCleared", "deleteCollection", "confirmDeleteCollection", "collectionDeleted", "removeFromCollection", "removedFromCollection", "collectionEmpty", "noCollections", "backupConfirm", "backupTitle", "backupIntro", "backupExport", "backupImport", "backupWarning",
   "backupExported", "backupImported", "backupFailed", "backupInvalid"
 ];
 

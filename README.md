@@ -54,17 +54,21 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 │   └── js/app.js
 ├── docs/ARCHITECTURE.md
 ├── index.html
+├── manifest.webmanifest
+├── service-worker.js
 ├── package.json
 ├── src/
 │   ├── calculators/average.js
 │   ├── data/
 │   │   ├── curriculum.js
 │   │   ├── document-catalog.js
+│   │   ├── official-sources.js
+│   │   ├── quiz.js
 │   │   ├── resource-filters.js
 │   │   └── resources.js
 │   ├── i18n/{ar,fr,en}.js
-│   └── utils/{collections,dates,history,notes,storage}.js
-└── tests/{average,backup,curriculum,dates,document-catalog,official-sources,i18n,resource-filters,resources,study-plan}.test.js
+│   └── utils/{collections,dates,history,notes,quiz-history,storage}.js
+└── tests/{average,backup,curriculum,dates,document-catalog,official-sources,quiz,quiz-history,i18n,resource-filters,resources,study-plan}.test.js
 ```
 
 ## Important limitations

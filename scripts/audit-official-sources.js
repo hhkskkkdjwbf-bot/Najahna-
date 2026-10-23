@@ -14,7 +14,7 @@ for (const source of uniqueUrls) {
     const response = await fetch(source.url, {
       redirect: "follow",
       headers: { "user-agent": "Najahna-Official-Source-Audit/1.0" },
-      signal: AbortSignal.timeout(12000)
+      signal: AbortSignal.timeout(5000)
     });
     const result = {
       url: source.url,

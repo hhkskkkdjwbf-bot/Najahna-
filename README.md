@@ -21,7 +21,7 @@
 - Starter school-year catalog covering 5 primary, 4 middle-school, and 3 secondary years.
 - Subject catalog with level-aware filtering and Arabic, French, and English labels.
 - New document-catalog metadata validator and filter functions for building a curated, year-specific Algerian resource library.
-- A multilingual official-source section linking to Ministry of Education resource indexes, courses/exercises, pedagogical documents, the ministry page for BAC past papers, and the ministry announcement about pedagogical arrangements for 2026–2027. These are external references, not a claim that Najahna has imported or verified every linked file.
+- A searchable official-source directory with filters for school level and resource category. It includes ONPS schoolbook catalogues and selected publication pages, plus Ministry archives for BAC papers and pedagogical documents. The source pages were checked on 2026-10-23; this verifies the source/page index, not every PDF, the current curriculum applicability, or reuse permissions. No catalogue entry is presented as a verified direct PDF download.
 - Accessible skip link, semantic labels, and reduced-motion support.
 - Automated Node.js tests and a GitHub Actions quality workflow.
 
@@ -64,7 +64,7 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 │   │   └── resources.js
 │   ├── i18n/{ar,fr,en}.js
 │   └── utils/{collections,dates,history,notes,storage}.js
-└── tests/{average,backup,curriculum,dates,document-catalog,i18n,resource-filters,resources,study-plan}.test.js
+└── tests/{average,backup,curriculum,dates,document-catalog,official-sources,i18n,resource-filters,resources,study-plan}.test.js
 ```
 
 ## Important limitations
@@ -80,7 +80,7 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 ## Roadmap
 
 1. Populate the metadata catalog with verified, rights-cleared courses and BEM/BAC papers, year by year and subject by subject.
-2. Add real PDF metadata, source attribution, file validation, and broken-link checks.
+2. Inspect individual source files and editions, then add file metadata, source attribution, permission notes, PDF validation, and automated link checks.
 3. Integrate the curated catalog into the visible resource search and detail pages.
 4. Build secure account authentication and database-backed folders, history, notes, and favorites.
 5. Add grade- and stream-specific semester/annual average rules with tests.

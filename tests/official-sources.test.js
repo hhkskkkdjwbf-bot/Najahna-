@@ -36,3 +36,30 @@ test("every source has an explicit reviewed date and source type", () => {
     assert.ok(["catalog", "publication", "archive"].includes(source.pageType));
   }
 });
+
+
+test("individual textbook pages carry explicit school-year and subject metadata", () => {
+  const publications = officialSources.filter(source => source.pageType === "publication");
+  assert.ok(publications.length >= 7);
+  for (const source of publications) {
+    assert.equal(typeof source.grade, "string", `${source.id} needs a grade`);
+    assert.equal(typeof source.subject, "string", `${source.id} needs a subject`);
+  }
+  assert.ok(officialSources.some(source => source.url === "https://www.onps.dz/1764"));
+  assert.ok(officialSources.some(source => source.url === "https://www.onps.dz/521"));
+  assert.ok(officialSources.some(source => source.url === "https://www.onps.dz/480"));
+  assert.ok(officialSources.some(source => source.url === "https://www.onps.dz/598"));
+  assert.ok(officialSources.some(source => source.url === "https://www.onps.dz/596"));
+});
+
+test("rejects unknown school years and publications without subject metadata", () => {
+  const sample = officialSources.find(source => source.pageType === "publication");
+  const result = validateOfficialSources([
+    { ...sample, id: "bad-grade", grade: "unlisted-grade" },
+    { ...sample, id: "no-subject", subject: undefined }
+  ]);
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.some(error => error.message === "invalid grade"));
+  assert.ok(result.errors.some(error => error.message === "grade and subject must be provided together"));
+  assert.ok(result.errors.some(error => error.message === "publication entries require grade and subject metadata"));
+});

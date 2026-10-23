@@ -12,6 +12,7 @@ import { calculateWeightedAverage } from "../../src/calculators/average.js";
 import { getQuizQuestions, gradeQuiz } from "../../src/data/quiz.js";
 import { getQuizHistory, recordQuizAttempt, clearQuizHistory } from "../../src/utils/quiz-history.js";
 import { officialSources } from "../../src/data/official-sources.js";
+import { getUpcomingSchoolEvents, schoolCalendarSource } from "../../src/data/school-calendar.js";
 import ar from "../../src/i18n/ar.js";
 import fr from "../../src/i18n/fr.js";
 import en from "../../src/i18n/en.js";
@@ -46,6 +47,7 @@ function setLanguage(next) {
   renderQuiz();
   renderQuizHistory();
   renderOfficialSources();
+  renderSchoolCalendar();
   renderResources();
   renderFavorites();
   renderCollections();
@@ -65,6 +67,31 @@ function getFavorites() {
 }
 function saveFavorites(ids) { localStorage.setItem("najahna-favorites", JSON.stringify([...new Set(ids)])); }
 function typeLabel(type) { return t(({lesson:"typeLesson",summary:"typeSummary",exercise:"typeExercise",exam:"typeExam",book:"typeBook",flashcard:"typeFlashcard",mindmap:"typeMindmap"})[type]); }
+
+function renderSchoolCalendar() {
+  const root = $("#school-calendar-list");
+  if (!root) return;
+  const today = new Date();
+  const todayISO = [today.getFullYear(), String(today.getMonth() + 1).padStart(2, "0"), String(today.getDate()).padStart(2, "0")].join("-");
+  const events = getUpcomingSchoolEvents(todayISO, 6);
+  const locale = language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en";
+  const dateLabel = value => new Date(value + "T12:00:00").toLocaleDateString(locale, { day:"numeric", month:"short", year:"numeric" });
+  const categoryLabel = category => t(({holiday:"calendarHoliday",exam:"calendarSchoolExam","national-exam":"calendarNationalExam"})[category]);
+  const dayGap = value => Math.round((Date.parse(value + "T12:00:00Z") - Date.parse(todayISO + "T12:00:00Z")) / 86400000);
+  root.innerHTML = events.map(event => {
+    const gap = dayGap(event.startDate);
+    const status = gap < 0 ? t("calendarInProgress") : gap === 0 ? t("calendarToday") : t("calendarDaysLeft").replace("{count}", String(gap));
+    const dateRange = event.startDate === event.endDate ? dateLabel(event.startDate) : dateLabel(event.startDate) + " – " + dateLabel(event.endDate);
+    return `<article class="school-calendar-card">
+      <div class="school-calendar-card-top"><span class="calendar-category">${escapeHTML(categoryLabel(event.category))}</span><span class="calendar-countdown">${escapeHTML(status)}</span></div>
+      <h3>${escapeHTML(event.title[language])}</h3>
+      <p class="calendar-date">${escapeHTML(dateRange)}</p>
+    </article>`;
+  }).join("");
+  if (!events.length) root.innerHTML = `<p class="empty-state">${escapeHTML(t("calendarNoUpcoming"))}</p>`;
+  root.dataset.source = schoolCalendarSource;
+}
+
 function renderOfficialSources() {
   const root = $("#official-source-grid");
   if (!root) return;
@@ -543,6 +570,7 @@ if ("serviceWorker" in navigator && (location.protocol === "https:" || location.
 
 setLanguage(language);
 renderOfficialSources();
+renderSchoolCalendar();
 renderQuizHistory();
 renderCatalogFilters();
 renderCollections();

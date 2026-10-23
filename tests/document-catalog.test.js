@@ -59,3 +59,17 @@ test("rejects unavailable records with a download link", () => {
   const result = validateDocumentRecord({ ...validBem, status: "unavailable" });
   assert.ok(result.errors.some((error) => error.includes("unavailable documents")));
 });
+
+test("rejects impossible last-checked dates rather than accepting date normalization", () => {
+  assert.ok(validateDocumentRecord({ ...validBem, lastChecked: "2026-02-31" }).errors.some(error => error.includes("lastChecked")));
+  assert.ok(validateDocumentRecord({ ...validBem, lastChecked: "2024-02-29" }).valid);
+});
+
+test("document search ignores accents and Arabic diacritics", () => {
+  const records = [
+    { ...validBem, title: "Révision mathématique", description: "Résumé général" },
+    { ...validBem, id: "bem-arabic-2024", title: "بَلاغَة", subjectId: "arabic" }
+  ];
+  assert.deepEqual(filterDocumentCatalog(records, { query: "Revision mathematique" }).map(record => record.id), ["bem-math-2024"]);
+  assert.deepEqual(filterDocumentCatalog(records, { query: "بلاغة" }).map(record => record.id), ["bem-arabic-2024"]);
+});

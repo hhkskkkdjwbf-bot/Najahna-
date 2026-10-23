@@ -26,7 +26,7 @@ for (const source of uniqueUrls) {
     };
     results.push(result);
     console.log(`${result.ok ? "OK" : result.definitiveFailure ? "BROKEN" : "CHECK"} ${result.status} ${result.url}`);
-    if (response.body) await response.body.cancel();
+    if (response.body) response.body.cancel().catch(() => {});
   } catch (error) {
     results.push({ url: source.url, title: source.title.en, status: "NETWORK_ERROR", finalUrl: "", ok: false, definitiveFailure: false, detail: error?.message || "Request failed" });
     console.log(`CHECK NETWORK_ERROR ${source.url} — ${error?.message || "request failed"}`);

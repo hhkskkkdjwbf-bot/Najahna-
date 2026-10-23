@@ -15,19 +15,21 @@ function makeStorage(seed = {}) {
 }
 
 test("backup includes Najahna data and excludes unrelated browser storage", () => {
-  const storage = makeStorage({ "najahna:notes": "[1]", "najahna-language": "fr", "najahna-favorites": "[\\"p-math-01\\"]", "other-app:token": "secret" });
+  const favorites = JSON.stringify(["p-math-01"]);
+  const storage = makeStorage({ "najahna:notes": "[1]", "najahna-language": "fr", "najahna-favorites": favorites, "other-app:token": "secret" });
   assert.deepEqual(createBackup(storage, "2026-10-23T10:00:00.000Z"), {
     app: "Najahna", version: 1, exportedAt: "2026-10-23T10:00:00.000Z",
-    entries: [["najahna:notes", "[1]"], ["najahna-language", "fr"], ["najahna-favorites", "[\\"p-math-01\\"]"]]
+    entries: [["najahna:notes", "[1]"], ["najahna-language", "fr"], ["najahna-favorites", favorites]]
   });
 });
 
 test("backup restores owned entries and leaves unrelated keys untouched", () => {
-  const source = makeStorage({ "najahna:notes": "[1]", "najahna-theme": "dark" });
+  const favorites = JSON.stringify(["p-math-01"]);
+  const source = makeStorage({ "najahna:notes": "[1]", "najahna-theme": "dark", "najahna-favorites": favorites });
   const destination = makeStorage({ "najahna:notes": "old", "najahna:history": "[]", "other-app:token": "keep" });
   assert.equal(restoreBackup(serializeBackup(source), destination), 3);
   assert.deepEqual(destination.snapshot(), {
-    "najahna:notes": "[1]", "najahna-theme": "dark", "other-app:token": "keep"
+    "najahna:notes": "[1]", "najahna-theme": "dark", "najahna-favorites": favorites, "other-app:token": "keep"
   });
 });
 

@@ -89,6 +89,9 @@ export function validateDocumentRecord(record) {
   if (record.status === "verified" && !isHttpUrl(record.sourceUrl)) {
     errors.push("verified documents require an http(s) sourceUrl");
   }
+  if (record.status === "verified" && !isValidISODate(record.lastChecked)) {
+    errors.push("verified documents require a valid lastChecked date");
+  }
   if (record.sourceUrl !== undefined && !isHttpUrl(record.sourceUrl)) {
     errors.push("sourceUrl must be a valid http(s) URL");
   }
@@ -101,8 +104,13 @@ export function validateDocumentRecord(record) {
   if (record.status === "unavailable" && record.downloadUrl) {
     errors.push("unavailable documents cannot expose a downloadUrl");
   }
-  if (record.languages !== undefined && (!Array.isArray(record.languages) || record.languages.some((language) => !["ar", "fr", "en", "ber"].includes(language)))) {
-    errors.push("languages must be an array containing supported language codes");
+  if (record.languages !== undefined && (
+    !Array.isArray(record.languages) ||
+    record.languages.length === 0 ||
+    record.languages.some((language) => !["ar", "fr", "en", "ber"].includes(language)) ||
+    new Set(record.languages).size !== record.languages.length
+  )) {
+    errors.push("languages must be a non-empty array of unique supported language codes");
   }
   if (record.programReference !== undefined && typeof record.programReference !== "string") {
     errors.push("programReference must be text");

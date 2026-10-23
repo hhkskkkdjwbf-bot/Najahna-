@@ -68,7 +68,7 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 
 - No verified server-backed account authentication, database, cloud synchronization, upload service, or production admin system is available yet.
 - Favorites, notes, history, collections, study plans, and preferences are stored in the current browser using `localStorage`; they do not sync between devices and may be lost when browser data is cleared.
-- Notes can be deleted individually or cleared in bulk. Collections can be deleted or have individual resources removed. History, favorites, and completed study sessions have cleanup controls; destructive bulk actions ask for confirmation. A local JSON backup can export and restore Najahna-owned browser data. Restoring replaces existing Najahna local data in that browser; keep backup files private.
+- Notes can be deleted individually or cleared in bulk. Collections can be deleted or have individual resources removed. History, favorites, and completed study sessions have cleanup controls; destructive bulk actions ask for confirmation. A local JSON backup can export and restore Najahna-owned browser data, including favorites and language/theme preferences. Restoring replaces existing Najahna local data in that browser; keep backup files private.
 - Learning resources are illustrative samples. Real exam papers and courses must be sourced, checked, and added separately. Do not describe a sample as an official downloadable document.
 - The school-year and subject catalog is a useful starting taxonomy, not a guarantee that every subject applies to every stream or current official program.
 - The average calculator is an estimate; official calculation rules can vary by grade, stream, subject coefficients, and term.

@@ -7,6 +7,8 @@
 ## Current features
 
 - Arabic-first responsive interface, with French and English translations.
+- Installable Progressive Web App (PWA) where supported, with a local offline cache for the app shell, core modules, styles, and sample resources. External web fonts and uncached future content may still require a connection.
+- Service worker updates are versioned and remove older Najahna shell caches.
 - Right-to-left Arabic layout and left-to-right French/English layout.
 - Light/dark theme preference stored in the browser.
 - Search and combined filters for school level, school year, subject, and resource type, with a live result count and one-click filter reset.

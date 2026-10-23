@@ -43,6 +43,10 @@ export function validateDocumentRecord(record) {
     errors.push("id must be a stable lowercase slug (3–80 characters)");
   }
   if (typeof record.title !== "string" || !record.title.trim()) errors.push("title is required");
+  else if (record.title.trim().length > 240) errors.push("title must be 240 characters or fewer");
+  if (record.description !== undefined && (typeof record.description !== "string" || record.description.length > 4000)) {
+    errors.push("description must be text of at most 4000 characters");
+  }
   if (!documentKinds.includes(record.kind)) errors.push("kind must be a supported document kind");
   if (!documentStatuses.includes(record.status)) errors.push("status must be a supported verification status");
 
@@ -57,6 +61,9 @@ export function validateDocumentRecord(record) {
     errors.push("subject is not configured for this school level");
   }
 
+  if (record.kind !== "exam" && (record.examYear !== undefined || record.examType !== undefined)) {
+    errors.push("examYear and examType can only be set for exam documents");
+  }
   if (record.kind === "exam" && !Number.isInteger(record.examYear)) {
     errors.push("examYear is required for exam documents");
   }
@@ -126,4 +133,25 @@ export function filterDocumentCatalog(records, {
       (status === "all" || record.status === status) &&
       (!normalizedQuery || normalizedSearchable.includes(normalizedQuery));
   });
+}
+
+/**
+ * Validate an entire catalog before importing or publishing it.
+ * Duplicate IDs are rejected because they make updates and links ambiguous.
+ */
+export function validateDocumentCatalog(records) {
+  if (!Array.isArray(records)) {
+    return { valid: false, errors: [{ index: null, id: null, messages: ["catalog must be an array"] }] };
+  }
+  const errors = [];
+  const seenIds = new Set();
+  records.forEach((record, index) => {
+    const result = validateDocumentRecord(record);
+    if (!result.valid) errors.push({ index, id: typeof record?.id === "string" ? record.id : null, messages: result.errors });
+    if (typeof record?.id === "string") {
+      if (seenIds.has(record.id)) errors.push({ index, id: record.id, messages: ["duplicate document id"] });
+      seenIds.add(record.id);
+    }
+  });
+  return { valid: errors.length === 0, errors };
 }

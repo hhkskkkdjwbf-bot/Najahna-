@@ -44,7 +44,7 @@ const detailKeys = [
   "officialUpdatesText",
   "officialCalendarTitle",
   "officialCalendarText",
-  "deleteNote", "noteDeleted", "clearHistory", "historyCleared", "deleteCollection", "confirmDeleteCollection", "collectionDeleted", "removeFromCollection", "removedFromCollection", "collectionEmpty", "noCollections", "backupConfirm", "backupTitle", "backupIntro", "backupExport", "backupImport", "backupWarning",
+  "deleteNote", "noteDeleted", "clearNotes", "confirmClearNotes", "notesCleared", "clearCompletedStudy", "confirmClearCompletedStudy", "completedStudyCleared", "noCompletedStudy", "clearHistory", "historyCleared", "deleteCollection", "confirmDeleteCollection", "collectionDeleted", "removeFromCollection", "removedFromCollection", "collectionEmpty", "noCollections", "backupConfirm", "backupTitle", "backupIntro", "backupExport", "backupImport", "backupWarning",
   "backupExported", "backupImported", "backupFailed", "backupInvalid"
 ];
 

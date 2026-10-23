@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createStudyTask, removeStudyTask, toggleStudyTask } from "../src/utils/study-plan.js";
+import { clearCompletedStudyTasks, createStudyTask, removeStudyTask, toggleStudyTask } from "../src/utils/study-plan.js";
 
 test("creates a clean study task with a supported duration", () => {
   const task = createStudyTask({ id: "task-1", subject: "  Mathematics  ", date: "2026-10-23", minutes: 25 });
@@ -26,4 +26,10 @@ test("toggles completion without mutating other tasks", () => {
 
 test("removes only the requested task", () => {
   assert.deepEqual(removeStudyTask([{ id: "a" }, { id: "b" }], "a"), [{ id: "b" }]);
+});
+
+test("clears completed sessions while keeping pending sessions", () => {
+  const tasks = [{ id: "done", completed: true }, { id: "pending", completed: false }];
+  assert.deepEqual(clearCompletedStudyTasks(tasks), [{ id: "pending", completed: false }]);
+  assert.equal(tasks.length, 2);
 });

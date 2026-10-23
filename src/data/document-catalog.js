@@ -19,7 +19,7 @@ function normalizeSearchText(value) {
 }
 
 function isHttpUrl(value) {
-  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  if (typeof value !== "string" || !value.trim()) return false;
   try {
     const url = new URL(value);
     return url.protocol === "https:" || url.protocol === "http:";

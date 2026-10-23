@@ -10,4 +10,5 @@ historyTitle:"Historique de révision",historyIntro:"Les dernières ressources m
  backupConfirm:"La restauration remplacera les données Najahna actuelles de ce navigateur. Voulez-vous continuer ?",
  backupTitle:"Sauvegarde de vos données",backupIntro:"Exportez vos notes, dossiers, tâches et historique pour les restaurer plus tard.",backupExport:"Exporter une sauvegarde",backupImport:"Restaurer une sauvegarde",backupWarning:"Le fichier contient vos données locales. Gardez-le en lieu sûr ; la restauration remplace les données Najahna de ce navigateur.",backupExported:"Sauvegarde préparée.",backupImported:"Sauvegarde restaurée ; actualisation…",backupFailed:"Impossible de créer la sauvegarde.",backupInvalid:"Fichier invalide ou restauration impossible.",
  deleteNote:"Supprimer",noteDeleted:"Note supprimée."
+  clearHistory:"Effacer l’historique",historyCleared:"Historique effacé."
 };

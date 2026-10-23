@@ -10,6 +10,7 @@
 - Right-to-left Arabic layout and left-to-right French/English layout.
 - Light/dark theme preference stored in the browser.
 - Search and combined filters for school level, school year, subject, and resource type, with a live result count and one-click filter reset.
+- Resource search checks Arabic, French, and English translations regardless of the interface language, while preserving accent/diacritic-tolerant matching.
 - Accessible resource detail dialog with translated level, year, subject, and explicit sample-only content status.
 - Browser-local favorites, revision history, personal notes, and revision collections, with controls to remove resources from folders and delete folders.
 - Bulk cleanup for saved notes, revision history, favorites, and completed study sessions, with confirmation before destructive actions.

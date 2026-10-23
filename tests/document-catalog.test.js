@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { filterDocumentCatalog, validateDocumentRecord } from "../src/data/document-catalog.js";
+import { filterDocumentCatalog, validateDocumentCatalog, validateDocumentRecord } from "../src/data/document-catalog.js";
 
 const validBem = {
   id: "bem-math-2024",
@@ -72,4 +72,23 @@ test("document search ignores accents and Arabic diacritics", () => {
   ];
   assert.deepEqual(filterDocumentCatalog(records, { query: "Revision mathematique" }).map(record => record.id), ["bem-math-2024"]);
   assert.deepEqual(filterDocumentCatalog(records, { query: "بلاغة" }).map(record => record.id), ["bem-arabic-2024"]);
+});
+
+test("verified records require a valid review date", () => {
+  assert.ok(validateDocumentRecord({ ...validBem, lastChecked: undefined }).errors.some(error => error.includes("lastChecked")));
+  assert.ok(validateDocumentRecord({ ...validBem, lastChecked: "2026-02-31" }).errors.some(error => error.includes("lastChecked")));
+});
+
+test("rejects exam-only metadata on non-exam documents and duplicate language codes", () => {
+  assert.ok(validateDocumentRecord({ ...validBem, kind: "lesson" }).errors.some(error => error.includes("only be set for exam")));
+  assert.ok(validateDocumentRecord({ ...validBem, languages: ["ar", "ar"] }).errors.some(error => error.includes("unique supported")));
+  assert.ok(validateDocumentRecord({ ...validBem, title: "x".repeat(241) }).errors.some(error => error.includes("240 characters")));
+});
+
+test("validates whole catalogs and reports duplicate IDs with their positions", () => {
+  assert.deepEqual(validateDocumentCatalog([validBem]), { valid: true, errors: [] });
+  const result = validateDocumentCatalog([validBem, { ...validBem }]);
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.some(error => error.index === 1 && error.id === validBem.id && error.messages.includes("duplicate document id")));
+  assert.equal(validateDocumentCatalog(null).valid, false);
 });

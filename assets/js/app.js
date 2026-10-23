@@ -21,6 +21,7 @@ let language = localStorage.getItem("najahna-language") || "ar";
 let selectedLevel = "all";
 let activeResourceId = null;
 let toastTimer;
+let pendingInstallPrompt = null;
 let quizState = { level: "primary", questions: [], index: 0, answers: [], submitted: false };
 
 function t(key) { return translations[language]?.[key] ?? translations.ar[key] ?? key; }
@@ -447,6 +448,33 @@ $("#quiz-content")?.addEventListener("click", event => {
   if (event.target.closest("[data-quiz-previous]")) { quizState.index = Math.max(0, quizState.index - 1); quizState.submitted = false; renderQuiz(); return; }
   if (event.target.closest("[data-quiz-restart]")) resetQuiz();
 });
+
+const installButton = $("#install-app");
+window.addEventListener("beforeinstallprompt", event => {
+  event.preventDefault();
+  pendingInstallPrompt = event;
+  if (installButton) installButton.hidden = false;
+});
+window.addEventListener("appinstalled", () => {
+  pendingInstallPrompt = null;
+  if (installButton) installButton.hidden = true;
+  showToast(t("installSuccess"));
+});
+installButton?.addEventListener("click", async () => {
+  if (!pendingInstallPrompt) return;
+  pendingInstallPrompt.prompt();
+  await pendingInstallPrompt.userChoice;
+  pendingInstallPrompt = null;
+  if (installButton) installButton.hidden = true;
+});
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register(new URL("../../service-worker.js", import.meta.url), {
+      scope: new URL("../../", import.meta.url).pathname
+    }).catch(() => showToast(t("offlineSetupFailed")));
+  }, { once: true });
+}
+
 setLanguage(language);
 renderCatalogFilters();
 renderCollections();

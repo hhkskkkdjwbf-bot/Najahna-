@@ -8,6 +8,7 @@ import { readJSON, writeJSON } from "../../src/utils/storage.js";
 import { recordResourceView, getResourceHistory, clearResourceHistory } from "../../src/utils/history.js";
 import { serializeBackup, restoreBackup } from "../../src/utils/backup.js";
 import { toLocalDateISO, parseLocalCalendarDate } from "../../src/utils/dates.js";
+import { calculateWeightedAverage } from "../../src/calculators/average.js";
 import ar from "../../src/i18n/ar.js";
 import fr from "../../src/i18n/fr.js";
 import en from "../../src/i18n/en.js";
@@ -193,16 +194,24 @@ function calculateAverage(event) {
   event.preventDefault();
   const rows = $$(".grade-row");
   if (!rows.length) { showToast(t("addAtLeastOne")); return; }
-  let weightedTotal = 0, totalCoefficient = 0;
+  const grades = [];
   for (const row of rows) {
-    const grade = Number(row.querySelector('[name="grade"]').value);
-    const coefficient = Number(row.querySelector('[name="coefficient"]').value);
-    if (!Number.isFinite(grade) || grade < 0 || grade > 20 || !Number.isInteger(coefficient) || coefficient < 1 || coefficient > 20) {
-      showToast(t("invalidGrade")); row.querySelector('[name="grade"]').focus(); return;
+    const gradeInput = row.querySelector('[name="grade"]');
+    const coefficientInput = row.querySelector('[name="coefficient"]');
+    const grade = gradeInput.value;
+    const coefficient = coefficientInput.value;
+    if (grade.trim() === "" || coefficient.trim() === "" ||
+        !Number.isFinite(Number(grade)) || Number(grade) < 0 || Number(grade) > 20 ||
+        !Number.isInteger(Number(coefficient)) || Number(coefficient) < 1 || Number(coefficient) > 20) {
+      showToast(t("invalidGrade"));
+      (grade.trim() === "" || Number(grade) < 0 || Number(grade) > 20 ? gradeInput : coefficientInput).focus();
+      return;
     }
-    weightedTotal += grade * coefficient; totalCoefficient += coefficient;
+    grades.push({ grade, coefficient });
   }
-  const average = weightedTotal / totalCoefficient;
+  let average;
+  try { average = calculateWeightedAverage(grades); }
+  catch { showToast(t("invalidGrade")); return; }
   $("#average-result").innerHTML = `${t("averageLabel")} <strong>${average.toLocaleString(language === "en" ? "en" : language === "fr" ? "fr-FR" : "ar-DZ", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} / 20</strong>`;
   $("#average-result").hidden = false;
 }

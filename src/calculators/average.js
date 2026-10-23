@@ -4,8 +4,12 @@ export function calculateWeightedAverage(items) {
   let weightedTotal = 0;
   let totalCoefficient = 0;
   for (const item of items) {
-    const grade = Number(item?.grade);
-    const coefficient = Number(item?.coefficient);
+    const rawGrade = item?.grade;
+    const rawCoefficient = item?.coefficient;
+    if (rawGrade === null || rawGrade === undefined || String(rawGrade).trim() === "") throw new RangeError("Grades must be between 0 and 20.");
+    if (rawCoefficient === null || rawCoefficient === undefined || String(rawCoefficient).trim() === "") throw new RangeError("Coefficients must be positive numbers.");
+    const grade = Number(rawGrade);
+    const coefficient = Number(rawCoefficient);
     if (!Number.isFinite(grade) || grade < 0 || grade > 20) throw new RangeError("Grades must be between 0 and 20.");
     if (!Number.isFinite(coefficient) || coefficient <= 0) throw new RangeError("Coefficients must be positive numbers.");
     weightedTotal += grade * coefficient;

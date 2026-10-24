@@ -809,19 +809,6 @@ export const officialSources = [
   url: "https://www.onps.dz/243",
   title: { ar: "كتاب التربية العلمية والتكنولوجية — السنة الرابعة ابتدائي", fr: "Manuel de sciences et technologie — 4e année primaire", en: "Science and Technology textbook — Primary Year 4" },
   description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف الكتاب. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS présentant la couverture. Ce n’est pas un PDF direct ; vérifiez l’édition actuelle.", en: "Official ONPS publication page showing the cover. It is not a direct PDF; check the current edition." }
-},
-{
-  id: "onps-primary-arabic-year-5",
-  publisher: "ONPS",
-  kind: "books",
-  levels: ["primary"],
-  grade: "primary-5",
-  subject: "arabic",
-  pageType: "publication",
-  checkedOn: "2026-10-24",
-  url: "https://www.onps.dz/265",
-  title: { ar: "كتاب اللغة العربية — السنة الخامسة ابتدائي", fr: "Manuel d’arabe — 5e année primaire", en: "Arabic textbook — Primary Year 5" },
-  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف كتاب اللغة العربية. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS présentant la couverture du manuel d’arabe. Ce n’est pas un PDF direct ; vérifiez l’édition actuelle.", en: "Official ONPS publication page showing the Arabic textbook cover. It is not a direct PDF; check the edition." }
 }
 
 ];

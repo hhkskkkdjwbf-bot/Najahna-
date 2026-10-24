@@ -75,3 +75,16 @@ test("every local module imported by the app is included in the offline shell ca
   assert.ok(imports.length > 0, "the app should expose local module imports");
   assert.deepEqual(imports.filter(path => !shellPaths.includes(path)), []);
 });
+
+test("study dashboard exposes accessible completion progress and workload metrics", () => {
+  assert.ok(html.includes('id="study-progress-bar"'));
+  assert.ok(app.includes('aria-valuenow", String(completionRate)'));
+  assert.ok(app.includes("progressNextWeek"));
+  assert.ok(app.includes("progressOverdue"));
+  assert.ok(css.includes(".study-progress-bar span"));
+  for (const file of ["en.js", "fr.js", "ar.js"]) {
+    const translation = readFileSync(new URL("../src/i18n/" + file, import.meta.url), "utf8");
+    assert.ok(translation.includes("progressNextWeek:"));
+    assert.ok(translation.includes("progressOverdue:"));
+  }
+});

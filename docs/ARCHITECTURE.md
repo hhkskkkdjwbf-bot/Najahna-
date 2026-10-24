@@ -23,7 +23,7 @@
 
 A future backend should separate `users`, `resources`, `resource_files`, `favorites`, `folders`, `folder_items`, `study_notes`, `study_history`, and `grade_entries`. Each resource should include a stable ID, stage, grade, subject, stream when applicable, type, language, verified source, rights status, and file integrity metadata. Keep private notes and student account data access-controlled.
 
-## Security and minors
+## Account profile and authentication boundary\n\n`src/utils/account-profile.js` manages a device-local profile only: a stable non-secret Najahna ID, display name, optional email, school year and avatar color. The ID is an identifier, not a credential. Profile data is stored in browser local storage and is editable/deletable independently of study records. No password is collected or stored, and an email address is not verified.\n\nDo not present this local profile as registration, sign-in or a secure account. Email/password authentication, verification and recovery require a server-backed authentication provider or backend, per-user authorization, abuse controls and tested account lifecycle flows. GitHub Pages cannot securely host private server credentials or enforce database permissions by itself.\n\n## Security and minors
 
 Use a maintained authentication provider or a properly implemented server-side authentication system; never store passwords in plain text or embed secrets in browser JavaScript. Validate and authorize every server request, rate-limit sensitive endpoints, use secure cookies and CSRF protections where relevant, and minimize collection of data from minors. Establish a privacy policy and deletion/export procedures before launching accounts.
 

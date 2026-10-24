@@ -66,3 +66,12 @@ test("study plan can isolate overdue pending sessions and shows localized urgenc
     assert.match(translation, /studyTaskToday:/);
   }
 });
+
+test("every local module imported by the app is included in the offline shell cache", () => {
+  const imports = [...app.matchAll(/from\s+["'](\.\.\/\.\.\/[^"']+)["']/g)]
+    .map(match => "./" + match[1].slice(6));
+  const shellPaths = [...serviceWorker.matchAll(/["'](\.\/[^"']+)["']/g)]
+    .map(match => match[1]);
+  assert.ok(imports.length > 0, "the app should expose local module imports");
+  assert.deepEqual(imports.filter(path => !shellPaths.includes(path)), []);
+});

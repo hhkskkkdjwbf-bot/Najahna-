@@ -18,6 +18,21 @@ export function createStudyTask({ id, subject, date, minutes }) {
   return { id: cleanId, subject: cleanSubject, date: cleanDate, minutes: duration, completed: false, createdAt: new Date().toISOString() };
 }
 
+/** Move overdue, unfinished sessions to today without touching completed or future work. */
+export function rescheduleOverdueStudyTasks(tasks, today) {
+  const text = String(today ?? "");
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) throw new TypeError("A valid target date is required.");
+  const [year, month, day] = text.split("-").map(Number);
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (parsed.getUTCFullYear() !== year || parsed.getUTCMonth() !== month - 1 || parsed.getUTCDate() !== day) {
+    throw new TypeError("A valid target date is required.");
+  }
+  if (!Array.isArray(tasks)) throw new TypeError("Study tasks must be an array.");
+  return tasks.map(task => task && !task.completed && typeof task.date === "string" && task.date < text
+    ? { ...task, date: text }
+    : task);
+}
+
 export function toggleStudyTask(tasks, id) {
   return tasks.map((task) => task.id === id ? { ...task, completed: !task.completed } : task);
 }

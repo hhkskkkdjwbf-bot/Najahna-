@@ -97,7 +97,7 @@ test("every school year has a multi-subject daily challenge with complete locali
       for (const language of ["ar", "fr", "en"]) {
         assert.ok(Array.isArray(question.choices[language]) && question.choices[language].length >= 2, `${question.id} has missing choices in ${language}`);
         assert.equal(question.choices[language].length, question.choices.en.length, `${question.id} choice counts differ`);
-        assert.ok(question.choices[language].every(choice => typeof choice === "string" && choice.trim()), `${question.id} has an empty choice in ${language}`);
+        assert.ok(question.choices[language].every(choice => typeof choice === "string" && choice.trim() && !choice.includes(" / ")), `${question.id} has an empty or unlocalized choice in ${language}`);
         assert.ok(question.explanation[language].trim(), `${question.id} has a missing explanation in ${language}`);
       }
       assert.ok(question.answer >= 0 && question.answer < question.choices.en.length, `${question.id} has an invalid answer key`);

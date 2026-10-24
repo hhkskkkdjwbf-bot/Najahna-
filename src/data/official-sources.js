@@ -602,6 +602,26 @@ export const officialSources = [
   }
 }
 
+  {
+    id: "official-school-calendar-2026-2027",
+    publisher: "Prime Minister Office",
+    kind: "pedagogical-docs",
+    levels: ["primary", "middle", "secondary"],
+    pageType: "guide",
+    checkedOn: "2026-10-24",
+    publishedOn: "2026-08-08",
+    url: "https://www.premier-ministre.gov.dz/ar/post/%D8%AA%D8%B9%D8%AF%D9%8A%D9%84-%D8%B1%D8%B2%D9%86%D8%A7%D9%85%D8%A9-%D8%A7%D9%84%D8%AF%D8%AE%D9%88%D9%84-%D8%A7%D9%84%D9%85%D8%AF%D8%B1%D8%B3%D9%8A-%D9%84%D9%84%D8%B3%D9%86%D8%A9-%D8%A7%D9%84%D8%AF%D8%B1%D8%A7%D8%B3%D9%8A%D8%A9-2026-2027",
+    title: {
+      ar: "تعديل رزنامة الدخول المدرسي 2026–2027",
+      fr: "Calendrier officiel de la rentrée scolaire 2026–2027",
+      en: "Official 2026–2027 school-entry calendar"
+    },
+    description: {
+      ar: "إعلان رسمي من مصالح الوزير الأول: دخول الإداريين في 6 سبتمبر، والأساتذة في 13 سبتمبر، والتلاميذ في 21 سبتمبر 2026. هذه صفحة ويب وليست ملف PDF.",
+      fr: "Annonce officielle des services du Premier ministre : personnel administratif le 6 septembre, enseignants le 13 septembre et élèves le 21 septembre 2026. Il s’agit d’une page web, pas d’un PDF.",
+      en: "Official Prime Minister Office notice: administrative staff return on 6 September, teachers on 13 September, and pupils on 21 September 2026. This is a web page, not a PDF."
+    }
+  },
 ];
 
 function isValidISODate(value) {
@@ -628,27 +648,7 @@ export function validateOfficialSources(records = officialSources) {
     if (!Array.isArray(source.levels) || !source.levels.length || source.levels.some(level => !["primary", "middle", "secondary"].includes(level))) fail("invalid school levels");
     if (!["catalog", "publication", "archive", "guide"].includes(source.pageType)) fail("invalid page type");
     const allowedGrades = ["primary-1", "primary-2", "primary-3", "primary-4", "primary-5", "middle-1", "middle-2", "middle-3", "middle-4", "secondary-1", "secondary-2", "secondary-3"];
-    const allowedSubjects = ["arabic", "english", "french", "physics", "islamic-studies", "history"  {
-    id: "official-school-calendar-2026-2027",
-    publisher: "Prime Minister Office",
-    kind: "pedagogical-docs",
-    levels: ["primary", "middle", "secondary"],
-    pageType: "guide",
-    checkedOn: "2026-10-24",
-    publishedOn: "2026-08-08",
-    url: "https://www.premier-ministre.gov.dz/ar/post/%D8%AA%D8%B9%D8%AF%D9%8A%D9%84-%D8%B1%D8%B2%D9%86%D8%A7%D9%85%D8%A9-%D8%A7%D9%84%D8%AF%D8%AE%D9%88%D9%84-%D8%A7%D9%84%D9%85%D8%AF%D8%B1%D8%B3%D9%8A-%D9%84%D9%84%D8%B3%D9%86%D8%A9-%D8%A7%D9%84%D8%AF%D8%B1%D8%A7%D8%B3%D9%8A%D8%A9-2026-2027",
-    title: {
-      ar: "تعديل رزنامة الدخول المدرسي 2026–2027",
-      fr: "Calendrier officiel de la rentrée scolaire 2026–2027",
-      en: "Official 2026–2027 school-entry calendar"
-    },
-    description: {
-      ar: "إعلان رسمي من مصالح الوزير الأول: دخول الإداريين في 6 سبتمبر، والأساتذة في 13 سبتمبر، والتلاميذ في 21 سبتمبر 2026. هذه صفحة ويب وليست ملف PDF.",
-      fr: "Annonce officielle des services du Premier ministre : personnel administratif le 6 septembre, enseignants le 13 septembre et élèves le 21 septembre 2026. Il s’agit d’une page web, pas d’un PDF.",
-      en: "Official Prime Minister Office notice: administrative staff return on 6 September, teachers on 13 September, and pupils on 21 September 2026. This is a web page, not a PDF."
-    }
-  },
-];
+    const allowedSubjects = ["arabic", "english", "french", "physics", "islamic-studies", "history"];
     if (source.grade !== undefined && !allowedGrades.includes(source.grade)) fail("invalid grade");
     if (source.subject !== undefined && !allowedSubjects.includes(source.subject)) fail("invalid subject");
     if (source.pageType !== "catalog" && (source.grade === undefined) !== (source.subject === undefined)) fail("grade and subject must be provided together");

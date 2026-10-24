@@ -30,6 +30,7 @@ const translations = { ar, fr, en };
 let cloudSession = null;
 let cloudAuthNotice = "";
 let cloudResetMode = location.hash.includes("reset-password");
+let cloudSignupMode = false;
 let cloudAuthUnsubscribe = null;
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -110,7 +111,7 @@ function renderCloudAccount() {
   const configured = cloudAccountConfigured();
   const status = $("#cloud-account-status");
   if (status) status.textContent = cloudAuthNotice || (!configured ? copy.notConfigured : cloudSession ? copy.session + ": " + (cloudSession.user?.email || "") : cloudResetMode ? copy.passwordResetMode : copy.cloudReady);
-  const signedIn = Boolean(cloudSession?.user);
+  const signedIn = Boolean(cloudSession?.user) && !cloudResetMode;
   $("#cloud-account-session").hidden = !signedIn;
   $("#cloud-auth-form").hidden = signedIn;
   $("#cloud-account-user").textContent = signedIn ? (copy.session + ": " + (cloudSession.user.email || "")) : copy.notSigned;
@@ -118,7 +119,7 @@ function renderCloudAccount() {
   $("#cloud-auth-password-label").textContent = copy.password;
   $("#cloud-auth-confirm-label").textContent = copy.confirm;
   $("#cloud-auth-signin").textContent = copy.signin;
-  $("#cloud-auth-signup").textContent = copy.signup;
+  $("#cloud-auth-signup").textContent = cloudSignupMode ? (language === "fr" ? "Confirmer la création du compte" : language === "ar" ? "تأكيد إنشاء الحساب" : "Confirm account creation") : copy.signup;
   $("#cloud-auth-reset").textContent = copy.reset;
   $("#cloud-auth-update").textContent = copy.update;
   $("#cloud-sync-upload").textContent = copy.upload;
@@ -127,7 +128,7 @@ function renderCloudAccount() {
   $("#cloud-account-delete").textContent = copy.delete;
   $("#cloud-sync-note").textContent = copy.syncNote;
   $("#cloud-account-title").textContent = copy.title;
-  $("#cloud-auth-password-confirm").hidden = !cloudResetMode && !$("#cloud-auth-password-confirm").dataset.signupMode;
+  $("#cloud-auth-password-confirm").hidden = !cloudSignupMode || cloudResetMode;
   $("#cloud-auth-confirm-label").hidden = $("#cloud-auth-password-confirm").hidden;
   $("#cloud-auth-signin").hidden = cloudResetMode;
   $("#cloud-auth-signup").hidden = cloudResetMode;
@@ -137,7 +138,7 @@ function renderCloudAccount() {
     const node = $(selector);
     if (node) node.disabled = !configured;
   });
-  $("#cloud-auth-password").autocomplete = cloudResetMode ? "new-password" : "current-password";
+  $("#cloud-auth-password").autocomplete = (cloudResetMode || cloudSignupMode) ? "new-password" : "current-password";
 }
 async function refreshCloudSession(notice = "") {
   cloudAuthNotice = notice;
@@ -1177,6 +1178,8 @@ $("#account-copy-id")?.addEventListener("click", async () => {
 
 
 $("#cloud-auth-signin")?.addEventListener("click", async () => {
+  cloudSignupMode = false;
+  renderCloudAccount();
   const copy = cloudAccountCopy[language] || cloudAccountCopy.en;
   try {
     if (!cloudAccountConfigured()) throw new Error("CLOUD_ACCOUNT_NOT_CONFIGURED");
@@ -1190,20 +1193,32 @@ $("#cloud-auth-signin")?.addEventListener("click", async () => {
 });
 $("#cloud-auth-signup")?.addEventListener("click", async () => {
   const copy = cloudAccountCopy[language] || cloudAccountCopy.en;
+  if (!cloudSignupMode) {
+    cloudSignupMode = true;
+    cloudAuthNotice = language === "fr" ? "Choisis un mot de passe, confirme-le, puis clique à nouveau sur « Créer un compte »." : language === "ar" ? "اختر كلمة مرور وأكدها ثم اضغط على إنشاء الحساب مرة أخرى." : "Choose a password, confirm it, then click Create account again.";
+    renderCloudAccount();
+    $("#cloud-auth-password-confirm").focus();
+    return;
+  }
   try {
     if (!cloudAccountConfigured()) throw new Error("CLOUD_ACCOUNT_NOT_CONFIGURED");
     const email = $("#cloud-auth-email").value.trim();
     const password = $("#cloud-auth-password").value;
+    const confirmation = $("#cloud-auth-password-confirm").value;
     const profile = getAccountProfile();
     const displayName = $("#account-name").value.trim() || profile?.name || email.split("@")[0];
     if (!email) { cloudAuthNotice = copy.emailRequired; renderCloudAccount(); return; }
     if (password.length < 10) { cloudAuthNotice = copy.weakPassword; renderCloudAccount(); return; }
+    if (password !== confirmation) { cloudAuthNotice = copy.passwordMismatch; renderCloudAccount(); return; }
     const result = await registerCloudAccount({ email, password, displayName, gradeId: $("#account-grade").value || profile?.gradeId || "" });
+    cloudSignupMode = false;
     if (result.session) await refreshCloudSession(copy.signinOk);
     else { cloudSession = null; cloudAuthNotice = copy.signupOk; renderCloudAccount(); }
   } catch (error) { cloudAuthNotice = cloudErrorMessage(error); renderCloudAccount(); }
 });
 $("#cloud-auth-reset")?.addEventListener("click", async () => {
+  cloudSignupMode = false;
+  renderCloudAccount();
   const copy = cloudAccountCopy[language] || cloudAccountCopy.en;
   try {
     const email = $("#cloud-auth-email").value.trim();
@@ -1230,14 +1245,6 @@ $("#cloud-auth-password-confirm")?.addEventListener("input", () => {
   const password = $("#cloud-auth-password").value;
   const confirmation = $("#cloud-auth-password-confirm").value;
   $("#cloud-auth-signup").disabled = password.length < 10 || password !== confirmation || !cloudAccountConfigured();
-});
-$("#cloud-auth-signup")?.addEventListener("click", async event => {
-  const confirmField = $("#cloud-auth-password-confirm");
-  if (!confirmField.hidden && $("#cloud-auth-password").value !== confirmField.value) {
-    event.preventDefault();
-    cloudAuthNotice = (cloudAccountCopy[language] || cloudAccountCopy.en).passwordMismatch;
-    renderCloudAccount();
-  }
 });
 $("#cloud-auth-signout")?.addEventListener("click", async () => {
   try {

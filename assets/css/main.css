@@ -361,3 +361,7 @@ body.dark .hero::before{background:radial-gradient(ellipse at 85% 10%,#d5f17a0c,
 @media (max-width: 1000px) { .resource-category-guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .resource-category-guide-grid { grid-template-columns: minmax(0, 1fr); } .resource-category-card { padding: 1rem; } }
 @media print { .resource-category-guide { display: none !important; } }
+
+.resource-category-browse { margin-top: .85rem; max-width: 100%; white-space: normal; }
+.resource-category-card { display: flex; flex-direction: column; align-items: flex-start; }
+.resource-category-card p { flex: 1 1 auto; }

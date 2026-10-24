@@ -322,3 +322,27 @@ body.dark .hero::before{background:radial-gradient(ellipse at 85% 10%,#d5f17a0c,
 @media(max-width:760px){.site-header{padding-inline:16px;gap:12px}.main-nav{gap:12px}.main-nav a{font-size:12px}.hero::before{inset:8px 6px;border-radius:24px}}
 @media(max-width:480px){.site-header{position:relative;flex-wrap:wrap;justify-content:space-between}.main-nav{order:3;width:100%;justify-content:center;margin:0;padding-top:6px;border-top:1px solid var(--line)}.header-actions{margin-inline-start:auto}.hero::before{inset:4px 0;border-radius:20px}}
 @media(prefers-reduced-motion:reduce){.main-nav a::after,.resource-card::before{transition:none}}
+
+
+/* Study achievements: encouraging, low-pressure progress indicators. */
+.achievement-panel{display:grid;grid-template-columns:minmax(180px,.8fr) 1.2fr;gap:18px;align-items:center;margin:18px 0;padding:22px;border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+.achievement-panel h3{font-size:19px;margin:8px 0}.achievement-panel p{color:var(--muted);font-size:12px;line-height:1.8;margin:0}
+.achievement-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.achievement-stat{padding:13px;border-radius:13px;background:var(--surface-soft);text-align:center}.achievement-stat strong{display:block;color:var(--green);font-size:25px}.achievement-stat span{font-size:11px;color:var(--muted)}
+.achievement-badges{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:7px}.achievement-badge{padding:7px 10px;border-radius:999px;background:#edf5d9;color:#476622;font-size:11px;font-weight:700}body.dark .achievement-badge{background:#2c3b25;color:#d5f17a}
+.exam-sheet-section{padding-top:28px}.exam-sheet-builder{max-width:100%}.exam-sheet-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:end}.exam-sheet-form>label{display:grid;gap:7px;color:var(--muted);font-size:12px;font-weight:600}.exam-sheet-form select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text)}.exam-sheet-form .exam-sheet-check{display:flex;flex-direction:row;align-items:center;gap:9px;min-height:40px}.exam-sheet-check input{accent-color:var(--green);width:17px;height:17px}.exam-sheet-form button{min-height:42px}
+.exam-sheet-print-area{margin-top:22px;padding:22px;border:1px dashed var(--line);border-radius:14px;background:var(--surface)}.print-sheet-heading{text-align:center;border-bottom:2px solid var(--text);padding-bottom:14px;margin-bottom:18px}.print-sheet-heading h1{font-size:24px;margin:0 0 8px}.print-sheet-heading p{margin:0 0 18px;color:var(--muted)}.print-student-fields{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px}.print-question{padding:12px 0;border-bottom:1px solid var(--line);break-inside:avoid}.print-question h3{font-size:14px;margin:0 0 8px}.print-question small{color:var(--muted)}.print-question ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px 22px;margin:8px 0;padding-inline-start:25px;font-size:12px}.print-answer-space{min-height:20px;margin:10px 0 0;color:var(--muted);font-size:11px}.print-answer-key{break-before:page;border-top:2px solid var(--text);padding-top:20px;margin-top:28px}.print-answer-key h2{font-size:20px}.print-answer-key li{padding:5px 0}.exam-sheet-screen-actions{margin-top:20px}
+@media(max-width:760px){.achievement-panel{grid-template-columns:1fr}.exam-sheet-form{grid-template-columns:1fr 1fr}.exam-sheet-form button{grid-column:1/-1}}
+@media(max-width:480px){.exam-sheet-form{grid-template-columns:1fr}.exam-sheet-form button{grid-column:auto}.achievement-summary{grid-template-columns:repeat(3,minmax(0,1fr))}.achievement-stat{padding:10px 5px}.achievement-stat strong{font-size:21px}}
+@media print{
+  @page{size:A4;margin:14mm}
+  body *{visibility:hidden!important}
+  #exam-sheet-output,#exam-sheet-output *{visibility:visible!important}
+  #exam-sheet-output{display:block!important;position:absolute;inset:0 auto auto 0;width:100%;margin:0;padding:0;border:0;border-radius:0;background:#fff;color:#111;box-shadow:none;font-family:Arial,sans-serif}
+  #exam-sheet-output .print-sheet-content{color:#111}
+  #exam-sheet-output .print-sheet-heading{border-color:#111}
+  #exam-sheet-output .print-sheet-heading p,#exam-sheet-output .print-question small,#exam-sheet-output .print-answer-space{color:#444}
+  #exam-sheet-output .print-question{border-color:#ddd}
+  #exam-sheet-output .exam-sheet-screen-actions{display:none!important}
+  #exam-sheet-output .print-answer-key{break-before:page;page-break-before:always}
+}

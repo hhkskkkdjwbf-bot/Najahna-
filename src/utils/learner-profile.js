@@ -20,14 +20,14 @@ export function saveLearnerProfile(input) {
 }
 
 export function getDailyChallengeCompletion(date, gradeId) {
-  if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(date) || !schoolYears.some(year => year.id === gradeId)) return null;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !schoolYears.some(year => year.id === gradeId)) return null;
   const records = readJSON(DAILY_KEY, {});
   const record = records?.[gradeId]?.[date];
   return record && Number.isFinite(record.score) && Number.isFinite(record.total) ? { score: record.score, total: record.total, completedAt: record.completedAt } : null;
 }
 
 export function saveDailyChallengeCompletion(date, gradeId, score, total) {
-  if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(date) || !schoolYears.some(year => year.id === gradeId)) throw new TypeError("Invalid challenge date or school year.");
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !schoolYears.some(year => year.id === gradeId)) throw new TypeError("Invalid challenge date or school year.");
   if (!Number.isInteger(score) || !Number.isInteger(total) || total < 1 || score < 0 || score > total) throw new RangeError("Invalid challenge score.");
   const records = readJSON(DAILY_KEY, {});
   const next = { ...records, [gradeId]: { ...(records?.[gradeId] || {}), [date]: { score, total, completedAt: new Date().toISOString() } } };

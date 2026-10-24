@@ -45,10 +45,10 @@ function setLanguage(next) {
     if (node.dataset.i18n === "heroTitle") node.innerHTML = value;
     else node.textContent = value;
   });
-  $("[data-i18n-placeholder]").forEach(node => node.placeholder = t(node.dataset.i18nPlaceholder));
-  $("[data-i18n-title]").forEach(node => node.title = t(node.dataset.i18nTitle));
-  $("[data-i18n-aria-label]").forEach(node => node.setAttribute("aria-label", t(node.dataset.i18nAriaLabel)));
-  $("#level-filter option, #type-filter option, #study-plan-filter option, #official-source-level option, #official-source-kind option, #official-source-grade option, #official-source-subject option, #learner-grade option").forEach(option => { if (option.dataset.i18n) option.textContent = t(option.dataset.i18n); });
+  $$("[data-i18n-placeholder]").forEach(node => node.placeholder = t(node.dataset.i18nPlaceholder));
+  $$("[data-i18n-title]").forEach(node => node.title = t(node.dataset.i18nTitle));
+  $$("[data-i18n-aria-label]").forEach(node => node.setAttribute("aria-label", t(node.dataset.i18nAriaLabel)));
+  $$("#level-filter option, #type-filter option, #study-plan-filter option, #official-source-level option, #official-source-kind option, #official-source-grade option, #official-source-subject option, #learner-grade option").forEach(option => { if (option.dataset.i18n) option.textContent = t(option.dataset.i18n); });
   renderLevelCounts();
   renderCatalogFilters();
   renderQuiz();
@@ -278,7 +278,7 @@ function resetQuiz(level = $("#quiz-level")?.value || "primary") {
   renderQuiz();
 }
 function renderLevelCounts() {
-  $("[data-level-count]").forEach(node => {
+  $$("[data-level-count]").forEach(node => {
     const count = resources.filter(item => item.level === node.dataset.levelCount).length;
     node.textContent = t("sampleCount").replace("{count}", String(count));
   });
@@ -314,7 +314,7 @@ function renderCatalogFilters() {
 }
 function syncQuickTypeFilters() {
   const selected = $("#type-filter")?.value || "all";
-  $(".resource-quick-filter").forEach(button => {
+  $$(".resource-quick-filter").forEach(button => {
     const active = button.dataset.quickType === selected;
     button.classList.toggle("active", active);
     button.setAttribute("aria-pressed", String(active));
@@ -541,7 +541,7 @@ $("#reset-resource-filters").addEventListener("click", () => {
   $("#subject-filter").value = "all";
   $("#type-filter").value = "all";
   selectedLevel = "all";
-  $(".level-card").forEach(card => {
+  $$(".level-card").forEach(card => {
     card.classList.remove("active");
     card.setAttribute("aria-pressed", "false");
   });
@@ -615,7 +615,7 @@ $("#year-category-grid")?.addEventListener("click", event => {
   selectedLevel = level;
   renderCatalogFilters();
   $("#year-filter").value = `${level}:${year}`;
-  $(".level-card").forEach(card => {
+  $$(".level-card").forEach(card => {
     const active = card.dataset.level === level;
     card.classList.toggle("active", active);
     card.setAttribute("aria-pressed", String(active));
@@ -808,7 +808,7 @@ $("#note-form")?.addEventListener("submit", event => {
 });
 $$("[data-level]").forEach(button => button.addEventListener("click", () => {
   selectedLevel = button.dataset.level; $("#level-filter").value = selectedLevel; renderCatalogFilters();
-  $(".level-card").forEach(card => {
+  $$(".level-card").forEach(card => {
     const active = card === button;
     card.classList.toggle("active", active);
     card.setAttribute("aria-pressed", String(active));

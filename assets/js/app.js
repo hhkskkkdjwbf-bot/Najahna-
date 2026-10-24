@@ -570,7 +570,7 @@ document.addEventListener("keydown", event => {
   const key = event.key.toLowerCase();
   const search = $("#resource-search");
   const helpDialog = $("#keyboard-shortcuts-dialog");
-  if ((event.ctrlKey || event.metaKey) && !event.altKey && key === "k") {
+  if ((event.ctrlKey || event.metaKey) && !event.altKey && event.key.toLowerCase() === "k") {
     event.preventDefault();
     search?.focus();
     search?.select();

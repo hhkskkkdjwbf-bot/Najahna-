@@ -223,3 +223,12 @@ body.dark .resource-quick-filter.active{color:#10231a}
 .history-item-copy small{font-size:11px;color:var(--muted)}
 .history-resume{flex-shrink:0;white-space:nowrap}
 @media(max-width:480px){.history-item{align-items:flex-start;flex-direction:column}.history-resume{align-self:flex-start}}
+
+/* Study planner urgency cues: overdue sessions are distinct from today's work. */
+.study-task-content{display:grid;gap:5px;min-width:0}
+.study-task-status{justify-self:start;font-size:11px;font-style:normal;font-weight:750;padding:3px 8px;border-radius:999px}
+.study-task-status.is-overdue{background:#fff0e9;color:#a13c19}
+.study-task-status.is-today{background:#edf7d6;color:#345e1b}
+body.dark .study-task-status.is-overdue{background:#48291f;color:#ffc2a7}
+body.dark .study-task-status.is-today{background:#2d4021;color:#d4f6a8}
+.study-task.is-overdue{border-inline-start:3px solid #c75a34;padding-inline-start:10px}

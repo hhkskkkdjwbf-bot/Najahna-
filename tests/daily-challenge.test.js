@@ -19,7 +19,7 @@ test("daily challenge selects one question per subject for the exact school year
   assert.equal(questions.length, 10);
   assert.equal(new Set(questions.map(question => question.subject)).size, questions.length);
   assert.ok(questions.every(question => question.gradeId === "primary-1"));
-  assert.equal(getDailyChallengeQuestions(dailyChallengeBank, "primary-2", "2026-10-24").length, 1);
+  assert.equal(getDailyChallengeQuestions(dailyChallengeBank, "primary-2", "2026-10-24").length, 6);
   assert.deepEqual(getDailyChallengeQuestions(dailyChallengeBank, "primary-1", "bad-date"), []);
 });
 

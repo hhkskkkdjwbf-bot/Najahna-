@@ -86,3 +86,50 @@ test("rejects malformed optional publication dates", () => {
   assert.equal(result.valid, false);
   assert.ok(result.errors.some(error => error.message === "publishedOn must use a valid YYYY-MM-DD date"));
 });
+
+
+import { schoolCalendarEvents, validateSchoolCalendar, getUpcomingSchoolEvents } from "../src/data/school-calendar.js";
+
+test("school calendar contains valid translated events", () => {
+  assert.deepEqual(validateSchoolCalendar(), { valid: true, errors: [] });
+  assert.ok(schoolCalendarEvents.length >= 8);
+  for (const event of schoolCalendarEvents) {
+    assert.ok(event.title.ar);
+    assert.ok(event.title.fr);
+    assert.ok(event.title.en);
+  }
+});
+
+test("school calendar rejects malformed records, duplicate IDs and reversed dates", () => {
+  const sample = schoolCalendarEvents[0];
+  const result = validateSchoolCalendar([
+    sample,
+    { ...sample },
+    { ...sample, id: "bad-date", startDate: "2027-02-30" },
+    { ...sample, id: "reversed-dates", startDate: "2027-11-03", endDate: "2027-11-02" },
+    ["not", "an", "event"]
+  ]);
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.some(error => error.message === "duplicate event id"));
+  assert.ok(result.errors.some(error => error.message === "invalid date"));
+  assert.ok(result.errors.some(error => error.message === "end date precedes start date"));
+  assert.ok(result.errors.some(error => error.message === "event must be an object"));
+});
+
+test("upcoming events include events in progress, sort correctly, and do not mutate input", () => {
+  const events = [
+    { id: "later", startDate: "2027-01-10", endDate: "2027-01-10" },
+    { id: "ongoing", startDate: "2026-10-20", endDate: "2026-10-30" },
+    { id: "earlier", startDate: "2026-11-02", endDate: "2026-11-02" },
+    { id: "expired", startDate: "2026-10-01", endDate: "2026-10-02" }
+  ];
+  const originalOrder = events.map(event => event.id);
+  const result = getUpcomingSchoolEvents("2026-10-24", 3, events);
+  assert.deepEqual(result.map(event => event.id), ["ongoing", "earlier", "later"]);
+  assert.deepEqual(events.map(event => event.id), originalOrder);
+});
+
+test("upcoming event limit is respected and zero returns no events", () => {
+  assert.equal(getUpcomingSchoolEvents("2026-10-24", 2).length, 2);
+  assert.deepEqual(getUpcomingSchoolEvents("2026-10-24", 0), []);
+});

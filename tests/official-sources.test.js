@@ -134,3 +134,20 @@ test("upcoming event limit is respected and zero returns no events", () => {
   assert.equal(getUpcomingSchoolEvents("2026-10-24", 2).length, 2);
   assert.deepEqual(getUpcomingSchoolEvents("2026-10-24", 0), []);
 });
+
+
+test("official ONPS catalogue has a grade-specific entry for every school year", () => {
+  const grades = ["primary-1","primary-2","primary-3","primary-4","primary-5","middle-1","middle-2","middle-3","middle-4","secondary-1","secondary-2","secondary-3"];
+  const categories = officialSources.filter(source => source.id.startsWith("onps-catalog-"));
+  assert.equal(categories.length, 12);
+  for (const grade of grades) {
+    const source = categories.find(item => item.grade === grade);
+    assert.ok(source, "missing ONPS catalogue entry for " + grade);
+    assert.equal(source.pageType, "catalog");
+    assert.equal(source.kind, "books");
+    assert.equal(source.levels[0], grade.split("-")[0]);
+    assert.match(source.url, /^https:\/\/www\\.onps\\.dz\//);
+    assert.ok(source.description.fr.includes("pas d’un PDF direct"));
+  }
+  assert.equal(validateOfficialSources(categories).valid, true);
+});

@@ -5,7 +5,24 @@ const DEFAULTS = [{ id: "saved", name: "Saved for later", resourceIds: [] }, { i
 
 export function getCollections() {
   const stored = readJSON(KEY, null);
-  return Array.isArray(stored) ? stored : DEFAULTS.map(item => ({ ...item, resourceIds: [...item.resourceIds] }));
+  if (!Array.isArray(stored)) return DEFAULTS.map(item => ({ ...item, resourceIds: [...item.resourceIds] }));
+
+  // Browser-local data can be edited, truncated, or left by an older app version.
+  // Normalize it before renderers assume every collection has a resourceIds array.
+  const seenIds = new Set();
+  return stored.filter(item => item && typeof item === "object" && !Array.isArray(item) &&
+      typeof item.id === "string" && item.id.trim() && !seenIds.has(item.id) &&
+      typeof item.name === "string" && item.name.trim())
+    .map(item => {
+      seenIds.add(item.id);
+      return {
+        id: item.id,
+        name: item.name.trim().slice(0, 60),
+        resourceIds: Array.isArray(item.resourceIds)
+          ? [...new Set(item.resourceIds.filter(id => typeof id === "string" && id.trim()))]
+          : []
+      };
+    });
 }
 
 export function createCollection(name) {

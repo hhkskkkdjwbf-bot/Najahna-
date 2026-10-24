@@ -628,7 +628,7 @@ export function validateOfficialSources(records = officialSources) {
     if (!Array.isArray(source.levels) || !source.levels.length || source.levels.some(level => !["primary", "middle", "secondary"].includes(level))) fail("invalid school levels");
     if (!["catalog", "publication", "archive", "guide"].includes(source.pageType)) fail("invalid page type");
     const allowedGrades = ["primary-1", "primary-2", "primary-3", "primary-4", "primary-5", "middle-1", "middle-2", "middle-3", "middle-4", "secondary-1", "secondary-2", "secondary-3"];
-    const allowedSubjects = ["arabic", "english", "french", "physics", "islamic-studies", "history"];
+    const allowedSubjects = ["arabic", "english", "french", "math", "science", "physics", "islamic-studies", "history"];
     if (source.grade !== undefined && !allowedGrades.includes(source.grade)) fail("invalid grade");
     if (source.subject !== undefined && !allowedSubjects.includes(source.subject)) fail("invalid subject");
     if (source.pageType !== "catalog" && (source.grade === undefined) !== (source.subject === undefined)) fail("grade and subject must be provided together");

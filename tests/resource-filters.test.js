@@ -51,3 +51,19 @@ test("searches every translation even when another interface language is active"
     ["p-math"]
   );
 });
+
+test("Arabic search normalizes alef variants, Persian letter forms, and repeated whitespace", () => {
+  const arabicVariantResources = [{
+    ...resources[0],
+    id: "arabic-normalization",
+    title: { ar: "إِبْدَاع", fr: "Créativité", en: "Creativity" }
+  }];
+  assert.deepEqual(
+    filterResources(arabicVariantResources, { query: "ابداع", language: "ar" }).map(item => item.id),
+    ["arabic-normalization"]
+  );
+  assert.deepEqual(
+    filterResources(resources, { query: "  Arithmetic   lesson  ", language: "ar" }).map(item => item.id),
+    ["p-math"]
+  );
+});

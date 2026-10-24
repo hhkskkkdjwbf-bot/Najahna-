@@ -38,6 +38,14 @@ test("offline shell caches every newly imported local data module", () => {
   assert.match(serviceWorker, /\.\/src\/utils\/quiz-history\.js/);
 });
 
+test("official-source badge does not imply that every link or PDF was verified", () => {
+  assert.match(arabic, /officialSourceChecked:"جهة نشر رسمية"/);
+  assert.match(french, /officialSourceChecked:"Éditeur officiel"/);
+  assert.match(english, /officialSourceChecked:"Official publisher"/);
+  assert.match(french, /officialSourceRightsUnknown:"Droits de réutilisation non confirmés"/);
+  assert.match(english, /officialSourceRightsUnknown:"Reuse rights not confirmed"/);
+});
+
 test("source-directory controls are translated in Arabic, French and English", () => {
   for (const key of ["officialSourceSearchLabel", "officialSourceLevelLabel", "officialSourceKindLabel", "officialSourceGradeLabel", "officialSourceSubjectLabel", "officialSourceRightsUnknown", "officialSourceCheckedOn", "officialSourceEmpty", "officialSourceGuidePage", "officialSourcePublishedOn"]) {
     assert.ok(arabic.includes(key), `Arabic translation missing ${key}`);

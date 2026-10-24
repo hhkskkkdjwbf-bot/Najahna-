@@ -25,6 +25,10 @@ jobs:
           node --check src/data/curriculum.js
           node --check src/data/resources.js
           node --check src/data/official-sources.js
+          node --check src/data/school-calendar.js
+          node --check src/i18n/ar.js
+          node --check src/i18n/fr.js
+          node --check src/i18n/en.js
           node --check scripts/audit-official-sources.js
           node --check src/utils/quiz-history.js
           node --check service-worker.js

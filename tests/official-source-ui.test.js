@@ -162,16 +162,16 @@ test("resource cards display localized subject names instead of raw identifiers"
 test("offline cache version is unique and the app shell covers all local JavaScript imports", () => {
   const version = serviceWorker.match(/const CACHE_NAME = "([^"]+)"/)?.[1];
   assert.ok(version, "service worker cache name must be declared");
-  assert.match(version, /^najahna-shell-v\\d+$/);
+  assert.match(version, /^najahna-shell-v\d+$/);
   assert.equal(serviceWorker.match(/const CACHE_NAME/g)?.length, 1);
-  const imports = [...app.matchAll(/from ["'](\\.\\.?\\/[^"']+\\.js)["']/g)].map(match => match[1].replace(/^\\.\\.\\/\\.\\.\\/(src\\/)/, "./$1"));
-  const cachedPaths = new Set([...serviceWorker.matchAll(/["'](\\.\\/[^"']+\\.js)["']/g)].map(match => match[1]));
+  const imports = [...app.matchAll(/from ["'](\.\.?\/[^"']+\.js)["']/g)].map(match => match[1].replace(/^\.\.\/\.\.\/(src\/)/, "./$1"));
+  const cachedPaths = new Set([...serviceWorker.matchAll(/["'](\.\/[^"']+\.js)["']/g)].map(match => match[1]));
   const missing = imports.filter(path => !cachedPaths.has(path));
   assert.deepEqual(missing, [], "every imported local JS module should be precached for offline use");
 });
 
 test("service worker removes only obsolete Najahna shell caches and keeps the current cache", () => {
-  assert.match(serviceWorker, /key\\.startsWith\\("najahna-shell-"\\) && key !== CACHE_NAME/);
-  assert.match(serviceWorker, /await self\\.skipWaiting\\(\\)/);
-  assert.match(serviceWorker, /await self\\.clients\\.claim\\(\\)/);
+  assert.match(serviceWorker, /key\.startsWith\("najahna-shell-"\) && key !== CACHE_NAME/);
+  assert.match(serviceWorker, /await self\.skipWaiting\(\)/);
+  assert.match(serviceWorker, /await self\.clients\.claim\(\)/);
 });

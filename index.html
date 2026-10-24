@@ -104,6 +104,24 @@
     </section>
     <section id="practice" class="section practice-section">
       <div class="section-heading"><div><span class="eyebrow" data-i18n="quizEyebrow">اختبر نفسك</span><h2 data-i18n="quizTitle">تحدّي المراجعة السريع</h2></div><p data-i18n="quizIntro">أسئلة تدريبية أصلية مع تصحيح فوري وتفسير للإجابة.</p></div>
+      <article class="tool-panel learner-profile-panel">
+        <div class="tool-heading"><span class="tool-icon">◎</span><div><h3 data-i18n="learnerProfileTitle">Your learner profile</h3><p data-i18n="learnerProfileIntro">Choose the exact school year to personalize the daily challenge.</p></div></div>
+        <form id="learner-profile-form" class="learner-profile-form">
+          <label><span data-i18n="learnerNameLabel">First name or nickname (optional)</span><input id="learner-name" maxlength="60" autocomplete="nickname" data-i18n-placeholder="learnerNamePlaceholder" placeholder="Your name"></label>
+          <label><span data-i18n="learnerGradeLabel">School year</span><select id="learner-grade" required>
+            <option value="primary-1" data-i18n="gradePrimary1">Primary Year 1</option><option value="primary-2" data-i18n="gradePrimary2">Primary Year 2</option><option value="primary-3" data-i18n="gradePrimary3">Primary Year 3</option><option value="primary-4" data-i18n="gradePrimary4">Primary Year 4</option><option value="primary-5" data-i18n="gradePrimary5">Primary Year 5</option>
+            <option value="middle-1" data-i18n="gradeMiddle1">Middle School Year 1</option><option value="middle-2" data-i18n="gradeMiddle2">Middle School Year 2</option><option value="middle-3" data-i18n="gradeMiddle3">Middle School Year 3</option><option value="middle-4" data-i18n="gradeMiddle4">Middle School Year 4</option>
+            <option value="secondary-1" data-i18n="gradeSecondary1">Secondary Year 1</option><option value="secondary-2" data-i18n="gradeSecondary2">Secondary Year 2</option><option value="secondary-3" data-i18n="gradeSecondary3">Secondary Year 3</option>
+          </select></label>
+          <button id="learner-profile-save" class="button button-primary button-small" type="submit" data-i18n="learnerProfileSave">Save profile</button>
+        </form>
+        <p id="learner-profile-status" class="small-note" aria-live="polite" data-i18n="learnerProfileNeeded">Save your school year to unlock your daily challenge.</p>
+        <p class="small-note" data-i18n="learnerProfileLocalNote">This profile is stored on this device only. It is not an online account and does not sync across devices.</p>
+      </article>
+      <article class="tool-panel daily-challenge-panel">
+        <div class="tool-heading"><span class="tool-icon">☀</span><div><h3 data-i18n="dailyChallengeTitle">Daily challenge</h3><p data-i18n="dailyChallengeIntro">One question per available subject, tailored to your school year.</p></div></div>
+        <div id="daily-challenge-content" aria-live="polite"></div>
+      </article>
       <article class="quiz-panel">
         <div class="quiz-toolbar"><label for="quiz-level" data-i18n="quizChooseLevel">اختر المستوى</label><select id="quiz-level"><option value="primary" data-i18n="primary">الابتدائي</option><option value="middle" data-i18n="middle">المتوسط</option><option value="secondary" data-i18n="secondary">الثانوي</option></select><span id="quiz-progress" class="quiz-progress" aria-live="polite"></span></div>
         <div id="quiz-content"></div>

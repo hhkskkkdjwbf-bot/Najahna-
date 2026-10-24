@@ -361,7 +361,7 @@ function renderHistory() {
   root.innerHTML = history.length ? history.slice(0, 10).map(entry => {
     const resource = resources.find(item => item.id === entry.resourceId);
     if (!resource) return "";
-    return `<div class="history-item"><span>${escapeHTML(resource.title[language])}</span><small>${escapeHTML(new Date(entry.viewedAt).toLocaleString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { dateStyle:"medium", timeStyle:"short" }))}</small></div>`;
+    return `<div class="history-item"><div class="history-item-copy"><strong>${escapeHTML(resource.title[language])}</strong><small>${escapeHTML(new Date(entry.viewedAt).toLocaleString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { dateStyle:"medium", timeStyle:"short" }))}</small></div><button type="button" class="button button-outline button-small history-resume" data-history-resource="${escapeHTML(resource.id)}">${escapeHTML(t("historyResume"))}</button></div>`;
   }).join("") : `<p class="small-note">${t("historyEmpty")}</p>`;
   renderStudyDashboard();
 }
@@ -536,6 +536,16 @@ $("#resource-grid").addEventListener("click", event => {
   const id = button.dataset.favorite; const favorites = getFavorites(); const exists = favorites.includes(id);
   saveFavorites(exists ? favorites.filter(item => item !== id) : [...favorites, id]);
   renderResources(); renderFavorites(); showToast(t(exists ? "removed" : "saved"));
+});
+$("#history-list")?.addEventListener("click", event => {
+  const button = event.target.closest("[data-history-resource]");
+  if (!button) return;
+  const resource = resources.find(item => item.id === button.dataset.historyResource);
+  if (!resource) return;
+  recordResourceView(resource.id);
+  renderHistory();
+  renderResourceDetails(resource.id);
+  $("#resource-dialog").showModal();
 });
 $("#clear-history")?.addEventListener("click", () => {
   if (!window.confirm(t("confirmClearHistory"))) return;

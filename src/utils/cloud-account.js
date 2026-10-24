@@ -1,4 +1,5 @@
 import { supabaseConfig, isSupabaseConfigured } from "../config/supabase.js";
+import { validateCloudBackupEntries } from "./cloud-backup-validation.js";
 
 let clientPromise;
 async function getClient() {
@@ -82,7 +83,7 @@ export async function uploadLocalStudyData() {
   const client = await getClient();
   const session = await getCloudSession();
   if (!session?.user?.id) throw new Error("AUTHENTICATION_REQUIRED");
-  const entries = getLocalStudyData();
+  const entries = validateCloudBackupEntries(getLocalStudyData());
   const { error } = await client.from("learner_data").upsert({
     user_id: session.user.id,
     data: entries,
@@ -99,20 +100,8 @@ export async function downloadCloudStudyData() {
   const { data, error } = await client.from("learner_data").select("data,updated_at").eq("user_id", session.user.id).maybeSingle();
   if (error) throw error;
   if (!data) return { count: 0, updatedAt: null };
-  if (!Array.isArray(data.data) || data.data.length > 20000) throw new Error("INVALID_CLOUD_BACKUP");
-  const entries = [];
-  const seen = new Set();
-  for (const entry of data.data) {
-    if (!Array.isArray(entry) || entry.length !== 2 || typeof entry[0] !== "string" ||
-        !entry[0].startsWith("najahna:") || entry[0] === "najahna:account-profile" ||
-        typeof entry[1] !== "string" || seen.has(entry[0]) || entry[0].length > 200) {
-      throw new Error("INVALID_CLOUD_BACKUP");
-    }
-    // Validate JSON before touching existing local data.
-    JSON.parse(entry[1]);
-    seen.add(entry[0]);
-    entries.push(entry);
-  }
+  // Validate the complete payload before touching existing local data.
+  const entries = validateCloudBackupEntries(data.data);
   const storage = globalThis.localStorage;
   const previous = [];
   for (let index = 0; index < storage.length; index += 1) {

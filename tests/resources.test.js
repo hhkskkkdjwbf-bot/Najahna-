@@ -80,7 +80,7 @@ test("sample resources never claim official downloads and the official PDF entry
   }
 
   const localPdfs = resources.filter(item => item.availability === "pdf" && item.sourceName === "Najahna");
-  assert.equal(localPdfs.length, 3);
+  assert.equal(localPdfs.length, 4);
   assert.deepEqual(localPdfs.map(item => item.id).sort(), [
     "najahna-french-5ap-adjectives",
     "najahna-maths-4am-equations",

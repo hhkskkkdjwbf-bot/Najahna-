@@ -95,3 +95,15 @@ test("library exposes twelve accessible school-year category controls", () => {
     assert.ok(english.includes(key), `English translation missing ${key}`);
   }
 });
+
+
+test("official-source filters cover all twelve school years and year cards synchronize the source directory", () => {
+  const grades = ["primary-1","primary-2","primary-3","primary-4","primary-5","middle-1","middle-2","middle-3","middle-4","secondary-1","secondary-2","secondary-3"];
+  const keys = ["gradePrimary1","gradePrimary2","gradePrimary3","gradePrimary4","gradePrimary5","gradeMiddle1","gradeMiddle2","gradeMiddle3","gradeMiddle4","gradeSecondary1","gradeSecondary2","gradeSecondary3"];
+  for (let i = 0; i < grades.length; i++) {
+    assert.match(html, new RegExp('value="' + grades[i] + '"'), 'missing filter option ' + grades[i]);
+    for (const [lang, content] of [["Arabic",arabic],["French",french],["English",english]]) assert.ok(content.includes(keys[i]), lang + ' translation missing ' + keys[i]);
+  }
+  assert.match(app, /!source\\.grade && source\\.levels\\.includes\\(grade\\.split\\("-"\\)\\[0\\]\\)/);
+  assert.match(app, /official-source-grade.*value = .*level.*year/s);
+});

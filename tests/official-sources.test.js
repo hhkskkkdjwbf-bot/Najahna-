@@ -12,7 +12,7 @@ test("all source entries link only to HTTPS ONPS or Ministry domains", () => {
   for (const source of officialSources) {
     const url = new URL(source.url);
     assert.equal(url.protocol, "https:");
-    assert.ok(["www.onps.dz", "www.education.gov.dz"].includes(url.hostname));
+    assert.ok(["www.onps.dz", "www.education.gov.dz", "www.premier-ministre.gov.dz"].includes(url.hostname));
   }
 });
 
@@ -105,6 +105,19 @@ test("clearly marks suspended 2026 secondary arrangements and links the official
   assert.match(overview.description.fr, /seules les dispositions du primaire ont été approuvées/i);
   assert.match(overview.description.en, /suspended pending Council of Ministers approval/i);
   assert.equal(validateOfficialSources([overview, decision]).valid, true);
+});
+
+
+test("includes the official 2026–2027 school-entry calendar", () => {
+  const source = officialSources.find(item => item.id === "official-school-calendar-2026-2027");
+  assert.ok(source);
+  assert.equal(source.publisher, "Prime Minister Office");
+  assert.equal(source.pageType, "guide");
+  assert.deepEqual(source.levels, ["primary", "middle", "secondary"]);
+  assert.equal(source.publishedOn, "2026-08-08");
+  assert.ok(source.url.startsWith("https://www.premier-ministre.gov.dz/"));
+  assert.match(source.description.fr, /21 septembre 2026/);
+  assert.match(source.description.fr, /pas d’un PDF/);
 });
 
 test("rejects malformed optional publication dates", () => {

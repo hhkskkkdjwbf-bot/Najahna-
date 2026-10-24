@@ -615,6 +615,46 @@ export const officialSources = [
   title: { ar: "كتابي في الرياضيات — السنة الأولى متوسط", fr: "Manuel de mathématiques — 1re année moyenne", en: "Mathematics textbook — Middle School Year 1" },
   description: { ar: "صفحة الكتاب لدى الديوان الوطني للمطبوعات المدرسية وليست ملف PDF مباشرًا. تحقق من الطبعة الحالية.", fr: "Fiche du manuel ONPS, pas un PDF direct. Vérifiez l’édition applicable au programme actuel.", en: "ONPS textbook entry, not a direct PDF. Check the edition against the current curriculum." }
 }
+,
+{
+  id: "onps-primary-math-year-1",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["primary"],
+  grade: "primary-1",
+  subject: "math",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/128",
+  title: { ar: "كتابي في الرياضيات والتربية العلمية والتكنولوجية — السنة الأولى ابتدائي", fr: "Manuel de mathématiques et de sciences — 1re primaire", en: "Mathematics and science textbook — Primary Year 1" },
+  description: { ar: "صفحة كتاب لدى الديوان الوطني للمطبوعات المدرسية وليست ملف PDF مباشرًا. تحقق من الطبعة الحالية.", fr: "Fiche du manuel ONPS, pas un PDF direct. Vérifiez l’édition applicable au programme actuel.", en: "ONPS textbook entry, not a direct PDF. Check the edition against the current curriculum." }
+},
+{
+  id: "onps-middle-science-year-1",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-1",
+  subject: "science",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/313",
+  title: { ar: "كتابي في العلوم الطبيعية — السنة الأولى متوسط", fr: "Manuel de sciences naturelles — 1re année moyenne", en: "Natural sciences textbook — Middle School Year 1" },
+  description: { ar: "صفحة كتاب رسمية لدى الديوان وليست ملف PDF مباشرًا. تحقق من الطبعة الحالية.", fr: "Fiche officielle ONPS, pas un PDF direct. Vérifiez l’édition actuelle.", en: "Official ONPS textbook entry, not a direct PDF. Check the current edition." }
+},
+{
+  id: "onps-middle-english-year-1",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-1",
+  subject: "english",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/322",
+  title: { ar: "كتابي في الإنجليزية — السنة الأولى متوسط", fr: "Manuel d’anglais — 1re année moyenne", en: "English textbook — Middle School Year 1" },
+  description: { ar: "صفحة كتاب لدى الديوان وليست ملف PDF مباشرًا؛ تحقق من الطبعة.", fr: "Fiche du manuel ONPS, pas un PDF direct ; vérifiez l’édition.", en: "ONPS textbook entry, not a direct PDF; verify the edition." }
+}
 
 ];
 

@@ -75,11 +75,13 @@ test("sample resources never claim official downloads and the official PDF entry
   }
 
   const externalPdfs = resources.filter(item => item.availability === "pdf" && item.sourceUrl);
-  assert.equal(externalPdfs.length, 3);
+  assert.equal(externalPdfs.length, 5);
   assert.deepEqual(externalPdfs.map(item => item.id).sort(), [
     "dzexams-middle4-arabic-summary",
     "dzexams-middle4-math-summary",
-    "dzexams-middle4-science-lesson"
+    "dzexams-middle4-science-lesson",
+    "dzexams-secondary3-biology-lesson",
+    "dzexams-secondary3-math-summary"
   ].sort());
   for (const item of externalPdfs) {
     assert.equal(item.sourceName, "DzExams");

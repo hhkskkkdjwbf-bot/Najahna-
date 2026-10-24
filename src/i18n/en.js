@@ -27,4 +27,5 @@ historyTitle:"Revision history",historyIntro:"Recently marked resources on this 
  progressNextWeek:"Sessions due in the next 7 days",progressOverdue:"Overdue sessions",
   storageError:"Could not save changes in this browser. Check available storage space.",progressRate:"Completion rate",progressCompleted:"Sessions completed",progressMinutes:"Minutes studied",progressToday:"Today's sessions",
   historyResume:"Resume",
+  quizHistoryTrend:"Recent trend (last 3 vs previous 3)",
 };

@@ -571,12 +571,7 @@ document.addEventListener("keydown", event => {
   const key = event.key.toLowerCase();
   const search = $("#resource-search");
   const helpDialog = $("#keyboard-shortcuts-dialog");
-  if ((event.ctrlKey || event.metaKey) && !event.altKey && event.key.toLowerCase() === "k") {
-    event.preventDefault();
-    search?.focus();
-    search?.select();
-    return;
-  }
+
   if (event.key === "Escape") {
     if (helpDialog?.open) return; // Let the native dialog close itself accessibly.
     if (document.activeElement === search && search?.value) {
@@ -585,18 +580,26 @@ document.addEventListener("keydown", event => {
     }
     return;
   }
-  if (helpDialog?.open || event.ctrlKey || event.metaKey || event.altKey) {
-    if (event.altKey && event.shiftKey && !event.ctrlKey && !event.metaKey) {
-      const destinations = { r: "#resources", p: "#practice", t: "#tools", d: "#study-dashboard" };
-      const destination = destinations[key];
-      if (destination) {
-        event.preventDefault();
-        document.querySelector(destination)?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+  // Never move focus behind an open modal.
+  if (helpDialog?.open) return;
+  if ((event.ctrlKey || event.metaKey) && !event.altKey && key === "k") {
+    event.preventDefault();
+    search?.focus();
+    search?.select();
+    return;
+  }
+  // Navigation shortcuts must not interrupt typing in forms or editable controls.
+  if (isEditableTarget(event.target)) return;
+  if (event.altKey && event.shiftKey && !event.ctrlKey && !event.metaKey) {
+    const destinations = { r: "#resources", p: "#practice", t: "#tools", d: "#study-dashboard" };
+    const destination = destinations[key];
+    if (destination) {
+      event.preventDefault();
+      document.querySelector(destination)?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
     return;
   }
-  if (isEditableTarget(event.target)) return;
+  if (event.ctrlKey || event.metaKey || event.altKey) return;
   if (key === "/" && search) {
     event.preventDefault();
     search.focus();

@@ -178,3 +178,25 @@ test("official ONPS catalogue has a grade-specific entry for every school year",
   }
   assert.equal(validateOfficialSources(categories).valid, true);
 });
+
+
+test("new primary textbook entries match their official ONPS publication pages", () => {
+  const expected = [
+    ["onps-primary-science-year-3", "primary-3", "science", "https://www.onps.dz/172"],
+    ["onps-primary-math-year-3", "primary-3", "math", "https://www.onps.dz/169"],
+    ["onps-primary-arabic-year-4", "primary-4", "arabic", "https://www.onps.dz/237"],
+    ["onps-primary-science-year-4", "primary-4", "science", "https://www.onps.dz/243"],
+    ["onps-primary-arabic-year-5", "primary-5", "arabic", "https://www.onps.dz/265"]
+  ];
+  const entries = expected.map(([id, grade, subject, url]) => {
+    const source = officialSources.find(item => item.id === id);
+    assert.ok(source, "missing source " + id);
+    assert.equal(source.grade, grade);
+    assert.equal(source.subject, subject);
+    assert.equal(source.url, url);
+    assert.equal(source.pageType, "publication");
+    assert.match(source.description.fr, /PDF direct/i);
+    return source;
+  });
+  assert.equal(validateOfficialSources(entries).valid, true);
+});

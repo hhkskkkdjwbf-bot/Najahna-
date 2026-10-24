@@ -26,7 +26,7 @@ export function validateSchoolCalendar(events = schoolCalendarEvents) {
   if (!Array.isArray(events)) return { valid:false, errors:["events must be an array"] };
   events.forEach((event, index) => {
     const fail = message => errors.push({ index, id:event?.id ?? null, message });
-    if (!event || typeof event !== "object") { fail("event must be an object"); return; }
+    if (!event || typeof event !== "object" || Array.isArray(event)) { fail("event must be an object"); return; }
     if (typeof event.id !== "string" || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(event.id)) fail("invalid event id");
     if (ids.has(event.id)) fail("duplicate event id");
     ids.add(event.id);

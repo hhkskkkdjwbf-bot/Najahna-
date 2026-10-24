@@ -305,7 +305,7 @@ export const officialSources = [
   "grade": "primary-1",
   "pageType": "catalog",
   "checkedOn": "2026-10-24",
-  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/1primaire",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/primaire_sco/1primaire",
   "title": {
     "ar": "فهرس الكتب المدرسية — السنة الأولى ابتدائي",
     "fr": "Catalogue ONPS — 1re année primaire",
@@ -327,7 +327,7 @@ export const officialSources = [
   "grade": "primary-2",
   "pageType": "catalog",
   "checkedOn": "2026-10-24",
-  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/2primaire",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/primaire_sco/2primaire",
   "title": {
     "ar": "فهرس الكتب المدرسية — السنة الثانية ابتدائي",
     "fr": "Catalogue ONPS — 2e année primaire",
@@ -349,7 +349,7 @@ export const officialSources = [
   "grade": "primary-3",
   "pageType": "catalog",
   "checkedOn": "2026-10-24",
-  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/3primaire",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/primaire_sco/3primaire",
   "title": {
     "ar": "فهرس الكتب المدرسية — السنة الثالثة ابتدائي",
     "fr": "Catalogue ONPS — 3e année primaire",
@@ -371,7 +371,7 @@ export const officialSources = [
   "grade": "primary-4",
   "pageType": "catalog",
   "checkedOn": "2026-10-24",
-  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/4primaire",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/primaire_sco/4primaire",
   "title": {
     "ar": "فهرس الكتب المدرسية — السنة الرابعة ابتدائي",
     "fr": "Catalogue ONPS — 4e année primaire",
@@ -393,7 +393,7 @@ export const officialSources = [
   "grade": "primary-5",
   "pageType": "catalog",
   "checkedOn": "2026-10-24",
-  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/5primaire",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/primaire_sco/5primaire",
   "title": {
     "ar": "فهرس الكتب المدرسية — السنة الخامسة ابتدائي",
     "fr": "Catalogue ONPS — 5e année primaire",

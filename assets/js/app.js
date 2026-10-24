@@ -484,11 +484,26 @@ $("#reset-resource-filters").addEventListener("click", () => {
   $("#subject-filter").value = "all";
   $("#type-filter").value = "all";
   selectedLevel = "all";
-  $(".level-card").forEach(card => card.classList.remove("active"));
+  $(".level-card").forEach(card => {
+    card.classList.remove("active");
+    card.setAttribute("aria-pressed", "false");
+  });
   renderCatalogFilters();
+  renderYearCategories();
   renderResources();
 });
+$("#reset-resource-filters-empty")?.addEventListener("click", () => $("#reset-resource-filters").click());
 $("#resource-search").addEventListener("input", renderResources);
+document.addEventListener("keydown", event => {
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+    event.preventDefault();
+    $("#resource-search")?.focus();
+  }
+  if (event.key === "Escape" && document.activeElement === $("#resource-search") && $("#resource-search").value) {
+    $("#resource-search").value = "";
+    renderResources();
+  }
+});
 $("#level-filter").addEventListener("change", () => { selectedLevel = $("#level-filter").value; renderCatalogFilters(); renderResources(); });
 $("#year-filter")?.addEventListener("change", () => { renderYearCategories(); renderResources(); });
 $("#year-category-grid")?.addEventListener("click", event => {

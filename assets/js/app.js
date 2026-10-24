@@ -113,7 +113,7 @@ function renderOfficialSources() {
   const levelLabel = levels => levels.map(item => t(({primary:"primary",middle:"middle",secondary:"secondary"})[item])).join(" · ");
   const gradeLabel = value => t(({ "primary-3":"gradePrimary3", "primary-4":"gradePrimary4", "primary-5":"gradePrimary5", "middle-4":"gradeMiddle4", "secondary-1":"gradeSecondary1" })[value] || "officialSourceAllGrades");
   const subjectLabel = value => t(({arabic:"subjectArabic",english:"subjectEnglish",french:"subjectFrench",physics:"subjectPhysics","islamic-studies":"subjectIslamicStudies",history:"subjectHistory"})[value] || "officialSourceAllSubjects");
-  const pageTypeLabel = source => t(({catalog:"officialSourceCatalogPage",publication:"officialSourcePublicationPage",archive:"officialSourceArchivePage"})[source.pageType] || "officialSourceCatalogPage");
+  const pageTypeLabel = source => t(({catalog:"officialSourceCatalogPage",publication:"officialSourcePublicationPage",archive:"officialSourceArchivePage",guide:"officialSourceGuidePage"})[source.pageType] || "officialSourceCatalogPage");
   const dateLabel = date => {
     const parsed = new Date(`${date}T12:00:00`);
     return Number.isNaN(parsed.getTime()) ? date : parsed.toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { year:"numeric", month:"short", day:"numeric" });

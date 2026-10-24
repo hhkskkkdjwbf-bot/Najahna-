@@ -1,6 +1,6 @@
 /** Select one question per subject for an exact grade and local calendar day. */
 export function getDailyChallengeQuestions(bank, gradeId, date) {
-  if (!Array.isArray(bank) || typeof gradeId !== "string" || !/^\\d{4}-\\d{2}-\\d{2}$/.test(date)) return [];
+  if (!Array.isArray(bank) || typeof gradeId !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return [];
   const candidates = bank.filter(item => item && item.gradeId === gradeId && typeof item.subject === "string" && item.subject.trim() && item.prompt && item.choices && Array.isArray(item.choices.en) && Number.isInteger(item.answer) && item.answer >= 0 && item.answer < item.choices.en.length);
   const groups = new Map();
   for (const item of candidates) groups.set(item.subject, [...(groups.get(item.subject) || []), item]);

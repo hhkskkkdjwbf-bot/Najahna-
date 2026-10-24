@@ -559,6 +559,28 @@ export const officialSources = [
     "en": "Official ONPS catalogue for this school year. This is a catalogue page, not a direct PDF; verify the textbook title and edition on the source page."
   }
 }
+,
+{
+  id: "ministry-school-year-2026-2027",
+  publisher: "Ministry of National Education",
+  kind: "pedagogical-docs",
+  levels: ["primary", "middle", "secondary"],
+  pageType: "guide",
+  checkedOn: "2026-10-24",
+  publishedOn: "2026-07-30",
+  url: "https://www.education.gov.dz/2026/07/30/%D9%88%D8%B2%D9%8A%D8%B1-%D8%A7%D9%84%D8%AA%D8%B1%D8%A8%D9%8A%D8%A9-%D8%A7%D9%84%D9%88%D8%B7%D9%86%D9%8A%D8%A9-%D9%8A%D9%86%D8%B4%D9%91%D8%B7-%D9%86%D8%AF%D9%88%D8%A9-%D8%B5%D8%AD%D9%81%D9%8A%D8%A9/",
+  title: {
+    ar: "التوضيحات الرسمية للترتيبات البيداغوجية 2026–2027",
+    fr: "Dispositions pédagogiques officielles — rentrée 2026–2027",
+    en: "Official teaching arrangements — 2026–2027 school year"
+  },
+  description: {
+    ar: "بيان رسمي من وزارة التربية الوطنية حول ترتيبات الموسم 2026–2027، بما فيها تنظيم تدريس اللغات في الابتدائي وتعديلات التعليم الثانوي. صفحة ويب وليست ملف PDF؛ راجع آخر التحديثات الوزارية قبل اتخاذ أي قرار.",
+    fr: "Annonce officielle du ministère sur les dispositions de 2026–2027 : progression des langues au primaire et organisation du secondaire. C’est une page web, pas un PDF ; vérifiez les mises à jour ministérielles avant de prendre une décision.",
+    en: "Official ministry announcement on 2026–2027 arrangements, including primary language progression and secondary-school organization. This is a web page, not a PDF; check for newer ministry updates before relying on it."
+  }
+}
+
 ];
 
 function isValidISODate(value) {

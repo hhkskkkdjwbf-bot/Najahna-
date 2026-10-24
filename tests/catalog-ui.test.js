@@ -95,7 +95,7 @@ test("catalogue empty state offers a unique reset action and keyboard-accessible
   assert.match(html, /for="resource-search" data-i18n="searchLabel"/);
   assert.match(html, /aria-keyshortcuts="Control\+K Meta\+K"/);
   assert.match(app, /reset-resource-filters-empty.*addEventListener\("click"/);
-  assert.match(app, /event\.metaKey.*event\.key\.toLowerCase\(\) === "k"/s);
+  assert.match(app, /\(event\.ctrlKey \|\| event\.metaKey\).*key === "k"/s);
   assert.match(app, /event\.key === "Escape".*renderResources\(\)/s);
   assert.ok(app.includes('$("[data-i18n-title]")'));
   for (const file of ["en.js", "fr.js", "ar.js"]) {

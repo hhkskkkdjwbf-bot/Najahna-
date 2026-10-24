@@ -17,6 +17,8 @@ test("sample resource catalogue uses unique stable IDs and known types/levels", 
     if (item.availability === "pdf") {
       assert.ok(getDirectPdfUrl(item), `${item.id}: PDF availability requires a direct PDF URL`);
       assert.ok(item.officialSourceUrl?.startsWith("https://"), `${item.id}: official source attribution required`);
+      const sourceUrl = new URL(item.officialSourceUrl);
+      assert.ok(["education.gov.dz", "www.education.gov.dz"].includes(sourceUrl.hostname), `${item.id}: source attribution must use the official ministry domain`);
     }
   }
 });

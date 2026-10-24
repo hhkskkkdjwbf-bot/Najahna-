@@ -113,3 +113,16 @@ test("every year receives a distinct grade-specific set, not questions from anot
     assert.ok(questions.every(question => question.gradeId === year.id));
   }
 });
+
+
+test("every school year has two distinct math questions and rotates them by date", () => {
+  for (const year of schoolYears) {
+    const pool = dailyChallengeBank.filter(question => question.gradeId === year.id && question.subject === "math");
+    assert.ok(pool.length >= 2, `${year.id} needs at least two math questions`);
+    assert.ok(new Set(pool.map(question => question.prompt.en)).size >= 2, `${year.id} math variants must not repeat the same prompt`);
+    const firstDay = getDailyChallengeQuestions(dailyChallengeBank, year.id, "2026-10-24").find(question => question.subject === "math");
+    const nextDay = getDailyChallengeQuestions(dailyChallengeBank, year.id, "2026-10-25").find(question => question.subject === "math");
+    assert.ok(firstDay && nextDay, `${year.id} must include math in its daily challenge`);
+    assert.notEqual(firstDay.id, nextDay.id, `${year.id} should rotate its math question on the next day`);
+  }
+});

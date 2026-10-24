@@ -705,6 +705,58 @@ export const officialSources = [
   url: "https://www.onps.dz/335",
   title: { ar: "كتاب اللغة العربية — السنة الثانية متوسط", fr: "Manuel d’arabe — 2e année moyenne", en: "Arabic textbook — Middle School Year 2" },
   description: { ar: "صفحة منشور رسمية لدى الديوان تحدد كتاب اللغة العربية. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS pour le manuel d’arabe. Ce n’est pas un PDF direct ; vérifiez l’édition actuelle.", en: "Official ONPS entry for the Arabic textbook. It is not a direct PDF; check the current edition." }
+},
+{
+  id: "onps-middle-french-year-3",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-3",
+  subject: "french",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/441",
+  title: { ar: "كتاب اللغة الفرنسية — السنة الثالثة متوسط", fr: "Manuel de français — 3e année moyenne", en: "French textbook — Middle School Year 3" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف الكتاب. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS présentant la couverture. Ce n’est pas un PDF direct ; vérifiez l’édition actuelle.", en: "Official ONPS publication page showing the cover. It is not a direct PDF; check the current edition." }
+},
+{
+  id: "onps-middle-physics-year-3",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-3",
+  subject: "physics",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/438",
+  title: { ar: "كتاب الفيزياء والتكنولوجيا — السنة الثالثة متوسط", fr: "Manuel de physique et technologie — 3e année moyenne", en: "Physics and Technology textbook — Middle School Year 3" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تحدد كتاب الفيزياء والتكنولوجيا. ليست ملف PDF مباشرًا؛ تحقق من الطبعة.", fr: "Fiche officielle de l’ONPS identifiant le manuel de physique et technologie. Ce n’est pas un PDF direct ; vérifiez l’édition.", en: "Official ONPS entry identifying the physics and technology textbook. It is not a direct PDF; verify the edition." }
+},
+{
+  id: "onps-middle-amazigh-year-3",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-3",
+  subject: "amazigh",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/447",
+  title: { ar: "كتاب تامازيغت — السنة الثالثة متوسط", fr: "Manuel de tamazight — 3e année moyenne", en: "Tamazight textbook — Middle School Year 3" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض عنوان وغلاف الكتاب. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS présentant le titre et la couverture. Ce n’est pas un PDF direct ; vérifiez l’édition actuelle.", en: "Official ONPS publication page showing the title and cover. It is not a direct PDF; check the current edition." }
+},
+{
+  id: "onps-middle-civics-year-3",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-3",
+  subject: "civics",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/444",
+  title: { ar: "كتاب التربية المدنية — السنة الثالثة متوسط", fr: "Manuel d’éducation civique — 3e année moyenne", en: "Civics textbook — Middle School Year 3" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان. تعذر التحقق من تحميل PDF مباشر؛ تحقق من الطبعة والصفحة قبل الاستخدام.", fr: "Fiche officielle de l’ONPS. Le chargement de la page n’a pas pu être confirmé lors du contrôle ; vérifiez la page et l’édition.", en: "Official ONPS publication entry. The page could not be fully checked during review; verify the page and edition before use." }
 }
 
 ];
@@ -733,7 +785,7 @@ export function validateOfficialSources(records = officialSources) {
     if (!Array.isArray(source.levels) || !source.levels.length || source.levels.some(level => !["primary", "middle", "secondary"].includes(level))) fail("invalid school levels");
     if (!["catalog", "publication", "archive", "guide"].includes(source.pageType)) fail("invalid page type");
     const allowedGrades = ["primary-1", "primary-2", "primary-3", "primary-4", "primary-5", "middle-1", "middle-2", "middle-3", "middle-4", "secondary-1", "secondary-2", "secondary-3"];
-    const allowedSubjects = ["arabic", "english", "french", "math", "science", "physics", "islamic-studies", "history"];
+    const allowedSubjects = ["arabic", "english", "french", "math", "science", "physics", "islamic-studies", "history", "amazigh", "civics"];
     if (source.grade !== undefined && !allowedGrades.includes(source.grade)) fail("invalid grade");
     if (source.subject !== undefined && !allowedSubjects.includes(source.subject)) fail("invalid subject");
     if (source.pageType !== "catalog" && (source.grade === undefined) !== (source.subject === undefined)) fail("grade and subject must be provided together");

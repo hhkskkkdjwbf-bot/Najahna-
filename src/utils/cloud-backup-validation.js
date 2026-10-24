@@ -10,7 +10,8 @@ export function validateCloudBackupEntries(entries) {
   for (const entry of entries) {
     if (!Array.isArray(entry) || entry.length !== 2 ||
         typeof entry[0] !== "string" || !entry[0].startsWith("najahna:") ||
-        entry[0] === "najahna:account-profile" || entry[0].length > MAX_CLOUD_KEY_LENGTH ||
+        entry[0].length <= "najahna:".length || entry[0] === "najahna:account-profile" ||
+        entry[0].length > MAX_CLOUD_KEY_LENGTH ||
         typeof entry[1] !== "string" || seen.has(entry[0])) {
       throw new Error("INVALID_CLOUD_BACKUP");
     }

@@ -296,3 +296,29 @@ body.dark .study-task-status.is-today{background:#2d4021;color:#d4f6a8}
 .keyboard-shortcuts-dialog>.button{width:100%}
 @media(max-width:480px){.keyboard-shortcuts-dialog{padding:18px;border-radius:18px}.keyboard-shortcut-list li{align-items:flex-start;flex-direction:column;gap:7px}.keyboard-shortcut-list kbd{align-self:flex-start}}
 @media(prefers-reduced-motion:reduce){.daily-challenge-question,.daily-challenge-option{transition:none}}
+
+
+/* Site-wide visual polish: more legible hierarchy and a calmer, consistent interaction system. */
+.site-header{position:sticky;top:0;z-index:40;max-width:none;padding-inline:max(24px,calc((100vw - 1144px)/2));background:color-mix(in srgb,var(--bg) 91%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid color-mix(in srgb,var(--line) 72%,transparent);box-shadow:0 6px 24px #173d2905}
+body.dark .site-header{box-shadow:0 6px 24px #0001}
+.main-nav a{position:relative;padding-block:10px;transition:color .16s}
+.main-nav a::after{content:"";position:absolute;inset-inline:0;bottom:2px;height:2px;border-radius:3px;background:var(--green);transform:scaleX(0);transform-origin:center;transition:transform .16s}
+.main-nav a:hover::after,.main-nav a:focus-visible::after{transform:scaleX(1)}
+.hero{position:relative;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:20px 16px 8px;z-index:-1;border-radius:34px;background:radial-gradient(ellipse at 85% 10%,color-mix(in srgb,var(--lime) 22%,transparent),transparent 45%),linear-gradient(125deg,color-mix(in srgb,var(--surface-soft) 78%,var(--bg)),var(--bg) 72%);border:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+body.dark .hero::before{background:radial-gradient(ellipse at 85% 10%,#d5f17a0c,transparent 45%),linear-gradient(125deg,var(--surface-soft),var(--bg) 72%)}
+.section-heading{position:relative}
+.section-heading h2{line-height:1.35}
+.section-heading .eyebrow{letter-spacing:.2px}
+.level-card,.resource-card,.tool-panel{box-shadow:0 8px 30px #173d2906}
+.resource-card{position:relative;overflow:hidden}
+.resource-card::before{content:"";position:absolute;inset-inline:0;top:0;height:3px;background:var(--green);transform:scaleX(0);transform-origin:left;transition:transform .2s}
+.resource-card:hover::before,.resource-card:focus-within::before{transform:scaleX(1)}
+.resource-card:hover{border-color:color-mix(in srgb,var(--green) 28%,var(--line))}
+.tool-panel{transition:border-color .18s,box-shadow .18s}
+.tool-panel:focus-within{border-color:color-mix(in srgb,var(--green) 24%,var(--line))}
+.search-box:focus-within{border-color:var(--green);box-shadow:0 0 0 4px color-mix(in srgb,var(--green) 12%,transparent)}
+.button:focus-visible,.icon-button:focus-visible{outline-offset:3px}
+@media(max-width:760px){.site-header{padding-inline:16px;gap:12px}.main-nav{gap:12px}.main-nav a{font-size:12px}.hero::before{inset:8px 6px;border-radius:24px}}
+@media(max-width:480px){.site-header{position:relative;flex-wrap:wrap;justify-content:space-between}.main-nav{order:3;width:100%;justify-content:center;margin:0;padding-top:6px;border-top:1px solid var(--line)}.header-actions{margin-inline-start:auto}.hero::before{inset:4px 0;border-radius:20px}}
+@media(prefers-reduced-motion:reduce){.main-nav a::after,.resource-card::before{transition:none}}

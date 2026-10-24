@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { resources, resourceTypes, schoolLevels } from "../src/data/resources.js";
 import { schoolYears } from "../src/data/curriculum.js";
+import { getDirectPdfUrl } from "../src/utils/pdf-resources.js";
 
 const supportedLanguages = ["ar", "fr", "en"];
 
@@ -12,7 +13,11 @@ test("sample resource catalogue uses unique stable IDs and known types/levels", 
     assert.ok(item.id, "resource ID must not be empty");
     assert.ok(schoolLevels.includes(item.level), `unknown school level: ${item.level}`);
     assert.ok(resourceTypes.includes(item.type), `unknown resource type: ${item.type}`);
-    assert.equal(item.availability, "sample", "demo entries must remain explicitly marked as samples");
+    assert.ok(["sample", "pdf"].includes(item.availability), "availability must be sample or a verified direct PDF");
+    if (item.availability === "pdf") {
+      assert.ok(getDirectPdfUrl(item), `${item.id}: PDF availability requires a direct PDF URL`);
+      assert.ok(item.officialSourceUrl?.startsWith("https://"), `${item.id}: official source attribution required`);
+    }
   }
 });
 
@@ -38,7 +43,13 @@ test("each resource's grade numbers belong to its stated school level", () => {
   }
 });
 
-test("catalog does not claim sample resources are verified official downloads", () => {
-  assert.ok(resources.every((item) => item.availability === "sample"));
-  assert.ok(resources.every((item) => !item.downloadUrl && !item.officialSourceUrl));
+test("sample resources never claim official downloads and the official PDF entry is verifiable", () => {
+  const samples = resources.filter(item => item.availability === "sample");
+  assert.ok(samples.length > 0);
+  assert.ok(samples.every(item => !item.downloadUrl && !item.officialSourceUrl && !item.pdfUrl));
+  const officialPdfs = resources.filter(item => item.availability === "pdf");
+  assert.equal(officialPdfs.length, 1);
+  assert.equal(officialPdfs[0].id, "official-primary-framework-2016");
+  assert.equal(officialPdfs[0].type, "pedagogical-doc");
+  assert.equal(getDirectPdfUrl(officialPdfs[0]), officialPdfs[0].pdfUrl);
 });

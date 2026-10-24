@@ -51,7 +51,7 @@ test("sample resources never claim official downloads and the official PDF entry
   const samples = resources.filter(item => item.availability === "sample");
   assert.ok(samples.length > 0);
   assert.ok(samples.every(item => !item.downloadUrl && !item.officialSourceUrl && !item.pdfUrl));
-  const officialPdfs = resources.filter(item => item.availability === "pdf");
+  const officialPdfs = resources.filter(item => item.availability === "pdf" && item.officialSourceUrl);
   assert.equal(officialPdfs.length, 5);
   const expectedPdfIds = [
     "official-primary-framework-2016",
@@ -65,6 +65,22 @@ test("sample resources never claim official downloads and the official PDF entry
     assert.equal(item.type, "pedagogical-doc");
     assert.equal(getDirectPdfUrl(item), item.pdfUrl);
     assert.ok(item.pdfUrl.startsWith("https://"));
+    const sourceUrl = new URL(item.officialSourceUrl);
+    assert.ok(["education.gov.dz", "www.education.gov.dz"].includes(sourceUrl.hostname));
+  }
+
+  const externalPdfs = resources.filter(item => item.availability === "pdf" && item.sourceUrl);
+  assert.equal(externalPdfs.length, 3);
+  assert.deepEqual(externalPdfs.map(item => item.id).sort(), [
+    "dzexams-middle4-arabic-summary",
+    "dzexams-middle4-math-summary",
+    "dzexams-middle4-science-lesson"
+  ].sort());
+  for (const item of externalPdfs) {
+    assert.equal(item.sourceName, "DzExams");
+    assert.equal(new URL(item.sourceUrl).hostname, "www.dzexams.com");
+    assert.equal(getDirectPdfUrl(item), item.pdfUrl);
+    assert.ok(item.description.fr.includes("droits de réutilisation") || item.description.fr.includes("droits de réutilisation ne sont pas confirmés"));
   }
 });
 

@@ -15,6 +15,7 @@ import { getQuizHistory, recordQuizAttempt, clearQuizHistory, getQuizTrend } fro
 import { dailyChallengeBank } from "../../src/data/daily-challenge.js";
 import { getDailyChallengeQuestions, gradeDailyChallenge } from "../../src/utils/daily-challenge.js";
 import { getLearnerProfile, saveLearnerProfile, getDailyChallengeCompletion, saveDailyChallengeCompletion } from "../../src/utils/learner-profile.js";
+import { getAccountProfile, saveAccountProfile, deleteAccountProfile, getAvatarInitials, accountAvatarColors } from "../../src/utils/account-profile.js";
 import { officialSources } from "../../src/data/official-sources.js";
 import { getDirectPdfUrl } from "../../src/utils/pdf-resources.js";
 import { createExamSheet } from "../../src/utils/exam-sheet.js";
@@ -36,6 +37,12 @@ let quizState = { level: "primary", questions: [], index: 0, answers: [], submit
 let dailyChallengeAnswers = {};
 
 function t(key) { return translations[language]?.[key] ?? translations.ar[key] ?? key; }
+const accountCopy = {
+  ar: { open:"حسابي", eyebrow:"ملفي الشخصي", title:"مساحتي في نجاحنا", intro:"خصص ملفك الدراسي.", status:"ملف محلي — محفوظ على هذا الجهاز فقط.", name:"الاسم الظاهر", email:"البريد الإلكتروني (اختياري)", grade:"السنة الدراسية", later:"اختر لاحقاً", color:"لون الصورة الرمزية", colors:["أخضر","أزرق","بنفسجي","برتقالي","فيروزي"], id:"معرّف نجاحنا", idNew:"سيُنشأ عند الحفظ", copy:"نسخ المعرّف", save:"حفظ الملف الشخصي", delete:"حذف الملف المحلي", security:"أمان الحساب", securityText:"تسجيل الدخول بالبريد وكلمة المرور، والتحقق من البريد، واستعادة كلمة المرور، والمزامنة بين الأجهزة غير مفعّلة بعد. الموقع حالياً ثابت؛ لن نطلب كلمة مرور ولن نخزنها هنا. يبقى الملف على هذا الجهاز.", close:"إغلاق", saved:"تم حفظ الملف على هذا الجهاز.", deleted:"تم حذف الملف المحلي.", deleteConfirm:"هل تريد حذف الملف الشخصي المحلي؟ لن تُحذف الملاحظات أو بيانات الدراسة الأخرى.", copyOk:"تم نسخ المعرّف.", copyFail:"تعذر النسخ؛ حدد المعرّف وانسخه يدوياً.", colorsLabel:["أخضر","أزرق","بنفسجي","برتقالي","فيروزي"] },
+  fr: { open:"Mon compte", eyebrow:"Profil personnel", title:"Mon espace Najahna", intro:"Personnalise ton profil d’apprentissage.", status:"Profil local — enregistré sur cet appareil uniquement.", name:"Nom affiché", email:"Adresse e-mail (facultatif)", grade:"Année scolaire", later:"Choisir plus tard", color:"Couleur de l’avatar", colors:["Vert","Bleu","Violet","Orange","Turquoise"], id:"Identifiant Najahna", idNew:"Créé lors de l’enregistrement", copy:"Copier l’ID", save:"Enregistrer le profil", delete:"Supprimer le profil local", security:"Sécurité du compte", securityText:"La connexion par e-mail et mot de passe, la vérification d’e-mail, la récupération de mot de passe et la synchronisation entre appareils ne sont pas encore activées. Najahna est actuellement un site statique : aucun mot de passe ne sera demandé ni enregistré ici. Le profil ci-dessus reste sur cet appareil.", close:"Fermer", saved:"Profil enregistré sur cet appareil.", deleted:"Profil local supprimé.", deleteConfirm:"Supprimer ce profil local ? Les notes et autres données d’étude ne seront pas supprimées.", copyOk:"Identifiant copié.", copyFail:"Copie impossible ; sélectionne et copie l’identifiant manuellement." },
+  en: { open:"My account", eyebrow:"Personal profile", title:"My Najahna space", intro:"Personalize your learning profile.", status:"Local profile — saved on this device only.", name:"Display name", email:"Email address (optional)", grade:"School year", later:"Choose later", color:"Avatar color", colors:["Green","Blue","Purple","Orange","Teal"], id:"Najahna ID", idNew:"Created when you save", copy:"Copy ID", save:"Save profile", delete:"Delete local profile", security:"Account security", securityText:"Email/password sign-in, email verification, password recovery, and cross-device sync are not enabled yet. Najahna is currently a static site: no password will be requested or stored here. This profile stays on this device.", close:"Close", saved:"Profile saved on this device.", deleted:"Local profile deleted.", deleteConfirm:"Delete this local profile? Your notes and other study data will not be deleted.", copyOk:"ID copied.", copyFail:"Could not copy; select and copy the ID manually." }
+};
+
 function escapeHTML(value) { return String(value).replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" })[char]); }
 function setLanguage(next) {
   language = translations[next] ? next : "ar";
@@ -62,6 +69,7 @@ function setLanguage(next) {
   renderQuizHistory();
   renderOfficialSources();
   renderSchoolCalendar();
+  renderAccountDialog();
   renderResources();
   renderFavorites();
   renderCollections();
@@ -71,6 +79,44 @@ function setLanguage(next) {
   if (activeResourceId && $("#resource-dialog").open) renderResourceDetails(activeResourceId);
   updateRemoveButtons();
 }
+function renderAccountDialog() {
+  const copy = accountCopy[language] || accountCopy.ar;
+  const profile = getAccountProfile();
+  const fields = {
+    "#account-open": profile?.name || copy.open,
+    "#account-eyebrow": copy.eyebrow, "#account-title": copy.title, "#account-intro": copy.intro,
+    "#account-status": copy.status, "#account-name-label": copy.name, "#account-email-label": copy.email,
+    "#account-grade-label": copy.grade, "#account-avatar-color-label": copy.color, "#account-id-label": copy.id,
+    "#account-copy-id": copy.copy, "#account-save": copy.save, "#account-delete": copy.delete,
+    "#account-security-title": copy.security, "#account-security-copy": copy.securityText,
+    "#account-close": "×"
+  };
+  Object.entries(fields).forEach(([selector, value]) => { const node = $(selector); if (node) node.textContent = value; });
+  const grade = $("#account-grade");
+  if (grade) {
+    const selected = profile?.gradeId || grade.value || "";
+    grade.replaceChildren(new Option(copy.later, ""));
+    schoolYears.forEach(year => grade.add(new Option(year.label[language] || year.label.ar, year.id)));
+    grade.value = selected;
+  }
+  const colors = $("#account-avatar-color");
+  if (colors) {
+    const selectedColor = profile?.avatarColor || colors.value || accountAvatarColors[0];
+    colors.replaceChildren(...accountAvatarColors.map((color, index) => new Option(copy.colors?.[index] || accountCopy.en.colors[index], color)));
+    colors.value = selectedColor;
+  }
+  $("#account-name").value = profile?.name || "";
+  $("#account-email").value = profile?.email || "";
+  $("#account-id").textContent = profile?.id || copy.idNew;
+  $("#account-copy-id").disabled = !profile?.id;
+  $("#account-delete").hidden = !profile;
+  const avatar = $("#account-avatar");
+  avatar.textContent = profile ? getAvatarInitials(profile.name) : "N";
+  avatar.style.backgroundColor = profile?.avatarColor || accountAvatarColors[0];
+  const open = $("#account-open");
+  if (open) open.setAttribute("aria-label", copy.open);
+}
+
 function showToast(message) {
   const toast = $("#toast"); toast.textContent = message; toast.classList.add("visible");
   clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove("visible"), 2400);
@@ -1006,6 +1052,50 @@ $("#quiz-content")?.addEventListener("click", event => {
   if (event.target.closest("[data-clear-quiz-history]")) { if (!window.confirm(t("quizHistoryClearConfirm"))) return; if (clearQuizHistory()) { renderQuizHistory(); showToast(t("quizHistoryCleared")); } else showToast(t("quizHistorySaveFailed")); }
 });
 
+
+const accountDialog = $("#account-dialog");
+$("#account-open")?.addEventListener("click", () => { renderAccountDialog(); accountDialog?.showModal(); });
+$("#account-close")?.addEventListener("click", () => accountDialog?.close());
+accountDialog?.addEventListener("click", event => { if (event.target === accountDialog) accountDialog.close(); });
+$("#account-form")?.addEventListener("submit", event => {
+  event.preventDefault();
+  try {
+    saveAccountProfile({
+      name: $("#account-name").value,
+      email: $("#account-email").value,
+      gradeId: $("#account-grade").value,
+      avatarColor: $("#account-avatar-color").value
+    });
+    renderAccountDialog();
+    showToast((accountCopy[language] || accountCopy.ar).saved);
+  } catch (error) {
+    showToast(error instanceof TypeError ? error.message : t("storageError"));
+  }
+});
+$("#account-delete")?.addEventListener("click", () => {
+  const copy = accountCopy[language] || accountCopy.ar;
+  if (!window.confirm(copy.deleteConfirm)) return;
+  if (deleteAccountProfile()) { renderAccountDialog(); showToast(copy.deleted); }
+  else showToast(t("storageError"));
+});
+$("#account-copy-id")?.addEventListener("click", async () => {
+  const copy = accountCopy[language] || accountCopy.ar;
+  const id = getAccountProfile()?.id;
+  if (!id) return;
+  try {
+    await navigator.clipboard.writeText(id);
+    showToast(copy.copyOk);
+  } catch {
+    const field = $("#account-id");
+    const range = document.createRange();
+    range.selectNodeContents(field);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    showToast(copy.copyFail);
+  }
+});
+
 const installButton = $("#install-app");
 window.addEventListener("beforeinstallprompt", event => {
   event.preventDefault();
@@ -1033,6 +1123,7 @@ if ("serviceWorker" in navigator && (location.protocol === "https:" || location.
 }
 
 setLanguage(language);
+renderAccountDialog();
 renderOfficialSources();
 renderSchoolCalendar();
 renderQuizHistory();

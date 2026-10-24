@@ -31,6 +31,8 @@ jobs:
           node --check src/i18n/en.js
           node --check scripts/audit-official-sources.js
           node --check src/utils/account-profile.js
+          node --check src/utils/cloud-account.js
+          node --check src/config/supabase.js
           node --check src/utils/quiz-history.js
           node --check service-worker.js
           node --check src/data/resource-filters.js
@@ -41,5 +43,8 @@ jobs:
           test -s assets/css/main.css
           test -s assets/js/app.js
           test -s src/utils/account-profile.js
+          test -s src/utils/cloud-account.js
+          test -s src/config/supabase.js
+          test -s supabase/migrations/202610240001_secure_learner_accounts.sql
           test -s src/data/curriculum.js
           test -s README.md

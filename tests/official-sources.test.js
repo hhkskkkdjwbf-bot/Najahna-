@@ -256,3 +256,22 @@ test("source validator accepts all subjects exposed by the official-source filte
     assert.equal(validateOfficialSources([candidate]).valid, true, subject);
   }
 });
+
+
+test("secondary year-one ONPS geography, science and Tamazight records remain distinct", () => {
+  const expected = [
+    ["onps-secondary-geography-year-1", "geography", "https://www.onps.dz/593"],
+    ["onps-secondary-science-year-1", "science", "https://www.onps.dz/583"],
+    ["onps-secondary-amazigh-year-1", "amazigh", "https://www.onps.dz/581"]
+  ];
+  for (const [id, subject, url] of expected) {
+    const source = officialSources.find(item => item.id === id);
+    assert.ok(source, "missing source " + id);
+    assert.equal(source.grade, "secondary-1");
+    assert.equal(source.subject, subject);
+    assert.equal(source.url, url);
+    assert.equal(source.pageType, "publication");
+    assert.match(source.description.fr, /pas un PDF direct/i);
+    assert.equal(validateOfficialSources([source]).valid, true);
+  }
+});

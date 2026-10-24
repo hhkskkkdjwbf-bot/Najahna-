@@ -232,3 +232,7 @@ body.dark .resource-quick-filter.active{color:#10231a}
 body.dark .study-task-status.is-overdue{background:#48291f;color:#ffc2a7}
 body.dark .study-task-status.is-today{background:#2d4021;color:#d4f6a8}
 .study-task.is-overdue{border-inline-start:3px solid #c75a34;padding-inline-start:10px}
+
+.study-progress-bar{height:8px;margin:0 0 16px;border-radius:999px;background:var(--surface-soft);overflow:hidden}
+.study-progress-bar span{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--green),#b7df63);transition:width .25s ease}
+@media(prefers-reduced-motion:reduce){.study-progress-bar span{transition:none}}

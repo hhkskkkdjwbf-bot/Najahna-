@@ -188,6 +188,19 @@ function renderLevelCounts() {
     node.textContent = t("sampleCount").replace("{count}", String(count));
   });
 }
+function renderYearCategories() {
+  const root = $("#year-category-grid");
+  if (!root) return;
+  const level = $("#level-filter")?.value || "all";
+  const selectedYear = $("#year-filter")?.value || "all";
+  const years = level === "all" ? schoolYears : schoolYears.filter(item => item.level === level);
+  root.innerHTML = years.map(item => {
+    const value = `${item.level}:${item.year}`;
+    const count = resources.filter(resource => resource.level === item.level && (resource.grades || []).includes(item.year)).length;
+    const selected = selectedYear === value;
+    return `<button type="button" class="year-category-card ${selected ? "active" : ""}" data-school-year="${value}" aria-pressed="${selected}"><span class="year-category-level">${escapeHTML(item.level === "primary" ? t("primary") : item.level === "middle" ? t("middle") : t("secondary"))}</span><strong>${escapeHTML(item.label[language])}</strong><span class="year-category-count">${escapeHTML(t("yearResourceCount").replace("{count}", String(count)))}</span></button>`;
+  }).join("");
+}
 function renderCatalogFilters() {
   const level = $("#level-filter")?.value || "all";
   const yearSelect = $("#year-filter");
@@ -202,6 +215,7 @@ function renderCatalogFilters() {
   subjectSelect.innerHTML = `<option value="all">${escapeHTML(t("allSubjects"))}</option>` + subjects.map(item => `<option value="${item.id}">${escapeHTML(item.label[language])}</option>`).join("");
   if ([...yearSelect.options].some(option => option.value === previousYear)) yearSelect.value = previousYear;
   if ([...subjectSelect.options].some(option => option.value === previousSubject)) subjectSelect.value = previousSubject;
+  renderYearCategories();
 }
 function renderResources() {
   const query = $("#resource-search").value.trim().toLocaleLowerCase();
@@ -378,7 +392,23 @@ $("#reset-resource-filters").addEventListener("click", () => {
 });
 $("#resource-search").addEventListener("input", renderResources);
 $("#level-filter").addEventListener("change", () => { selectedLevel = $("#level-filter").value; renderCatalogFilters(); renderResources(); });
-$("#year-filter")?.addEventListener("change", renderResources);
+$("#year-filter")?.addEventListener("change", () => { renderYearCategories(); renderResources(); });
+$("#year-category-grid")?.addEventListener("click", event => {
+  const button = event.target.closest("[data-school-year]");
+  if (!button) return;
+  const [level, year] = button.dataset.schoolYear.split(":");
+  $("#level-filter").value = level;
+  selectedLevel = level;
+  renderCatalogFilters();
+  $("#year-filter").value = `${level}:${year}`;
+  $(".level-card").forEach(card => {
+    const active = card.dataset.level === level;
+    card.classList.toggle("active", active);
+    card.setAttribute("aria-pressed", String(active));
+  });
+  renderYearCategories();
+  renderResources();
+});
 $("#subject-filter")?.addEventListener("change", renderResources);
 $("#type-filter").addEventListener("change", renderResources);
 $("#resource-grid").addEventListener("click", event => {

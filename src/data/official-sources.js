@@ -757,6 +757,71 @@ export const officialSources = [
   url: "https://www.onps.dz/444",
   title: { ar: "كتاب التربية المدنية — السنة الثالثة متوسط", fr: "Manuel d’éducation civique — 3e année moyenne", en: "Civics textbook — Middle School Year 3" },
   description: { ar: "صفحة منشور رسمية لدى الديوان. تعذر التحقق من تحميل PDF مباشر؛ تحقق من الطبعة والصفحة قبل الاستخدام.", fr: "Fiche officielle de l’ONPS. Le chargement de la page n’a pas pu être confirmé lors du contrôle ; vérifiez la page et l’édition.", en: "Official ONPS publication entry. The page could not be fully checked during review; verify the page and edition before use." }
+},
+{
+  id: "onps-primary-science-year-3",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["primary"],
+  grade: "primary-3",
+  subject: "science",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/172",
+  title: { ar: "كتاب التربية العلمية والتكنولوجية — السنة الثالثة ابتدائي", fr: "Manuel de sciences et technologie — 3e année primaire", en: "Science and Technology textbook — Primary Year 3" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف الكتاب. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS présentant la couverture. Ce n’est pas un PDF direct ; vérifiez l’édition actuelle.", en: "Official ONPS publication page showing the cover. It is not a direct PDF; check the current edition." }
+},
+{
+  id: "onps-primary-math-year-3",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["primary"],
+  grade: "primary-3",
+  subject: "math",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/169",
+  title: { ar: "كتاب الرياضيات — السنة الثالثة ابتدائي", fr: "Manuel de mathématiques — 3e année primaire", en: "Mathematics textbook — Primary Year 3" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان؛ قد تتعذر إتاحتها مؤقتًا. ليست ملف PDF مباشرًا، تحقق من الطبعة.", fr: "Fiche officielle de l’ONPS ; son accès peut être temporairement indisponible. Ce n’est pas un PDF direct.", en: "Official ONPS publication entry; access may be temporarily unavailable. This is not a direct PDF." }
+},
+{
+  id: "onps-primary-arabic-year-4",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["primary"],
+  grade: "primary-4",
+  subject: "arabic",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/237",
+  title: { ar: "كتاب اللغة العربية — السنة الرابعة ابتدائي", fr: "Manuel d’arabe — 4e année primaire", en: "Arabic textbook — Primary Year 4" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف كتاب اللغة العربية. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS présentant la couverture du manuel d’arabe. Ce n’est pas un PDF direct ; vérifiez l’édition.", en: "Official ONPS publication page showing the Arabic textbook cover. It is not a direct PDF; check the edition." }
+},
+{
+  id: "onps-primary-science-year-4",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["primary"],
+  grade: "primary-4",
+  subject: "science",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/243",
+  title: { ar: "كتاب التربية العلمية والتكنولوجية — السنة الرابعة ابتدائي", fr: "Manuel de sciences et technologie — 4e année primaire", en: "Science and Technology textbook — Primary Year 4" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف الكتاب. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS présentant la couverture. Ce n’est pas un PDF direct ; vérifiez l’édition actuelle.", en: "Official ONPS publication page showing the cover. It is not a direct PDF; check the current edition." }
+},
+{
+  id: "onps-primary-arabic-year-5",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["primary"],
+  grade: "primary-5",
+  subject: "arabic",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/265",
+  title: { ar: "كتاب اللغة العربية — السنة الخامسة ابتدائي", fr: "Manuel d’arabe — 5e année primaire", en: "Arabic textbook — Primary Year 5" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف كتاب اللغة العربية. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS présentant la couverture du manuel d’arabe. Ce n’est pas un PDF direct ; vérifiez l’édition actuelle.", en: "Official ONPS publication page showing the Arabic textbook cover. It is not a direct PDF; check the edition." }
 }
 
 ];

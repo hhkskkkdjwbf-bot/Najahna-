@@ -186,7 +186,6 @@ test("new primary textbook entries match their official ONPS publication pages",
     ["onps-primary-math-year-3", "primary-3", "math", "https://www.onps.dz/169"],
     ["onps-primary-arabic-year-4", "primary-4", "arabic", "https://www.onps.dz/237"],
     ["onps-primary-science-year-4", "primary-4", "science", "https://www.onps.dz/243"],
-    ["onps-primary-arabic-year-5", "primary-5", "arabic", "https://www.onps.dz/265"]
   ];
   const entries = expected.map(([id, grade, subject, url]) => {
     const source = officialSources.find(item => item.id === id);

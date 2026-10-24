@@ -93,6 +93,20 @@ test("includes current official ministry guidance for the 2026–2027 school yea
   assert.equal(validateOfficialSources([source]).valid, true);
 });
 
+
+test("clearly marks suspended 2026 secondary arrangements and links the official cancellation decision", () => {
+  const overview = officialSources.find(item => item.id === "ministry-school-year-2026-2027");
+  const decision = officialSources.find(item => item.id === "ministry-secondary-arrangements-cancelled-2026");
+  assert.ok(overview);
+  assert.ok(decision);
+  assert.equal(decision.pageType, "archive");
+  assert.equal(decision.publishedOn, "2026-09-10");
+  assert.deepEqual(decision.levels, ["secondary"]);
+  assert.match(overview.description.fr, /seules les dispositions du primaire ont été approuvées/i);
+  assert.match(overview.description.en, /suspended pending Council of Ministers approval/i);
+  assert.equal(validateOfficialSources([overview, decision]).valid, true);
+});
+
 test("rejects malformed optional publication dates", () => {
   const sample = officialSources[0];
   const result = validateOfficialSources([{ ...sample, publishedOn: "2023-99-40" }]);

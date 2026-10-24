@@ -828,6 +828,32 @@ export const officialSources = [
     fr: "PDF officiel d’aide expliquant comment télécharger des manuels via l’application Ma Bibliothèque numérique. Ce guide n’est pas un manuel scolaire et ne garantit pas la disponibilité de chaque titre ou édition.",
     en: "Official help PDF explaining how to download textbooks through the My Digital Library app. This guide is not a textbook and does not guarantee every title or edition is available."
   }
+},
+{
+  id: "onps-primary-math-year-5",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["primary"],
+  grade: "primary-5",
+  subject: "math",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/fr/268",
+  title: { ar: "كتاب الرياضيات — السنة الخامسة ابتدائي", fr: "Manuel de mathématiques — 5e année primaire", en: "Mathematics textbook — Primary Year 5" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف كتاب الرياضيات. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS présentant la couverture du manuel de mathématiques. Ce n’est pas un PDF direct ; vérifiez l’édition actuelle.", en: "Official ONPS publication page showing the mathematics textbook cover. It is not a direct PDF; check the current edition." }
+},
+{
+  id: "onps-middle-math-year-4",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-4",
+  subject: "math",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/fr/453",
+  title: { ar: "كتاب الرياضيات — السنة الرابعة متوسط", fr: "Manuel de mathématiques — 4e année moyenne", en: "Mathematics textbook — Middle Year 4" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف كتاب الرياضيات. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS présentant la couverture du manuel de mathématiques. Ce n’est pas un PDF direct ; vérifiez l’édition actuelle.", en: "Official ONPS publication page showing the mathematics textbook cover. It is not a direct PDF; check the current edition." }
 }
 
 ];

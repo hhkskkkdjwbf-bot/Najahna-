@@ -298,7 +298,7 @@ export const officialSources = [
 ];
 
 function isValidISODate(value) {
-  if (typeof value !== "string" || !/^\\d{4}-\\d{2}-\\d{2}$/.test(value)) return false;
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const date = new Date(`${value}T00:00:00Z`);
   return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
 }
@@ -333,8 +333,8 @@ export function validateOfficialSources(records = officialSources) {
         if (url.protocol !== "https:" || !["www.onps.dz", "www.education.gov.dz"].includes(url.hostname)) fail("source URL must use an approved official HTTPS domain");
       } catch { fail("invalid source URL"); }
     }
-    if (typeof source.checkedOn !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(source.checkedOn)) fail("checkedOn must use YYYY-MM-DD");
-        if (source.publishedOn !== undefined && (typeof source.publishedOn !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(source.publishedOn))) fail("publishedOn must use YYYY-MM-DD");
+    if (!isValidISODate(source.checkedOn)) fail("checkedOn must use a valid YYYY-MM-DD date");
+    if (source.publishedOn !== undefined && !isValidISODate(source.publishedOn)) fail("publishedOn must use a valid YYYY-MM-DD date");
     for (const language of ["ar", "fr", "en"]) {
       if (typeof source.title?.[language] !== "string" || !source.title[language].trim()) fail(`missing ${language} title`);
       if (typeof source.description?.[language] !== "string" || !source.description[language].trim()) fail(`missing ${language} description`);

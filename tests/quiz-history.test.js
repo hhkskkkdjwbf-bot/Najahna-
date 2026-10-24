@@ -30,3 +30,21 @@ test("history is bounded, tolerates corrupt storage and can be cleared", () => {
   assert.deepEqual(getQuizHistory(storage), []);
   assert.equal(clearQuizHistory(storage), true);
 });
+
+test("normalizes corrupted percentages and removes duplicate attempt IDs", () => {
+  const storage = memoryStorage();
+  storage.setItem("najahna-quiz-history", JSON.stringify([
+    { id: "attempt-1", level: "middle", score: 1, total: 3, percentage: 999, completedAt: "2026-10-23T10:00:00.000Z" },
+    { id: "attempt-1", level: "middle", score: 3, total: 3, percentage: 100, completedAt: "2026-10-23T11:00:00.000Z" },
+    { id: "attempt-2", level: "primary", score: 2, total: 2, percentage: -1, completedAt: "2026-10-23T12:00:00.000Z" }
+  ]));
+  const history = getQuizHistory(storage);
+  assert.equal(history.length, 1);
+  assert.equal(history[0].percentage, 33);
+  assert.equal(history[0].score, 1);
+});
+
+test("quiz history reads safely when browser storage is unavailable", () => {
+  assert.deepEqual(getQuizHistory(null), []);
+  assert.equal(clearQuizHistory({ removeItem() { throw new Error("blocked"); } }), false);
+});

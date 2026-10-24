@@ -550,14 +550,57 @@ $("#reset-resource-filters").addEventListener("click", () => {
 });
 $("#reset-resource-filters-empty")?.addEventListener("click", () => $("#reset-resource-filters").click());
 $("#resource-search").addEventListener("input", renderResources);
+function isEditableTarget(target) {
+  return Boolean(target?.closest?.("input, textarea, select, [contenteditable='true'], [role='textbox']"));
+}
+
+function openKeyboardHelp() {
+  const dialog = $("#keyboard-shortcuts-dialog");
+  if (dialog && !dialog.open) dialog.showModal();
+}
+
+$("#keyboard-help-button")?.addEventListener("click", openKeyboardHelp);
+$("#keyboard-shortcuts-close")?.addEventListener("click", () => $("#keyboard-shortcuts-dialog")?.close());
+$("#keyboard-shortcuts-dialog")?.addEventListener("click", event => {
+  if (event.target === event.currentTarget) event.currentTarget.close();
+});
+
 document.addEventListener("keydown", event => {
-  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+  const key = event.key.toLowerCase();
+  const search = $("#resource-search");
+  const helpDialog = $("#keyboard-shortcuts-dialog");
+  if ((event.ctrlKey || event.metaKey) && !event.altKey && key === "k") {
     event.preventDefault();
-    $("#resource-search")?.focus();
+    search?.focus();
+    search?.select();
+    return;
   }
-  if (event.key === "Escape" && document.activeElement === $("#resource-search") && $("#resource-search").value) {
-    $("#resource-search").value = "";
-    renderResources();
+  if (event.key === "Escape") {
+    if (helpDialog?.open) return; // Let the native dialog close itself accessibly.
+    if (document.activeElement === search && search?.value) {
+      search.value = "";
+      renderResources();
+    }
+    return;
+  }
+  if (helpDialog?.open || event.ctrlKey || event.metaKey || event.altKey) {
+    if (event.altKey && event.shiftKey && !event.ctrlKey && !event.metaKey) {
+      const destinations = { r: "#resources", p: "#practice", t: "#tools", d: "#study-dashboard" };
+      const destination = destinations[key];
+      if (destination) {
+        event.preventDefault();
+        document.querySelector(destination)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+    return;
+  }
+  if (isEditableTarget(event.target)) return;
+  if (key === "/" && search) {
+    event.preventDefault();
+    search.focus();
+  } else if (event.key === "?" ) {
+    event.preventDefault();
+    openKeyboardHelp();
   }
 });
 $("#level-filter").addEventListener("change", () => { selectedLevel = $("#level-filter").value; renderCatalogFilters(); renderResources(); });

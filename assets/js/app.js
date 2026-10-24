@@ -357,7 +357,7 @@ function renderCollections() {
 function renderHistory() {
   const root = $("#history-list");
   if (!root) return;
-  const history = getResourceHistory();
+  const history = getResourceHistory().filter(entry => resources.some(resource => resource.id === entry.resourceId));
   root.innerHTML = history.length ? history.slice(0, 10).map(entry => {
     const resource = resources.find(item => item.id === entry.resourceId);
     if (!resource) return "";

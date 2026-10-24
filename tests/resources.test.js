@@ -48,8 +48,17 @@ test("sample resources never claim official downloads and the official PDF entry
   assert.ok(samples.length > 0);
   assert.ok(samples.every(item => !item.downloadUrl && !item.officialSourceUrl && !item.pdfUrl));
   const officialPdfs = resources.filter(item => item.availability === "pdf");
-  assert.equal(officialPdfs.length, 1);
-  assert.equal(officialPdfs[0].id, "official-primary-framework-2016");
-  assert.equal(officialPdfs[0].type, "pedagogical-doc");
-  assert.equal(getDirectPdfUrl(officialPdfs[0]), officialPdfs[0].pdfUrl);
+  assert.equal(officialPdfs.length, 4);
+  const expectedPdfIds = [
+    "official-primary-framework-2016",
+    "official-primary-teaching-guide-2016",
+    "official-middle-english-guide-2016",
+    "official-secondary-english-curriculum-2015"
+  ];
+  assert.deepEqual(officialPdfs.map(item => item.id).sort(), expectedPdfIds.sort());
+  for (const item of officialPdfs) {
+    assert.equal(item.type, "pedagogical-doc");
+    assert.equal(getDirectPdfUrl(item), item.pdfUrl);
+    assert.ok(item.pdfUrl.startsWith("https://"));
+  }
 });

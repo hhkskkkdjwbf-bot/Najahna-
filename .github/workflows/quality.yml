@@ -54,6 +54,9 @@ jobs:
           test -s robots.txt
           test -s sitemap.xml
           grep -q 'rel="canonical"' index.html
+          grep -q 'href="https://hhkskkkdjwbf-bot.github.io/Najahna-/"' index.html
           grep -q 'property="og:title"' index.html
+          grep -q 'content="https://hhkskkkdjwbf-bot.github.io/Najahna-/"' index.html
           grep -q 'https://hhkskkkdjwbf-bot.github.io/Najahna-/sitemap.xml' robots.txt
           grep -q '<urlset' sitemap.xml
+          grep -q '<loc>https://hhkskkkdjwbf-bot.github.io/Najahna-/</loc>' sitemap.xml

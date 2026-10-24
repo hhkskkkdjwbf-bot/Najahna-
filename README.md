@@ -14,7 +14,7 @@
 - Search and combined filters for school level, school year, subject, and resource type, with a live result count and one-click filter reset.
 - Resource search checks Arabic, French, and English translations regardless of the interface language, while preserving accent/diacritic-tolerant matching.
 - Accessible resource detail dialog with translated level, year, subject, and explicit sample-only content status.
-- Browser-local favorites, revision history, personal notes, and revision collections, with controls to remove resources from folders and delete folders.
+- Browser-local learner profile with a stable Najahna ID, optional email, school year, generated initials avatar and color customization. The profile can be edited, its ID copied, or the profile deleted without deleting study records. It is explicitly device-local, not a verified login account.\n- Browser-local favorites, revision history, personal notes, and revision collections, with controls to remove resources from folders and delete folders.
 - Bulk cleanup for saved notes, revision history, favorites, and completed study sessions, with confirmation before destructive actions.
 - Weighted-average calculator (grades out of 20 and coefficients) with input validation.
 - Local study planner with dates, 15–90 minute sessions, completion tracking, deletion, and a remaining-minutes summary; it is stored only in the current browser.
@@ -77,7 +77,7 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 
 ## Important limitations
 
-- No verified server-backed account authentication, database, cloud synchronization, upload service, or production admin system is available yet.
+- No verified server-backed account authentication, database, cloud synchronization, upload service, or production admin system is available yet. The profile panel is local-only; it does not authenticate an email, store a password, send verification messages, recover passwords, or sync profiles between devices. Do not enter a password into a static-site prototype. A real email/password account requires a maintained auth provider or backend, server-side authorization, email verification, recovery flows, rate limits, and privacy controls before launch.
 - Favorites, notes, history, collections, study plans, and preferences are stored in the current browser using `localStorage`; they do not sync between devices and may be lost when browser data is cleared.
 - Notes can be deleted individually or cleared in bulk. Collections can be deleted or have individual resources removed. History, favorites, and completed study sessions have cleanup controls; destructive bulk actions ask for confirmation. A local JSON backup can export and restore Najahna-owned browser data, including favorites and language/theme preferences. Restoring replaces existing Najahna local data in that browser; keep backup files private.
 - Learning resources are illustrative samples. Real exam papers and courses must be sourced, checked, and added separately. Do not describe a sample as an official downloadable document.
@@ -90,7 +90,7 @@ Opening the HTML directly with `file://` may block ES module imports in some bro
 1. Populate the metadata catalog with verified, rights-cleared courses and BEM/BAC papers, year by year and subject by subject.
 2. Inspect individual source files and editions, then add file metadata, source attribution, permission notes, PDF validation, and automated link checks.
 3. Integrate the curated catalog into the visible resource search and detail pages.
-4. Build secure account authentication and database-backed folders, history, notes, and favorites.
+4. Connect the local learner profile to a secure authentication provider (email verification, password reset, optional passkeys/2FA) and a database with per-user authorization; migrate favorites, folders, notes, history, and study plans only after consent and tests.
 5. Add grade- and stream-specific semester/annual average rules with tests.
 6. Add accessible document previews and clear reporting for broken or incorrect content.
 7. Add SEO metadata, sitemap, robots policy, analytics with privacy controls, and performance budgets.

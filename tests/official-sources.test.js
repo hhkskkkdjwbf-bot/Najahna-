@@ -146,7 +146,7 @@ test("official ONPS catalogue has a grade-specific entry for every school year",
     assert.equal(source.pageType, "catalog");
     assert.equal(source.kind, "books");
     assert.equal(source.levels[0], grade.split("-")[0]);
-    assert.match(source.url, /^https:\/\/www\\.onps\\.dz\//);
+    assert.ok(source.url.startsWith("https://www.onps.dz/"));
     assert.ok(source.description.fr.includes("pas d’un PDF direct"));
   }
   assert.equal(validateOfficialSources(categories).valid, true);

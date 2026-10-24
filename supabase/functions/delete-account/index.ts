@@ -30,7 +30,7 @@ Deno.serve(async (request) => {
       global: { headers: { Authorization: authorization } },
       auth: { persistSession: false, autoRefreshToken: false }
     });
-    const { data: { user }, error: userError } = await userClient.auth.getUser();
+    const { data: { user }, error: userError } = await userClient.auth.getUser(authorization.slice("Bearer ".length));
     if (userError || !user) return Response.json({ error: "UNAUTHORIZED" }, { status: 401, headers: corsHeaders });
 
     const adminClient = createClient(url, serviceRoleKey, {

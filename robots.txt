@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hhkskkkdjwbf-bot.github.io/Najahna-/sitemap.xml

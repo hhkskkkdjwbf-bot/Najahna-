@@ -41,7 +41,8 @@ function setLanguage(next) {
     if (node.dataset.i18n === "heroTitle") node.innerHTML = value;
     else node.textContent = value;
   });
-  $$("[data-i18n-placeholder]").forEach(node => node.placeholder = t(node.dataset.i18nPlaceholder));
+  $("[data-i18n-placeholder]").forEach(node => node.placeholder = t(node.dataset.i18nPlaceholder));
+  $("[data-i18n-title]").forEach(node => node.title = t(node.dataset.i18nTitle));
   $("#level-filter option, #type-filter option, #study-plan-filter option, #official-source-level option, #official-source-kind option, #official-source-grade option, #official-source-subject option").forEach(option => { if (option.dataset.i18n) option.textContent = t(option.dataset.i18n); });
   renderLevelCounts();
   renderCatalogFilters();

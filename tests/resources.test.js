@@ -17,10 +17,15 @@ test("sample resource catalogue uses unique stable IDs and known types/levels", 
     assert.ok(["sample", "pdf"].includes(item.availability), "availability must be sample or a verified direct PDF");
     if (item.availability === "pdf") {
       assert.ok(getDirectPdfUrl(item), `${item.id}: PDF availability requires a direct PDF URL`);
-      assert.ok(item.officialSourceUrl?.startsWith("https://"), `${item.id}: official source attribution required`);
-      const sourceUrl = new URL(item.officialSourceUrl);
-      assert.ok(["education.gov.dz", "www.education.gov.dz"].includes(sourceUrl.hostname), `${item.id}: source attribution must use the official ministry domain`);
-      assert.notEqual(sourceUrl.pathname, "/", `${item.id}: source attribution must link to the actual document or a specific publication page`);
+      if (item.sourceName === "DzExams") {
+        assert.ok(item.sourceUrl?.startsWith("https://"), `${item.id}: external source attribution required`);
+        assert.equal(new URL(item.sourceUrl).hostname, "www.dzexams.com", `${item.id}: external source must be the attributed publisher`);
+      } else {
+        assert.ok(item.officialSourceUrl?.startsWith("https://"), `${item.id}: official source attribution required`);
+        const sourceUrl = new URL(item.officialSourceUrl);
+        assert.ok(["education.gov.dz", "www.education.gov.dz"].includes(sourceUrl.hostname), `${item.id}: source attribution must use the official ministry domain`);
+        assert.notEqual(sourceUrl.pathname, "/", `${item.id}: source attribution must link to the actual document or a specific publication page`);
+      }
     }
   }
 });

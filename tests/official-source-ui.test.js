@@ -164,7 +164,7 @@ test("offline cache version is unique and the app shell covers all local JavaScr
   assert.ok(version, "service worker cache name must be declared");
   assert.match(version, /^najahna-shell-v\\d+$/);
   assert.equal(serviceWorker.match(/const CACHE_NAME/g)?.length, 1);
-  const imports = [...app.matchAll(/from ["'](\\.\\.?\\/[^"']+\\.js)["']/g)].map(match => match[1]);
+  const imports = [...app.matchAll(/from ["'](\\.\\.?\\/[^"']+\\.js)["']/g)].map(match => match[1].replace(/^\\.\\.\\/\\.\\.\\/(src\\/)/, "./$1"));
   const cachedPaths = new Set([...serviceWorker.matchAll(/["'](\\.\\/[^"']+\\.js)["']/g)].map(match => match[1]));
   const missing = imports.filter(path => !cachedPaths.has(path));
   assert.deepEqual(missing, [], "every imported local JS module should be precached for offline use");

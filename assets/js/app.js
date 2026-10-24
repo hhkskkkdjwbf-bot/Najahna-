@@ -74,7 +74,7 @@ function saveFavorites(ids) {
     return true;
   } catch { showToast(t("storageError")); return false; }
 }
-function typeLabel(type) { return t(({lesson:"typeLesson",summary:"typeSummary",exercise:"typeExercise",exam:"typeExam",book:"typeBook",flashcard:"typeFlashcard",mindmap:"typeMindmap"})[type]); }
+function typeLabel(type) { return t(({lesson:"typeLesson",summary:"typeSummary",exercise:"typeExercise",exam:"typeExam",book:"typeBook",flashcard:"typeFlashcard",mindmap:"typeMindmap","pedagogical-doc":"typePedagogicalDoc"})[type] || "typeBook"); }
 
 function renderSchoolCalendar() {
   const root = $("#school-calendar-list");
@@ -237,7 +237,7 @@ function renderResourceDetails(id) {
   const item = resources.find(resource => resource.id === id);
   if (!item) return;
   activeResourceId = item.id;
-  $("#resource-dialog-type").textContent = `${typeLabel(item.type)} · ${t("sample")}`;
+  $("#resource-dialog-type").textContent = `${typeLabel(item.type)} · ${getDirectPdfUrl(item) ? t("pdfAvailable") : t("sample")}`;
   $("#resource-dialog-title").textContent = item.title[language];
   $("#resource-dialog-description").textContent = item.description[language];
   $("#resource-dialog-level").textContent = item.grade[language];

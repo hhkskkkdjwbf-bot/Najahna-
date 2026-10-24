@@ -601,7 +601,6 @@ export const officialSources = [
     en: "Official decision dated 9 September 2026 cancelling Decision No. 20 on schedules and coefficients in general and technological secondary education. This official page is not a direct PDF; check for later decisions."
   }
   },
-,
 {
   id: "onps-middle-math-year-1",
   publisher: "ONPS",

@@ -32,6 +32,7 @@ jobs:
           node --check scripts/audit-official-sources.js
           node --check src/utils/account-profile.js
           node --check src/utils/cloud-account.js
+          node --check src/utils/cloud-backup-validation.js
           node --check src/config/supabase.js
           node --check src/utils/quiz-history.js
           node --check service-worker.js

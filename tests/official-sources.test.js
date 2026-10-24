@@ -32,7 +32,7 @@ test("rejects duplicate IDs, non-official domains and missing translations", () 
 
 test("every source has an explicit reviewed date and source type", () => {
   for (const source of officialSources) {
-    assert.match(source.checkedOn, /^\\d{4}-\\d{2}-\\d{2}$/);
+    assert.match(source.checkedOn, /^\d{4}-\d{2}-\d{2}$/);
     assert.equal(new Date(`${source.checkedOn}T00:00:00Z`).toISOString().slice(0, 10), source.checkedOn);
     assert.ok(["catalog", "publication", "archive", "guide"].includes(source.pageType));
   }

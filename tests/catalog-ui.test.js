@@ -104,3 +104,24 @@ test("catalogue empty state offers a unique reset action and keyboard-accessible
     assert.match(translation, /searchShortcutHint:/);
   }
 });
+
+test("keyboard help exposes translated shortcuts and all navigation targets", () => {
+  assert.match(html, /id="keyboard-shortcuts-dialog"/);
+  assert.match(html, /id="keyboard-help-button"/);
+  assert.match(app, /key === "\/" && search/);
+  assert.match(app, /event\.key === "\?" \|\| event\.key === "؟"/);
+  for (const shortcut of ["r", "p", "t", "d"]) assert.ok(app.includes(`${shortcut}: "#`));
+  for (const file of ["en.js", "fr.js", "ar.js"]) {
+    const translation = readFileSync(new URL("../src/i18n/" + file, import.meta.url), "utf8");
+    for (const key of ["keyboardHelpTitle", "shortcutSlashHint", "shortcutResourcesHint", "shortcutPracticeHint", "shortcutToolsHint", "shortcutDashboardHint"]) {
+      assert.ok(translation.includes(key + ":"), `${file} is missing ${key}`);
+    }
+  }
+});
+
+test("keyboard shortcuts use query-all selection safely during language changes", () => {
+  assert.match(app, /\$\$\("\[data-i18n-title\]"\)\.forEach/);
+  assert.match(app, /\$\$\("\[data-i18n-aria-label\]"\)\.forEach/);
+  assert.match(app, /\$\$\("#level-filter option, #type-filter option/);
+  assert.doesNotMatch(app, /\$\("\[data-i18n-title\]"\)\.forEach/);
+});

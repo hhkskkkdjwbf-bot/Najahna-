@@ -294,7 +294,271 @@ export const officialSources = [
       fr: "Archive officielle de documents pédagogiques et réglementaires ; certaines publications sont anciennes et ne doivent pas être considérées comme le programme actuel sans vérification.",
       en: "Official archive of pedagogical and regulatory documents. Some entries are old and must not be treated as the current curriculum without checking."
     }
+  },
+{
+  "id": "onps-catalog-primary-1",
+  "publisher": "ONPS",
+  "kind": "books",
+  "levels": [
+    "primary"
+  ],
+  "grade": "primary-1",
+  "pageType": "catalog",
+  "checkedOn": "2026-10-24",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/1primaire",
+  "title": {
+    "ar": "فهرس الكتب المدرسية — السنة الأولى ابتدائي",
+    "fr": "Catalogue ONPS — 1re année primaire",
+    "en": "ONPS catalogue — Primary Year 1"
+  },
+  "description": {
+    "ar": "فهرس رسمي لكتب هذا المستوى على موقع الديوان الوطني للمطبوعات المدرسية. هذه صفحة فهرس وليست ملف PDF مباشرًا؛ تحقق من عنوان الكتاب والطبعة داخل الصفحة.",
+    "fr": "Catalogue officiel ONPS pour cette année scolaire. Il s’agit d’une page de catalogue, pas d’un PDF direct ; vérifiez le titre et l’édition sur la page source.",
+    "en": "Official ONPS catalogue for this school year. This is a catalogue page, not a direct PDF; verify the textbook title and edition on the source page."
   }
+},
+{
+  "id": "onps-catalog-primary-2",
+  "publisher": "ONPS",
+  "kind": "books",
+  "levels": [
+    "primary"
+  ],
+  "grade": "primary-2",
+  "pageType": "catalog",
+  "checkedOn": "2026-10-24",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/2primaire",
+  "title": {
+    "ar": "فهرس الكتب المدرسية — السنة الثانية ابتدائي",
+    "fr": "Catalogue ONPS — 2e année primaire",
+    "en": "ONPS catalogue — Primary Year 2"
+  },
+  "description": {
+    "ar": "فهرس رسمي لكتب هذا المستوى على موقع الديوان الوطني للمطبوعات المدرسية. هذه صفحة فهرس وليست ملف PDF مباشرًا؛ تحقق من عنوان الكتاب والطبعة داخل الصفحة.",
+    "fr": "Catalogue officiel ONPS pour cette année scolaire. Il s’agit d’une page de catalogue, pas d’un PDF direct ; vérifiez le titre et l’édition sur la page source.",
+    "en": "Official ONPS catalogue for this school year. This is a catalogue page, not a direct PDF; verify the textbook title and edition on the source page."
+  }
+},
+{
+  "id": "onps-catalog-primary-3",
+  "publisher": "ONPS",
+  "kind": "books",
+  "levels": [
+    "primary"
+  ],
+  "grade": "primary-3",
+  "pageType": "catalog",
+  "checkedOn": "2026-10-24",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/3primaire",
+  "title": {
+    "ar": "فهرس الكتب المدرسية — السنة الثالثة ابتدائي",
+    "fr": "Catalogue ONPS — 3e année primaire",
+    "en": "ONPS catalogue — Primary Year 3"
+  },
+  "description": {
+    "ar": "فهرس رسمي لكتب هذا المستوى على موقع الديوان الوطني للمطبوعات المدرسية. هذه صفحة فهرس وليست ملف PDF مباشرًا؛ تحقق من عنوان الكتاب والطبعة داخل الصفحة.",
+    "fr": "Catalogue officiel ONPS pour cette année scolaire. Il s’agit d’une page de catalogue, pas d’un PDF direct ; vérifiez le titre et l’édition sur la page source.",
+    "en": "Official ONPS catalogue for this school year. This is a catalogue page, not a direct PDF; verify the textbook title and edition on the source page."
+  }
+},
+{
+  "id": "onps-catalog-primary-4",
+  "publisher": "ONPS",
+  "kind": "books",
+  "levels": [
+    "primary"
+  ],
+  "grade": "primary-4",
+  "pageType": "catalog",
+  "checkedOn": "2026-10-24",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/4primaire",
+  "title": {
+    "ar": "فهرس الكتب المدرسية — السنة الرابعة ابتدائي",
+    "fr": "Catalogue ONPS — 4e année primaire",
+    "en": "ONPS catalogue — Primary Year 4"
+  },
+  "description": {
+    "ar": "فهرس رسمي لكتب هذا المستوى على موقع الديوان الوطني للمطبوعات المدرسية. هذه صفحة فهرس وليست ملف PDF مباشرًا؛ تحقق من عنوان الكتاب والطبعة داخل الصفحة.",
+    "fr": "Catalogue officiel ONPS pour cette année scolaire. Il s’agit d’une page de catalogue, pas d’un PDF direct ; vérifiez le titre et l’édition sur la page source.",
+    "en": "Official ONPS catalogue for this school year. This is a catalogue page, not a direct PDF; verify the textbook title and edition on the source page."
+  }
+},
+{
+  "id": "onps-catalog-primary-5",
+  "publisher": "ONPS",
+  "kind": "books",
+  "levels": [
+    "primary"
+  ],
+  "grade": "primary-5",
+  "pageType": "catalog",
+  "checkedOn": "2026-10-24",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/5primaire",
+  "title": {
+    "ar": "فهرس الكتب المدرسية — السنة الخامسة ابتدائي",
+    "fr": "Catalogue ONPS — 5e année primaire",
+    "en": "ONPS catalogue — Primary Year 5"
+  },
+  "description": {
+    "ar": "فهرس رسمي لكتب هذا المستوى على موقع الديوان الوطني للمطبوعات المدرسية. هذه صفحة فهرس وليست ملف PDF مباشرًا؛ تحقق من عنوان الكتاب والطبعة داخل الصفحة.",
+    "fr": "Catalogue officiel ONPS pour cette année scolaire. Il s’agit d’une page de catalogue, pas d’un PDF direct ; vérifiez le titre et l’édition sur la page source.",
+    "en": "Official ONPS catalogue for this school year. This is a catalogue page, not a direct PDF; verify the textbook title and edition on the source page."
+  }
+},
+{
+  "id": "onps-catalog-middle-1",
+  "publisher": "ONPS",
+  "kind": "books",
+  "levels": [
+    "middle"
+  ],
+  "grade": "middle-1",
+  "pageType": "catalog",
+  "checkedOn": "2026-10-24",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/cem/1cem",
+  "title": {
+    "ar": "فهرس الكتب المدرسية — السنة الأولى متوسط",
+    "fr": "Catalogue ONPS — 1re année moyenne",
+    "en": "ONPS catalogue — Middle School Year 1"
+  },
+  "description": {
+    "ar": "فهرس رسمي لكتب هذا المستوى على موقع الديوان الوطني للمطبوعات المدرسية. هذه صفحة فهرس وليست ملف PDF مباشرًا؛ تحقق من عنوان الكتاب والطبعة داخل الصفحة.",
+    "fr": "Catalogue officiel ONPS pour cette année scolaire. Il s’agit d’une page de catalogue, pas d’un PDF direct ; vérifiez le titre et l’édition sur la page source.",
+    "en": "Official ONPS catalogue for this school year. This is a catalogue page, not a direct PDF; verify the textbook title and edition on the source page."
+  }
+},
+{
+  "id": "onps-catalog-middle-2",
+  "publisher": "ONPS",
+  "kind": "books",
+  "levels": [
+    "middle"
+  ],
+  "grade": "middle-2",
+  "pageType": "catalog",
+  "checkedOn": "2026-10-24",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/cem/2cem",
+  "title": {
+    "ar": "فهرس الكتب المدرسية — السنة الثانية متوسط",
+    "fr": "Catalogue ONPS — 2e année moyenne",
+    "en": "ONPS catalogue — Middle School Year 2"
+  },
+  "description": {
+    "ar": "فهرس رسمي لكتب هذا المستوى على موقع الديوان الوطني للمطبوعات المدرسية. هذه صفحة فهرس وليست ملف PDF مباشرًا؛ تحقق من عنوان الكتاب والطبعة داخل الصفحة.",
+    "fr": "Catalogue officiel ONPS pour cette année scolaire. Il s’agit d’une page de catalogue, pas d’un PDF direct ; vérifiez le titre et l’édition sur la page source.",
+    "en": "Official ONPS catalogue for this school year. This is a catalogue page, not a direct PDF; verify the textbook title and edition on the source page."
+  }
+},
+{
+  "id": "onps-catalog-middle-3",
+  "publisher": "ONPS",
+  "kind": "books",
+  "levels": [
+    "middle"
+  ],
+  "grade": "middle-3",
+  "pageType": "catalog",
+  "checkedOn": "2026-10-24",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/cem/3cem",
+  "title": {
+    "ar": "فهرس الكتب المدرسية — السنة الثالثة متوسط",
+    "fr": "Catalogue ONPS — 3e année moyenne",
+    "en": "ONPS catalogue — Middle School Year 3"
+  },
+  "description": {
+    "ar": "فهرس رسمي لكتب هذا المستوى على موقع الديوان الوطني للمطبوعات المدرسية. هذه صفحة فهرس وليست ملف PDF مباشرًا؛ تحقق من عنوان الكتاب والطبعة داخل الصفحة.",
+    "fr": "Catalogue officiel ONPS pour cette année scolaire. Il s’agit d’une page de catalogue, pas d’un PDF direct ; vérifiez le titre et l’édition sur la page source.",
+    "en": "Official ONPS catalogue for this school year. This is a catalogue page, not a direct PDF; verify the textbook title and edition on the source page."
+  }
+},
+{
+  "id": "onps-catalog-middle-4",
+  "publisher": "ONPS",
+  "kind": "books",
+  "levels": [
+    "middle"
+  ],
+  "grade": "middle-4",
+  "pageType": "catalog",
+  "checkedOn": "2026-10-24",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/cem/4cem",
+  "title": {
+    "ar": "فهرس الكتب المدرسية — السنة الرابعة متوسط",
+    "fr": "Catalogue ONPS — 4e année moyenne",
+    "en": "ONPS catalogue — Middle School Year 4"
+  },
+  "description": {
+    "ar": "فهرس رسمي لكتب هذا المستوى على موقع الديوان الوطني للمطبوعات المدرسية. هذه صفحة فهرس وليست ملف PDF مباشرًا؛ تحقق من عنوان الكتاب والطبعة داخل الصفحة.",
+    "fr": "Catalogue officiel ONPS pour cette année scolaire. Il s’agit d’une page de catalogue, pas d’un PDF direct ; vérifiez le titre et l’édition sur la page source.",
+    "en": "Official ONPS catalogue for this school year. This is a catalogue page, not a direct PDF; verify the textbook title and edition on the source page."
+  }
+},
+{
+  "id": "onps-catalog-secondary-1",
+  "publisher": "ONPS",
+  "kind": "books",
+  "levels": [
+    "secondary"
+  ],
+  "grade": "secondary-1",
+  "pageType": "catalog",
+  "checkedOn": "2026-10-24",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/lycee/1lycee",
+  "title": {
+    "ar": "فهرس الكتب المدرسية — السنة الأولى ثانوي",
+    "fr": "Catalogue ONPS — 1re année secondaire",
+    "en": "ONPS catalogue — Secondary Year 1"
+  },
+  "description": {
+    "ar": "فهرس رسمي لكتب هذا المستوى على موقع الديوان الوطني للمطبوعات المدرسية. هذه صفحة فهرس وليست ملف PDF مباشرًا؛ تحقق من عنوان الكتاب والطبعة داخل الصفحة.",
+    "fr": "Catalogue officiel ONPS pour cette année scolaire. Il s’agit d’une page de catalogue, pas d’un PDF direct ; vérifiez le titre et l’édition sur la page source.",
+    "en": "Official ONPS catalogue for this school year. This is a catalogue page, not a direct PDF; verify the textbook title and edition on the source page."
+  }
+},
+{
+  "id": "onps-catalog-secondary-2",
+  "publisher": "ONPS",
+  "kind": "books",
+  "levels": [
+    "secondary"
+  ],
+  "grade": "secondary-2",
+  "pageType": "catalog",
+  "checkedOn": "2026-10-24",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/lycee/2lycee",
+  "title": {
+    "ar": "فهرس الكتب المدرسية — السنة الثانية ثانوي",
+    "fr": "Catalogue ONPS — 2e année secondaire",
+    "en": "ONPS catalogue — Secondary Year 2"
+  },
+  "description": {
+    "ar": "فهرس رسمي لكتب هذا المستوى على موقع الديوان الوطني للمطبوعات المدرسية. هذه صفحة فهرس وليست ملف PDF مباشرًا؛ تحقق من عنوان الكتاب والطبعة داخل الصفحة.",
+    "fr": "Catalogue officiel ONPS pour cette année scolaire. Il s’agit d’une page de catalogue, pas d’un PDF direct ; vérifiez le titre et l’édition sur la page source.",
+    "en": "Official ONPS catalogue for this school year. This is a catalogue page, not a direct PDF; verify the textbook title and edition on the source page."
+  }
+},
+{
+  "id": "onps-catalog-secondary-3",
+  "publisher": "ONPS",
+  "kind": "books",
+  "levels": [
+    "secondary"
+  ],
+  "grade": "secondary-3",
+  "pageType": "catalog",
+  "checkedOn": "2026-10-24",
+  "url": "https://www.onps.dz/category/%D8%A7%D9%84%D9%83%D8%AA%D8%A8/scolaires/lycee/3lycee",
+  "title": {
+    "ar": "فهرس الكتب المدرسية — السنة الثالثة ثانوي",
+    "fr": "Catalogue ONPS — 3e année secondaire",
+    "en": "ONPS catalogue — Secondary Year 3"
+  },
+  "description": {
+    "ar": "فهرس رسمي لكتب هذا المستوى على موقع الديوان الوطني للمطبوعات المدرسية. هذه صفحة فهرس وليست ملف PDF مباشرًا؛ تحقق من عنوان الكتاب والطبعة داخل الصفحة.",
+    "fr": "Catalogue officiel ONPS pour cette année scolaire. Il s’agit d’une page de catalogue, pas d’un PDF direct ; vérifiez le titre et l’édition sur la page source.",
+    "en": "Official ONPS catalogue for this school year. This is a catalogue page, not a direct PDF; verify the textbook title and edition on the source page."
+  }
+}
 ];
 
 function isValidISODate(value) {
@@ -320,11 +584,11 @@ export function validateOfficialSources(records = officialSources) {
     if (!officialSourceKinds.includes(source.kind)) fail("unsupported source kind");
     if (!Array.isArray(source.levels) || !source.levels.length || source.levels.some(level => !["primary", "middle", "secondary"].includes(level))) fail("invalid school levels");
     if (!["catalog", "publication", "archive", "guide"].includes(source.pageType)) fail("invalid page type");
-    const allowedGrades = ["primary-3", "primary-4", "primary-5", "middle-4", "secondary-1"];
+    const allowedGrades = ["primary-1", "primary-2", "primary-3", "primary-4", "primary-5", "middle-1", "middle-2", "middle-3", "middle-4", "secondary-1", "secondary-2", "secondary-3"];
     const allowedSubjects = ["arabic", "english", "french", "physics", "islamic-studies", "history"];
     if (source.grade !== undefined && !allowedGrades.includes(source.grade)) fail("invalid grade");
     if (source.subject !== undefined && !allowedSubjects.includes(source.subject)) fail("invalid subject");
-    if ((source.grade === undefined) !== (source.subject === undefined)) fail("grade and subject must be provided together");
+    if (source.pageType === "publication" && (source.grade === undefined || source.subject === undefined)) fail("publication entries require grade and subject metadata");
     if (source.grade && !source.levels?.includes(source.grade.split("-")[0])) fail("grade does not match declared school levels");
     if (source.pageType === "publication" && (!source.grade || !source.subject)) fail("publication entries require grade and subject metadata");
     if (typeof source.url !== "string") fail("URL is required");

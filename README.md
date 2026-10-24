@@ -18,6 +18,7 @@ The Supabase account integration is prepared but remains disabled until the proj
 - Search and combined filters for school level, school year, subject, and resource type, with a live result count and one-click filter reset.
 - Resource search checks Arabic, French, and English translations regardless of the interface language, while preserving accent/diacritic-tolerant matching.
 - Accessible resource detail dialog with translated level, year, subject, and explicit sample-only content status.
+- In-page PDF reading for direct PDF resources, with a separate reader dialog for curated source records that explicitly provide a direct PDF file. The library currently includes five Ministry-hosted pedagogical PDFs and five attributed PDFs hosted by DzExams; external embedding may be blocked by the publisher, and the latter documents’ reuse rights are not confirmed.
 - Browser-local learner profile with a stable Najahna ID, optional email, school year, generated initials avatar and color customization. The profile can be edited, its ID copied, or the profile deleted without deleting study records. It is explicitly device-local, not a verified login account.\n- Browser-local favorites, revision history, personal notes, and revision collections, with controls to remove resources from folders and delete folders.
 - Bulk cleanup for saved notes, revision history, favorites, and completed study sessions, with confirmation before destructive actions.
 - Weighted-average calculator (grades out of 20 and coefficients) with input validation.

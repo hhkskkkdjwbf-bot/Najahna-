@@ -263,3 +263,36 @@ body.dark .study-task-status.is-today{background:#2d4021;color:#d4f6a8}
 .daily-challenge-complete{margin:12px 0}
 .daily-challenge-check{display:grid;place-items:center;flex:0 0 42px;height:42px;border-radius:50%;background:var(--green);color:white;font-size:22px}
 @media(max-width:640px){.learner-profile-form{grid-template-columns:1fr}.daily-challenge-options{grid-template-columns:1fr}.daily-challenge-heading{flex-direction:column}}
+
+
+/* Daily challenge: clearer hierarchy, calmer surfaces, and strong keyboard focus. */
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px solid color-mix(in srgb,var(--green) 68%,white);outline-offset:3px}
+.daily-challenge-panel{position:relative;overflow:hidden;border:1px solid var(--line);background:linear-gradient(145deg,var(--surface),color-mix(in srgb,var(--surface-soft) 62%,var(--surface)));box-shadow:var(--shadow)}
+.daily-challenge-panel::before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:4px;background:linear-gradient(180deg,var(--green),var(--lime))}
+.daily-challenge-panel .tool-heading{align-items:center;margin-bottom:20px}
+.daily-challenge-panel .tool-icon{display:grid;place-items:center;width:46px;height:46px;border-radius:15px;background:color-mix(in srgb,var(--lime) 32%,var(--surface));font-size:23px}
+.learner-profile-form{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.learner-profile-form input:focus,.learner-profile-form select:focus{border-color:var(--green);box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 14%,transparent);outline:none}
+.daily-challenge-heading{padding:14px 16px;border-radius:14px;background:var(--surface-soft)}
+.daily-challenge-question{position:relative;background:var(--surface);transition:border-color .18s,box-shadow .18s,transform .18s}
+.daily-challenge-question:focus-within{border-color:var(--green);box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 10%,transparent)}
+.daily-challenge-question legend{max-width:100%}
+.daily-challenge-question>p{margin:12px 0 16px;line-height:1.85}
+.daily-challenge-option{min-height:46px;line-height:1.6;transition:background .15s,border-color .15s}
+.daily-challenge-option:hover{border-color:color-mix(in srgb,var(--green) 55%,var(--line));background:var(--surface-soft)}
+.daily-challenge-option:has(input:checked){box-shadow:inset 0 0 0 1px var(--green)}
+#daily-challenge-form>.button{width:100%;min-height:48px;margin-top:4px}
+.daily-challenge-empty,.daily-challenge-complete{border:1px solid var(--line)}
+.keyboard-help-trigger{font-weight:800;font-size:16px}
+.keyboard-shortcuts-dialog{width:min(560px,calc(100vw - 28px));max-height:min(84vh,760px);overflow:auto;border:1px solid var(--line);border-radius:24px;padding:24px;background:var(--surface);color:var(--text);box-shadow:0 24px 90px #0003}
+.keyboard-shortcuts-dialog::backdrop{background:#101a15a6;backdrop-filter:blur(4px)}
+.keyboard-dialog-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px}
+.keyboard-dialog-heading h2{font-size:clamp(23px,4vw,30px);letter-spacing:-.5px;margin:8px 0}
+.keyboard-dialog-heading p{color:var(--muted);font-size:13px;line-height:1.7;margin:0;max-width:390px}
+.keyboard-shortcut-list{list-style:none;padding:0;margin:0 0 20px;display:grid;gap:6px}
+.keyboard-shortcut-list li{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}
+.keyboard-shortcut-list li:last-child{border-bottom:0}
+.keyboard-shortcut-list kbd{flex-shrink:0;padding:5px 9px;border:1px solid var(--line);border-bottom-width:2px;border-radius:8px;background:var(--surface-soft);font:600 11px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:nowrap}
+.keyboard-shortcuts-dialog>.button{width:100%}
+@media(max-width:480px){.keyboard-shortcuts-dialog{padding:18px;border-radius:18px}.keyboard-shortcut-list li{align-items:flex-start;flex-direction:column;gap:7px}.keyboard-shortcut-list kbd{align-self:flex-start}}
+@media(prefers-reduced-motion:reduce){.daily-challenge-question,.daily-challenge-option{transition:none}}

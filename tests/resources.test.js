@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { resources, resourceTypes, schoolLevels } from "../src/data/resources.js";
 import { schoolYears } from "../src/data/curriculum.js";
 import { getDirectPdfUrl } from "../src/utils/pdf-resources.js";
+import { enrichResourceCatalog, resourceDescriptionMinimumLength, validateResourceCatalog } from "../src/data/resources.js";
 
 const supportedLanguages = ["ar", "fr", "en"];
 
@@ -65,4 +66,48 @@ test("sample resources never claim official downloads and the official PDF entry
     assert.equal(getDirectPdfUrl(item), item.pdfUrl);
     assert.ok(item.pdfUrl.startsWith("https://"));
   }
+});
+
+
+test("every resource has sufficiently detailed descriptions in all supported languages", () => {
+  assert.equal(resourceDescriptionMinimumLength, 90);
+  assert.deepEqual(validateResourceCatalog(), []);
+  for (const item of resources) {
+    for (const language of supportedLanguages) {
+      assert.ok(Array.from(item.description[language].trim()).length >= resourceDescriptionMinimumLength, `${item.id}: description too short in ${language}`);
+      assert.ok(item.title[language].trim().length >= 8, `${item.id}: title too vague in ${language}`);
+    }
+  }
+});
+
+test("resource enrichment adds type and availability guidance without changing source identity", () => {
+  const source = {
+    id: "quality-fixture", level: "primary", grades: ["1"], type: "exercise", subject: "math",
+    title: { ar: "عنوان تجريبي", fr: "Exercice de démonstration", en: "Demonstration exercise" },
+    description: { ar: "وصف قصير", fr: "Description courte", en: "Short description" },
+    grade: { ar: "السنة الأولى ابتدائي", fr: "1re année primaire", en: "Primary Year 1" }, availability: "sample"
+  };
+  const [result] = enrichResourceCatalog([source]);
+  assert.equal(result.id, source.id);
+  assert.equal(result.subject, source.subject);
+  assert.ok(result.description.fr.includes("correction"));
+  assert.ok(result.description.en.includes("demonstration"));
+  assert.ok(result.description.fr.length > source.description.fr.length);
+  assert.equal(source.description.fr, "Description courte", "enrichment must not mutate source data");
+});
+
+test("metadata validator catches vague descriptions, invalid subjects, and mismatched grades", () => {
+  const [source] = enrichResourceCatalog([{
+    id: "invalid-metadata", level: "primary", grades: ["4"], type: "lesson", subject: "unknown-subject",
+    title: { ar: "عنوان تجريبي", fr: "Titre de démonstration", en: "Demonstration title" },
+    description: { ar: "وصف", fr: "Description", en: "Description" },
+    grade: { ar: "الابتدائي", fr: "Primaire", en: "Primary" }, availability: "sample"
+  }]);
+  source.description = { ar: "قصير", fr: "Court", en: "Short" };
+  const errors = validateResourceCatalog([source]);
+  assert.ok(errors.some(error => error.includes("unknown subject")));
+  assert.ok(errors.some(error => error.includes("grade 4 does not match level primary")) === false, "grade 4 is valid for primary; use a different level to test mismatch");
+  source.level = "middle";
+  assert.ok(validateResourceCatalog([source]).some(error => error.includes("does not match level middle")));
+  assert.ok(validateResourceCatalog([source]).some(error => error.includes("description missing/short")));
 });

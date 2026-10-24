@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { dailyChallengeBank } from "../src/data/daily-challenge.js";
+import { schoolYears } from "../src/data/curriculum.js";
 import { getDailyChallengeQuestions, gradeDailyChallenge, isValidChallengeDate } from "../src/utils/daily-challenge.js";
 import { getDailyChallengeCompletion, getLearnerProfile, saveDailyChallengeCompletion, saveLearnerProfile } from "../src/utils/learner-profile.js";
 
@@ -87,7 +88,6 @@ test("corrupted stored challenge results are ignored instead of shown as valid",
 });
 
 test("every school year has a multi-subject daily challenge with complete localized questions", () => {
-  const { schoolYears } = await import("../src/data/curriculum.js");
   for (const year of schoolYears) {
     const questions = getDailyChallengeQuestions(dailyChallengeBank, year.id, "2026-10-24");
     assert.ok(questions.length >= 6, `${year.id} should have at least six daily questions, got ${questions.length}`);

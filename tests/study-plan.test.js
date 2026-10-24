@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { clearCompletedStudyTasks, createStudyTask, removeStudyTask, toggleStudyTask } from "../src/utils/study-plan.js";
+import { clearCompletedStudyTasks, createStudyTask, removeStudyTask, rescheduleOverdueStudyTasks, toggleStudyTask } from "../src/utils/study-plan.js";
 
 test("creates a clean study task with a supported duration", () => {
   const task = createStudyTask({ id: "task-1", subject: "  Mathematics  ", date: "2026-10-23", minutes: 25 });
@@ -49,4 +49,25 @@ test("sorts unfinished study work by urgency and leaves completed work last", as
     "late2", "late", "today", "future", "done"
   ]);
   assert.deepEqual(tasks.map(task => task.id), ["future", "done", "today", "late", "late2"]);
+});
+
+
+test("reschedules only overdue unfinished sessions to today", () => {
+  const tasks = [
+    { id: "late", date: "2026-10-20", completed: false, subject: "Math" },
+    { id: "done", date: "2026-10-18", completed: true, subject: "Arabic" },
+    { id: "today", date: "2026-10-24", completed: false, subject: "French" },
+    { id: "future", date: "2026-10-27", completed: false, subject: "Science" }
+  ];
+  const result = rescheduleOverdueStudyTasks(tasks, "2026-10-24");
+  assert.deepEqual(result.map(task => task.date), ["2026-10-24", "2026-10-18", "2026-10-24", "2026-10-27"]);
+  assert.deepEqual(tasks.map(task => task.date), ["2026-10-20", "2026-10-18", "2026-10-24", "2026-10-27"]);
+  assert.notEqual(result[0], tasks[0]);
+  assert.equal(result[1], tasks[1]);
+});
+
+test("rescheduling rejects invalid target dates and malformed task lists", () => {
+  assert.throws(() => rescheduleOverdueStudyTasks([], "2026-02-31"), /target date/);
+  assert.throws(() => rescheduleOverdueStudyTasks([], "today"), /target date/);
+  assert.throws(() => rescheduleOverdueStudyTasks(null, "2026-10-24"), /array/);
 });

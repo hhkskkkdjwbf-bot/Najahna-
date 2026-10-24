@@ -45,3 +45,24 @@ test("restore rejects duplicate keys", () => {
   const json = JSON.stringify({ app: "Najahna", version: 1, entries: [["najahna:notes", "a"], ["najahna:notes", "b"]] });
   assert.throws(() => restoreBackup(json, makeStorage()), /duplicate/);
 });
+
+test("learner profile and daily challenge history are included in backups", () => {
+  const profile = JSON.stringify({ name: "Sam", gradeId: "primary-1" });
+  const completions = JSON.stringify({ "primary-1": { "2026-10-24": { score: 8, total: 10 } } });
+  const source = makeStorage({
+    "najahna:learner-profile": profile,
+    "najahna:daily-challenge-completions": completions,
+    "third-party:session": "must-not-export"
+  });
+  const backup = createBackup(source, "2026-10-24T10:00:00.000Z");
+  assert.deepEqual(backup.entries, [
+    ["najahna:learner-profile", profile],
+    ["najahna:daily-challenge-completions", completions]
+  ]);
+
+  const destination = makeStorage({ "najahna:learner-profile": "old" });
+  restoreBackup(JSON.stringify(backup), destination);
+  assert.equal(destination.getItem("najahna:learner-profile"), profile);
+  assert.equal(destination.getItem("najahna:daily-challenge-completions"), completions);
+  assert.equal(destination.getItem("third-party:session"), null);
+});

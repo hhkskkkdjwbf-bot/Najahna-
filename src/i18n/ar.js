@@ -27,4 +27,5 @@ historyTitle:"سجل المراجعة",historyIntro:"آخر الموارد ال�
  progressNextWeek:"جلسات خلال الأيام السبعة القادمة",progressOverdue:"الجلسات المتأخرة",
   storageError:"تعذّر حفظ التغييرات في هذا المتصفح. تحقّق من مساحة التخزين.",progressRate:"نسبة الإنجاز",progressCompleted:"الجلسات المكتملة",progressMinutes:"دقائق المراجعة المنجزة",progressToday:"جلسات اليوم",
   historyResume:"متابعة المراجعة",
+  quizHistoryTrend:"الاتجاه الأخير (آخر 3 مقابل 3 السابقة)",
 };

@@ -37,3 +37,10 @@ test("all translation keys referenced directly by page markup exist in each lang
 test("translation fallback remains defined and does not expose missing-key markers", () => {
   assert.match(app, /translations\[language\]\?\.\[key\]\s*\?\?\s*translations\.ar\[key\]\s*\?\?\s*key/);
 });
+
+
+test("French interface copy uses clear, natural wording for worksheet actions", async () => {
+  const french = await readFile(new URL("../src/i18n/fr.js", import.meta.url), "utf8");
+  assert.match(french, /yearCategoriesIntro:"Accède directement aux ressources de ton année\."/);
+  assert.match(french, /Utilise le bouton d’impression pour imprimer la fiche ou l’enregistrer au format PDF\./);
+});

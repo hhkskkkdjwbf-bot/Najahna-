@@ -32,7 +32,7 @@ test("application imports and renders the curated source directory and wires eac
 });
 
 test("offline shell caches every newly imported local data module", () => {
-  assert.match(serviceWorker, /najahna-shell-v12/);
+  assert.match(serviceWorker, /najahna-shell-v13/);
   assert.match(serviceWorker, /\.\/src\/data\/official-sources\.js/);
   assert.match(serviceWorker, /\.\/src\/data\/school-calendar\.js/);
   assert.match(serviceWorker, /\.\/src\/utils\/quiz-history\.js/);

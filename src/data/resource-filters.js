@@ -7,7 +7,12 @@ function normalizeSearchText(value) {
     .normalize("NFD")
     .replace(/\p{M}/gu, "")
     .replace(/ـ/g, "")
+    .replace(/[أإآٱ]/g, "ا")
+    .replace(/[ىي]/g, match => match === "ى" ? "ي" : match)
+    .replace(/[ی]/g, "ي")
+    .replace(/[ک]/g, "ك")
     .toLocaleLowerCase()
+    .replace(/\s+/g, " ")
     .trim();
 }
 

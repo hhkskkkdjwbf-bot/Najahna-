@@ -577,7 +577,7 @@ export const officialSources = [
   description: {
     ar: "بيان رسمي حول ترتيبات الموسم 2026–2027. وفق توضيح الوزارة في سبتمبر 2026، تمت المصادقة على ترتيبات التعليم الابتدائي فقط، وجُمّدت الترتيبات الأخرى إلى حين المصادقة عليها من مجلس الوزراء. هذه صفحة ويب وليست ملف PDF.",
     fr: "Annonce officielle sur les dispositions de 2026–2027. Selon la clarification ministérielle de septembre 2026, seules les dispositions du primaire ont été approuvées ; les autres ont été suspendues jusqu’à leur validation par le Conseil des ministres. Cette page web n’est pas un PDF.",
-    en: "Official ministry announcement on 2026–2027 arrangements, including primary language progression and secondary-school organization. This is a web page, not a PDF; check for newer ministry updates before relying on it."
+    en: "Official ministry announcement on 2026–2027 arrangements. The ministry clarified in September 2026 that only primary-level arrangements had been approved; other arrangements were suspended pending Council of Ministers approval. This is a web page, not a direct PDF."
   }
 }
 ,

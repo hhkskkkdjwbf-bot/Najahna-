@@ -816,7 +816,6 @@ export const officialSources = [
   kind: "books",
   levels: ["primary", "middle", "secondary"],
   pageType: "guide",
-  publishedOn: "2022-10-24",
   checkedOn: "2026-10-24",
   url: "https://www.onps.dz/guide.pdf",
   title: {

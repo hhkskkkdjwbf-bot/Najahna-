@@ -176,6 +176,21 @@ test("service worker removes only obsolete Najahna shell caches and keeps the cu
   assert.match(serviceWorker, /await self\.clients\.claim\(\)/);
 });
 
+test("direct PDF source records open in an accessible in-page reader rather than navigating away", () => {
+  assert.match(html, /id="official-pdf-dialog"/);
+  assert.match(html, /id="official-pdf-frame"/);
+  assert.match(app, /const pdfUrl = getDirectPdfUrl\(source\)/);
+  assert.match(app, /data-official-pdf=/);
+  assert.match(app, /dialog\.showModal\(\)/);
+  assert.match(app, /removeAttribute\("src"\)/);
+  assert.match(app, /parsed\.protocol !== "https:" && parsed\.origin !== location\.origin/);
+  for (const [lang, content] of [["Arabic",arabic],["French",french],["English",english]]) {
+    for (const key of ["officialPdfAvailable", "officialPdfRead", "officialPdfReaderNote", "officialPdfClose"]) {
+      assert.ok(content.includes(key + ":"), lang + " translation missing " + key);
+    }
+  }
+});
+
 test("official source cards distinguish publisher verification from downloadable-file availability", () => {
   assert.match(app, /t\("officialSourceRightsUnknown"\)/);
   assert.match(app, /t\("officialSourcePageOnly"\)/);

@@ -255,6 +255,15 @@ function renderCatalogFilters() {
   if ([...subjectSelect.options].some(option => option.value === previousSubject)) subjectSelect.value = previousSubject;
   renderYearCategories();
 }
+function syncQuickTypeFilters() {
+  const selected = $("#type-filter")?.value || "all";
+  $(".resource-quick-filter").forEach(button => {
+    const active = button.dataset.quickType === selected;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+}
+
 function renderResources() {
   const query = $("#resource-search").value.trim().toLocaleLowerCase();
   const level = $("#level-filter").value;
@@ -269,6 +278,7 @@ function renderResources() {
     <div class="resource-meta"><span>${escapeHTML(item.grade[language])}</span><span>${escapeHTML(subjectCatalog.find(subject => subject.id === item.subject)?.label?.[language] || item.subject)}</span></div><div class="resource-actions">${getDirectPdfUrl(item) ? '<button type="button" class="button button-primary button-small" data-read-pdf="' + item.id + '">' + t("readPdf") + '</button>' : ""}<button type="button" class="button button-outline button-small" data-details-resource="${item.id}">${t("viewDetails")}</button><button type="button" class="button button-outline button-small" data-view-resource="${item.id}">${t("markViewed")}</button><button type="button" class="button button-quiet button-small" data-collect-resource="${item.id}">${t("addToCollection")}</button></div></article>`).join("");
   $("#empty-state").hidden = filtered.length !== 0;
   $("#resource-count").textContent = t("resourceCount").replace("{count}", String(filtered.length));
+  syncQuickTypeFilters();
 }
 function renderResourceDetails(id) {
   const item = resources.find(resource => resource.id === id);
@@ -486,6 +496,13 @@ $("#year-category-grid")?.addEventListener("click", event => {
 });
 $("#subject-filter")?.addEventListener("change", renderResources);
 $("#type-filter").addEventListener("change", renderResources);
+$("#resource-quick-filters")?.addEventListener("click", event => {
+  const button = event.target.closest("[data-quick-type]");
+  if (!button) return;
+  $("#type-filter").value = button.dataset.quickType;
+  renderResources();
+  $("#resources").scrollIntoView({ behavior: "smooth", block: "start" });
+});
 $("#study-dashboard")?.addEventListener("click", event => {
   const button = event.target.closest("[data-dashboard-resource]");
   if (!button) return;

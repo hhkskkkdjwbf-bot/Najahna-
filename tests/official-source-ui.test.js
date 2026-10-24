@@ -9,6 +9,23 @@ const arabic = readFileSync(new URL("../src/i18n/ar.js", import.meta.url), "utf8
 const french = readFileSync(new URL("../src/i18n/fr.js", import.meta.url), "utf8");
 const english = readFileSync(new URL("../src/i18n/en.js", import.meta.url), "utf8");
 
+test("personalized study dashboard aggregates local progress and provides a useful next action", () => {
+  for (const id of ["study-dashboard", "dashboard-completed", "dashboard-quiz-average", "dashboard-favorites", "dashboard-minutes", "dashboard-focus"]) {
+    assert.match(html, new RegExp('id="' + id + '"'), 'missing #' + id);
+  }
+  assert.match(app, /function renderStudyDashboard\(\)/);
+  assert.match(app, /getStudyTasks\(\)/);
+  assert.match(app, /getQuizHistory\(\)/);
+  assert.match(app, /getFavorites\(\)/);
+  assert.match(app, /getResourceHistory\(\)/);
+  assert.match(app, /data-dashboard-resource/);
+  for (const [lang, content] of [["Arabic",arabic],["French",french],["English",english]]) {
+    for (const key of ["dashboardTitle", "dashboardQuizAverage", "dashboardTodayTask", "dashboardResume", "dashboardLocalNote"]) {
+      assert.ok(content.includes(key + ":"), lang + " translation missing " + key);
+    }
+  }
+});
+
 test("official-source directory includes all controls and accessible result containers", () => {
   for (const id of ["official-source-search", "official-source-level", "official-source-kind", "official-source-grade", "official-source-subject", "reset-official-source-filters", "official-source-count", "official-source-grid", "official-source-empty"]) {
     assert.match(html, new RegExp(`id="${id}"`), `missing #${id}`);

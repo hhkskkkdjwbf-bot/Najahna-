@@ -599,9 +599,8 @@ export const officialSources = [
     ar: "قرار رسمي مؤرخ في 9 سبتمبر 2026 يلغي القرار رقم 20 المتعلق بالمواقيت والمعاملات في التعليم الثانوي العام والتكنولوجي. صفحة القرار الرسمية وليست ملف PDF مباشرًا؛ اعتمد النص الرسمي وأي تحديث لاحق.",
     fr: "Décision officielle du 9 septembre 2026 annulant la décision n° 20 sur les horaires et coefficients du secondaire général et technologique. La page officielle n’est pas un PDF direct ; vérifiez tout texte ultérieur.",
     en: "Official decision dated 9 September 2026 cancelling Decision No. 20 on schedules and coefficients in general and technological secondary education. This official page is not a direct PDF; check for later decisions."
+  }
   },
-}
-
   {
     id: "official-school-calendar-2026-2027",
     publisher: "Prime Minister Office",

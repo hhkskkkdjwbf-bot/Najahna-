@@ -35,3 +35,18 @@ test("all notes can be cleared without affecting unrelated browser keys", () => 
   assert.equal(clearNotes(), true);
   assert.deepEqual(getNotes(), []);
 });
+
+
+test("malformed and duplicate saved notes are ignored safely", () => {
+  const values = installStorage();
+  values.set("najahna:notes", JSON.stringify([
+    { id: "good", title: "  Maths ", body: " Review fractions ", updatedAt: "2026-10-22T10:00:00.000Z" },
+    { id: "good", title: "Duplicate", body: "Should be ignored", updatedAt: "2026-10-22T10:00:00.000Z" },
+    { id: "broken-date", title: "History", body: "Dates", updatedAt: "not-a-date" },
+    { id: "empty", title: " ", body: "Text", updatedAt: "2026-10-22T10:00:00.000Z" },
+    null
+  ]));
+  assert.deepEqual(getNotes(), [{
+    id: "good", resourceId: null, title: "Maths", body: "Review fractions", updatedAt: "2026-10-22T10:00:00.000Z"
+  }]);
+});

@@ -224,6 +224,34 @@
       <button class="button button-primary" id="account-save" type="submit">Enregistrer le profil</button>
       <button class="button button-outline" id="account-delete" type="button" hidden>Supprimer le profil local</button>
     </form>
+    <section class="cloud-account-panel" aria-labelledby="cloud-account-title">
+      <h3 id="cloud-account-title">Connexion sécurisée</h3>
+      <p id="cloud-account-status" class="cloud-account-status" role="status" aria-live="polite">La connexion cloud doit être configurée par le propriétaire du site avant activation.</p>
+      <form id="cloud-auth-form" class="account-form">
+        <label for="cloud-auth-email" id="cloud-auth-email-label">E-mail du compte</label>
+        <input id="cloud-auth-email" name="email" type="email" autocomplete="email" maxlength="254" required>
+        <label for="cloud-auth-password" id="cloud-auth-password-label">Mot de passe</label>
+        <input id="cloud-auth-password" name="password" type="password" autocomplete="current-password" minlength="10" maxlength="128" required>
+        <label for="cloud-auth-password-confirm" id="cloud-auth-confirm-label" hidden>Confirmer le mot de passe</label>
+        <input id="cloud-auth-password-confirm" name="passwordConfirm" type="password" autocomplete="new-password" minlength="10" maxlength="128" hidden>
+        <div class="cloud-auth-actions">
+          <button id="cloud-auth-signin" class="button button-primary" type="button">Se connecter</button>
+          <button id="cloud-auth-signup" class="button button-outline" type="button">Créer un compte</button>
+          <button id="cloud-auth-reset" class="button button-quiet" type="button">Mot de passe oublié ?</button>
+          <button id="cloud-auth-update" class="button button-primary" type="button" hidden>Enregistrer le nouveau mot de passe</button>
+        </div>
+      </form>
+      <div id="cloud-account-session" class="cloud-account-session" hidden>
+        <p id="cloud-account-user"></p>
+        <div class="cloud-auth-actions">
+          <button id="cloud-sync-upload" class="button button-outline" type="button">Sauvegarder cet appareil dans le cloud</button>
+          <button id="cloud-sync-download" class="button button-outline" type="button">Restaurer les données cloud sur cet appareil</button>
+          <button id="cloud-auth-signout" class="button button-quiet" type="button">Se déconnecter</button>
+          <button id="cloud-account-delete" class="button button-danger" type="button">Supprimer définitivement mon compte</button>
+        </div>
+        <p class="small-note" id="cloud-sync-note">La synchronisation est manuelle pour éviter d’écraser tes données par surprise.</p>
+      </div>
+    </section>
     <section class="account-security" aria-labelledby="account-security-title">
       <h3 id="account-security-title">Sécurité du compte</h3>
       <p id="account-security-copy">La connexion par e-mail et mot de passe, la vérification d’e-mail, la récupération de mot de passe et la synchronisation entre appareils ne sont pas encore activées. Najahna est actuellement un site statique : aucun mot de passe ne sera demandé ni enregistré ici. Le profil ci-dessus reste sur cet appareil.</p>

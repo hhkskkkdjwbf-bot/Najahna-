@@ -33,3 +33,18 @@ test("clears completed sessions while keeping pending sessions", () => {
   assert.deepEqual(clearCompletedStudyTasks(tasks), [{ id: "pending", completed: false }]);
   assert.equal(tasks.length, 2);
 });
+
+test("sorts unfinished study work by urgency and leaves completed work last", async () => {
+  const { sortStudyTasks } = await import("../src/utils/study-plan.js");
+  const tasks = [
+    { id: "future", subject: "Physics", date: "2026-10-28", completed: false },
+    { id: "done", subject: "Math", date: "2026-10-20", completed: true },
+    { id: "today", subject: "Arabic", date: "2026-10-24", completed: false },
+    { id: "late", subject: "History", date: "2026-10-22", completed: false },
+    { id: "late2", subject: "Math", date: "2026-10-21", completed: false }
+  ];
+  assert.deepEqual(sortStudyTasks(tasks, "2026-10-24").map(task => task.id), [
+    "late2", "late", "today", "future", "done"
+  ]);
+  assert.deepEqual(tasks.map(task => task.id), ["future", "done", "today", "late", "late2"]);
+});

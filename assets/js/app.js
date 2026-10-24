@@ -403,7 +403,7 @@ function renderResourceCategoryGuide() {
   root.innerHTML = resourceCategories.map(category => {
     const title = category.title[language] || category.title.en;
     const description = category.description[language] || category.description.en;
-    return `<article class="resource-category-card" data-resource-category="${escapeHTML(category.id)}"><span class="resource-category-card-icon" aria-hidden="true">${({lesson:"▤",summary:"≡",exercise:"✎",exam:"✓",book:"▧",flashcard:"▣",mindmap:"⌘","pedagogical-doc":"◎"})[category.id] || "•"}</span><h4>${escapeHTML(title)}</h4><p>${escapeHTML(description)}</p></article>`;
+    return `<article class="resource-category-card" data-resource-category="${escapeHTML(category.id)}"><span class="resource-category-card-icon" aria-hidden="true">${({lesson:"▤",summary:"≡",exercise:"✎",exam:"✓",book:"▧",flashcard:"▣",mindmap:"⌘","pedagogical-doc":"◎"})[category.id] || "•"}</span><h4>${escapeHTML(title)}</h4><p>${escapeHTML(description)}</p><button type="button" class="button button-outline button-small resource-category-browse" data-category-filter="${escapeHTML(category.id)}">${escapeHTML(t("categoryGuideBrowse"))}</button></article>`;
   }).join("");
 }
 
@@ -716,6 +716,15 @@ $("#year-category-grid")?.addEventListener("click", event => {
 });
 $("#subject-filter")?.addEventListener("change", renderResources);
 $("#type-filter").addEventListener("change", renderResources);
+$("#resource-category-guide-grid")?.addEventListener("click", event => {
+  const button = event.target.closest("[data-category-filter]");
+  if (!button) return;
+  const typeFilter = $("#type-filter");
+  if (!typeFilter) return;
+  typeFilter.value = button.dataset.categoryFilter;
+  renderResources();
+  $("#resource-grid")?.scrollIntoView({ behavior: "smooth", block: "start" });
+});
 $("#resource-quick-filters")?.addEventListener("click", event => {
   const button = event.target.closest("[data-quick-type]");
   if (!button) return;

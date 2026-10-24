@@ -39,3 +39,23 @@ test("backup restore rejects oversized and unsupported payloads", () => {
   assert.throws(() => restoreBackup(JSON.stringify({ app: "Other", version: 1, entries: [] }), storage), /Unsupported/i);
   assert.equal(storage.getItem("najahna:notes"), "keep");
 });
+
+
+test("restore rolls back owned data when a storage write fails", () => {
+  const storage = storageWithFailure({ "najahna:notes": "original", "najahna:history": "[]" });
+  storage.failNextWrite();
+  const backup = JSON.stringify({ app: "Najahna", version: 1, entries: [["najahna:notes", "replacement"]] });
+  assert.throws(() => restoreBackup(backup, storage), /Could not restore/);
+  assert.deepEqual(storage.snapshot(), { "najahna:notes": "original", "najahna:history": "[]" });
+});
+
+test("restore rejects invalid export metadata and excessive entry counts before changing data", () => {
+  const storage = storageWithFailure({ "najahna:notes": "keep" });
+  const invalidDate = JSON.stringify({ app: "Najahna", version: 1, exportedAt: "not-a-date", entries: [] });
+  assert.throws(() => restoreBackup(invalidDate, storage), /Unsupported/);
+  const tooMany = JSON.stringify({ app: "Najahna", version: 1, entries: Array.from({ length: 20001 }, (_, index) => [`najahna:item-${index}`, "x"]) });
+  assert.throws(() => restoreBackup(tooMany, storage), /Unsupported/);
+  const longKey = JSON.stringify({ app: "Najahna", version: 1, entries: [[`najahna:${"x".repeat(200)}`, "x"]] });
+  assert.throws(() => restoreBackup(longKey, storage), /invalid/i);
+  assert.equal(storage.getItem("najahna:notes"), "keep");
+});

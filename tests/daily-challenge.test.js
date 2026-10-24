@@ -85,3 +85,32 @@ test("corrupted stored challenge results are ignored instead of shown as valid",
   assert.equal(getDailyChallengeCompletion("2026-02-30", "primary-1"), null);
   assert.throws(() => saveDailyChallengeCompletion("2026-02-30", "primary-1", 1, 2), /date/i);
 });
+
+test("every school year has a multi-subject daily challenge with complete localized questions", () => {
+  const { schoolYears } = await import("../src/data/curriculum.js");
+  for (const year of schoolYears) {
+    const questions = getDailyChallengeQuestions(dailyChallengeBank, year.id, "2026-10-24");
+    assert.ok(questions.length >= 6, `${year.id} should have at least six daily questions, got ${questions.length}`);
+    assert.ok(new Set(questions.map(question => question.subject)).size >= 6, `${year.id} should cover at least six subjects`);
+    for (const question of questions) {
+      assert.ok(question.prompt.ar.trim() && question.prompt.fr.trim() && question.prompt.en.trim(), `${question.id} has a missing prompt translation`);
+      for (const language of ["ar", "fr", "en"]) {
+        assert.ok(Array.isArray(question.choices[language]) && question.choices[language].length >= 2, `${question.id} has missing choices in ${language}`);
+        assert.equal(question.choices[language].length, question.choices.en.length, `${question.id} choice counts differ`);
+        assert.ok(question.choices[language].every(choice => typeof choice === "string" && choice.trim()), `${question.id} has an empty choice in ${language}`);
+        assert.ok(question.explanation[language].trim(), `${question.id} has a missing explanation in ${language}`);
+      }
+      assert.ok(question.answer >= 0 && question.answer < question.choices.en.length, `${question.id} has an invalid answer key`);
+    }
+  }
+  assert.equal(new Set(dailyChallengeBank.map(question => question.id)).size, dailyChallengeBank.length, "question IDs must be unique");
+});
+
+test("every year receives a distinct grade-specific set, not questions from another year", () => {
+  const { schoolYears } = await import("../src/data/curriculum.js");
+  for (const year of schoolYears) {
+    const questions = getDailyChallengeQuestions(dailyChallengeBank, year.id, "2026-10-24");
+    assert.ok(questions.length > 0);
+    assert.ok(questions.every(question => question.gradeId === year.id));
+  }
+});

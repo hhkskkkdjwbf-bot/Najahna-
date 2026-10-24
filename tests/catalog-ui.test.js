@@ -88,3 +88,19 @@ test("study dashboard exposes accessible completion progress and workload metric
     assert.ok(translation.includes("progressOverdue:"));
   }
 });
+
+test("catalogue empty state offers a unique reset action and keyboard-accessible search", () => {
+  assert.equal((html.match(/id="reset-resource-filters"/g) || []).length, 1);
+  assert.equal((html.match(/id="reset-resource-filters-empty"/g) || []).length, 1);
+  assert.match(html, /for="resource-search" data-i18n="searchLabel"/);
+  assert.match(html, /aria-keyshortcuts="Control\+K Meta\+K"/);
+  assert.match(app, /reset-resource-filters-empty.*addEventListener\("click"/);
+  assert.match(app, /event\.metaKey.*event\.key\.toLowerCase\(\) === "k"/s);
+  assert.match(app, /event\.key === "Escape".*renderResources\(\)/s);
+  assert.match(app, /\$\$\("\[data-i18n-title\]"\)/);
+  for (const file of ["en.js", "fr.js", "ar.js"]) {
+    const translation = readFileSync(new URL("../src/i18n/" + file, import.meta.url), "utf8");
+    assert.match(translation, /searchLabel:/);
+    assert.match(translation, /searchShortcutHint:/);
+  }
+});

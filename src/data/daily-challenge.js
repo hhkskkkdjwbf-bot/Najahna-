@@ -138,6 +138,6 @@ const extra = [
 
 for (const [gradeId, subject, prompts, options, answer, explanations] of extra) {
   const id = gradeId.replace("primary-", "p").replace("middle-", "m").replace("secondary-", "s") + "-" + subject.replace("history-geography", "hg").replace("arabic", "ar").replace("french", "fr").replace("english", "en").replace("science", "sc") + "-01";
-  const localizedChoices = { ar: options.map(option => option.split(" / ")[0]), fr: options.map(option => option.split(" / ").length > 1 ? option.split(" / ")[1] : option), en: options.map(option => option.split(" / ").length > 2 ? option.split(" / ")[2] : option) };
+  const localizedChoices = { ar: options.map(option => option.split(" / ")[0]), fr: options.map(option => option.split(" / ").length > 1 ? option.split(" / ")[1] : option), en: options.map(option => { const parts = option.split(" / "); return parts.length > 2 ? parts[2] : parts.length > 1 ? parts[1] : option; }) };
   dailyChallengeBank.push(q(id, gradeId, subject, prompts, [localizedChoices.ar, localizedChoices.fr, localizedChoices.en], answer, explanations));
 }

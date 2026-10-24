@@ -32,7 +32,7 @@ test("application imports and renders the curated source directory and wires eac
 });
 
 test("offline shell caches every newly imported local data module", () => {
-  assert.match(serviceWorker, /najahna-shell-v19/);
+  assert.match(serviceWorker, /najahna-shell-v20/);
   assert.match(serviceWorker, /\.\/src\/data\/official-sources\.js/);
   assert.match(serviceWorker, /\.\/src\/data\/school-calendar\.js/);
   assert.match(serviceWorker, /\.\/src\/utils\/quiz-history\.js/);
@@ -82,6 +82,16 @@ test("school calendar section is translated and connected to the official source
   }
 });
 
+
+test("resource details expose a localized official-source link with safe external-link attributes", () => {
+  assert.match(html, /id="resource-dialog-source"[^>]*target="_blank"[^>]*rel="noopener noreferrer"[^>]*hidden/);
+  assert.match(app, /parsedSourceUrl\.protocol === "https:"/);
+  assert.match(app, /\["education\.gov\.dz", "www\.education\.gov\.dz"\]\.includes\(parsedSourceUrl\.hostname\)/);
+  assert.match(app, /sourceLink\.textContent = t\("officialSourceLink"\)/);
+  for (const [lang, content] of [["Arabic",arabic],["French",french],["English",english]]) {
+    assert.match(content, /officialSourceLink:/, lang + " translation missing official source label");
+  }
+});
 
 test("library exposes twelve accessible school-year category controls", () => {
   assert.match(html, /id="year-category-grid"/);

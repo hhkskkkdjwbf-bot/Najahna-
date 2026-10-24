@@ -10,11 +10,14 @@ export function getCollections() {
   // Browser-local data can be edited, truncated, or left by an older app version.
   // Normalize it before renderers assume every collection has a resourceIds array.
   const seenIds = new Set();
-  return stored.filter(item => item && typeof item === "object" && !Array.isArray(item) &&
-      typeof item.id === "string" && item.id.trim() && !seenIds.has(item.id) &&
-      typeof item.name === "string" && item.name.trim())
-    .map(item => {
+  return stored.filter(item => {
+      if (!item || typeof item !== "object" || Array.isArray(item) ||
+          typeof item.id !== "string" || !item.id.trim() || seenIds.has(item.id) ||
+          typeof item.name !== "string" || !item.name.trim()) return false;
       seenIds.add(item.id);
+      return true;
+    })
+    .map(item => {
       return {
         id: item.id,
         name: item.name.trim().slice(0, 60),

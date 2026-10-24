@@ -210,3 +210,21 @@ test("official ONPS digital-library guide is exposed as a genuine direct PDF", (
   assert.equal(getDirectPdfUrl({ pdfUrl: source.url }), source.url);
   assert.match(source.description.fr, /n’est pas un manuel scolaire/i);
 });
+
+
+test("additional ONPS mathematics publication pages are correctly classified", () => {
+  const expected = [
+    ["onps-primary-math-year-5", "primary-5", "primary", "math", "https://www.onps.dz/fr/268"],
+    ["onps-middle-math-year-4", "middle-4", "middle", "math", "https://www.onps.dz/fr/453"]
+  ];
+  for (const [id, grade, level, subject, url] of expected) {
+    const source = officialSources.find(item => item.id === id);
+    assert.ok(source, "missing source " + id);
+    assert.equal(source.grade, grade);
+    assert.deepEqual(source.levels, [level]);
+    assert.equal(source.subject, subject);
+    assert.equal(source.url, url);
+    assert.equal(source.pageType, "publication");
+    assert.match(source.description.fr, /PDF direct/i);
+  }
+});

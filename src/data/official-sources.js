@@ -896,6 +896,46 @@ export const officialSources = [
   title: { ar: "كتاب اللغة الفرنسية — السنة الأولى ثانوي، جذع مشترك آداب", fr: "Manuel de français — 1re secondaire, tronc commun lettres", en: "French textbook — Secondary Year 1, Arts common core" },
   description: { ar: "صفحة منشور رسمية لدى الديوان لكتاب الفرنسية الخاص بجذع الآداب المشترك. ليست ملف PDF مباشرًا؛ تحقق من الشعبة والطبعة.", fr: "Fiche officielle ONPS du manuel de français pour le tronc commun lettres. Ce n’est pas un PDF direct ; vérifiez la filière et l’édition.", en: "Official ONPS entry for the French textbook for the Arts common core. This is not a direct PDF; verify the stream and edition." }
 }
+,
+{
+  id: "onps-secondary-geography-year-1",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["secondary"],
+  grade: "secondary-1",
+  subject: "geography",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/593",
+  title: { ar: "كتاب الجغرافيا — السنة الأولى ثانوي، جذع مشترك آداب", fr: "Manuel de géographie — 1re secondaire, tronc commun lettres", en: "Geography textbook — Secondary Year 1, Arts common core" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف كتاب الجغرافيا. ليست ملف PDF مباشرًا؛ تحقق من الشعبة والطبعة.", fr: "Fiche officielle ONPS présentant la couverture du manuel de géographie. Ce n’est pas un PDF direct ; vérifiez la filière et l’édition.", en: "Official ONPS publication page showing the geography textbook cover. This is not a direct PDF; verify the stream and edition." }
+},
+{
+  id: "onps-secondary-science-year-1",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["secondary"],
+  grade: "secondary-1",
+  subject: "science",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/583",
+  title: { ar: "كتاب العلوم الطبيعية والحياة — السنة الأولى ثانوي، جذع مشترك آداب", fr: "Manuel de sciences naturelles — 1re secondaire, tronc commun lettres", en: "Natural Sciences textbook — Secondary Year 1, Arts common core" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف كتاب العلوم الطبيعية والحياة. ليست ملف PDF مباشرًا؛ تحقق من الشعبة والطبعة.", fr: "Fiche officielle ONPS présentant la couverture du manuel de sciences naturelles et de la vie. Ce n’est pas un PDF direct ; vérifiez la filière et l’édition.", en: "Official ONPS publication page showing the natural sciences and life textbook cover. This is not a direct PDF; verify the stream and edition." }
+},
+{
+  id: "onps-secondary-amazigh-year-1",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["secondary"],
+  grade: "secondary-1",
+  subject: "amazigh",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/581",
+  title: { ar: "كتاب تامازيغت — السنة الأولى ثانوي، جذع مشترك آداب", fr: "Manuel de tamazight — 1re secondaire, tronc commun lettres", en: "Tamazight textbook — Secondary Year 1, Arts common core" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف كتاب تامازيغت. ليست ملف PDF مباشرًا؛ تحقق من الشعبة والطبعة.", fr: "Fiche officielle ONPS présentant la couverture du manuel de tamazight. Ce n’est pas un PDF direct ; vérifiez la filière et l’édition.", en: "Official ONPS publication page showing the Tamazight textbook cover. This is not a direct PDF; verify the stream and edition." }
+}
 ];
 
 function isValidISODate(value) {

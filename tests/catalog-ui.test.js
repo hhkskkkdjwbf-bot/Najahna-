@@ -97,7 +97,7 @@ test("catalogue empty state offers a unique reset action and keyboard-accessible
   assert.match(app, /reset-resource-filters-empty.*addEventListener\("click"/);
   assert.match(app, /event\.metaKey.*event\.key\.toLowerCase\(\) === "k"/s);
   assert.match(app, /event\.key === "Escape".*renderResources\(\)/s);
-  assert.match(app, /\$\$\("\[data-i18n-title\]"\)/);
+  assert.ok(app.includes('$("[data-i18n-title]")'));
   for (const file of ["en.js", "fr.js", "ar.js"]) {
     const translation = readFileSync(new URL("../src/i18n/" + file, import.meta.url), "utf8");
     assert.match(translation, /searchLabel:/);

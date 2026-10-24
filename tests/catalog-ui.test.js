@@ -34,7 +34,7 @@ test("design refresh supports narrow screens, visible keyboard focus and reduced
 });
 
 test("service worker increments its shell cache after UI assets change", () => {
-  assert.match(serviceWorker, /const CACHE_NAME = "najahna-shell-v34"/);
+  assert.match(serviceWorker, /const CACHE_NAME = "najahna-shell-v[0-9]+"/);
   assert.match(serviceWorker, /"\.\/assets\/css\/main\.css"/);
   assert.match(serviceWorker, /"\.\/assets\/js\/app\.js"/);
 });

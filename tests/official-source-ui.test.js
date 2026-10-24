@@ -104,6 +104,6 @@ test("official-source filters cover all twelve school years and year cards synch
     assert.match(html, new RegExp('value="' + grades[i] + '"'), 'missing filter option ' + grades[i]);
     for (const [lang, content] of [["Arabic",arabic],["French",french],["English",english]]) assert.ok(content.includes(keys[i]), lang + ' translation missing ' + keys[i]);
   }
-  assert.match(app, /!source\\.grade && source\\.levels\\.includes\\(grade\\.split\\("-"\\)\\[0\\]\\)/);
+  assert.match(app, /!source\.grade && source\.levels\.includes\(grade\.split\("-"\)\[0\]\)/);
   assert.match(app, /official-source-grade.*value = .*level.*year/s);
 });

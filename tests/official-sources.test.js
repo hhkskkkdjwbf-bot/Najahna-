@@ -81,6 +81,18 @@ test("includes the official ONPS digital-library guide without mislabeling it as
   assert.match(guide.description.en, /not a textbook PDF/i);
 });
 
+
+test("includes current official ministry guidance for the 2026–2027 school year without labeling it as a PDF", () => {
+  const source = officialSources.find(item => item.id === "ministry-school-year-2026-2027");
+  assert.ok(source);
+  assert.equal(source.publisher, "Ministry of National Education");
+  assert.equal(source.pageType, "guide");
+  assert.equal(source.publishedOn, "2026-07-30");
+  assert.equal(source.levels.length, 3);
+  assert.match(source.description.fr, /pas un PDF/i);
+  assert.equal(validateOfficialSources([source]).valid, true);
+});
+
 test("rejects malformed optional publication dates", () => {
   const sample = officialSources[0];
   const result = validateOfficialSources([{ ...sample, publishedOn: "2023-99-40" }]);

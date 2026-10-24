@@ -38,6 +38,11 @@ test("offline shell caches every newly imported local data module", () => {
   assert.match(serviceWorker, /\.\/src\/utils\/quiz-history\.js/);
 });
 
+test("official-source search includes every translated title and description", () => {
+  assert.match(app, /localizedText\(source\.title\)/);
+  assert.match(app, /localizedText\(source\.description\)/);
+});
+
 test("official-source badge does not imply that every link or PDF was verified", () => {
   assert.match(arabic, /officialSourceChecked:"جهة نشر رسمية"/);
   assert.match(french, /officialSourceChecked:"Éditeur officiel"/);

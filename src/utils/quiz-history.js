@@ -12,7 +12,20 @@ function validAttempt(attempt) {
 export function getQuizHistory(storage = globalThis.localStorage) {
   try {
     const parsed = JSON.parse(storage.getItem(STORAGE_KEY) || "[]");
-    return Array.isArray(parsed) ? parsed.filter(validAttempt).slice(0, MAX_ATTEMPTS) : [];
+    if (!Array.isArray(parsed)) return [];
+    const seen = new Set();
+    return parsed.filter(attempt => {
+      if (!validAttempt(attempt) || seen.has(attempt.id)) return false;
+      seen.add(attempt.id);
+      return true;
+    }).slice(0, MAX_ATTEMPTS).map(attempt => ({
+      id: attempt.id,
+      level: attempt.level,
+      score: attempt.score,
+      total: attempt.total,
+      percentage: Math.round(attempt.score / attempt.total * 100),
+      completedAt: new Date(attempt.completedAt).toISOString()
+    }));
   } catch {
     return [];
   }

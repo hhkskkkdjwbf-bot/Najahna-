@@ -11,6 +11,9 @@ import { toLocalDateISO, parseLocalCalendarDate } from "../../src/utils/dates.js
 import { calculateWeightedAverage } from "../../src/calculators/average.js";
 import { getQuizQuestions, gradeQuiz } from "../../src/data/quiz.js";
 import { getQuizHistory, recordQuizAttempt, clearQuizHistory, getQuizTrend } from "../../src/utils/quiz-history.js";
+import { dailyChallengeBank } from "../../src/data/daily-challenge.js";
+import { getDailyChallengeQuestions, gradeDailyChallenge } from "../../src/utils/daily-challenge.js";
+import { getLearnerProfile, saveLearnerProfile, getDailyChallengeCompletion, saveDailyChallengeCompletion } from "../../src/utils/learner-profile.js";
 import { officialSources } from "../../src/data/official-sources.js";
 import { getDirectPdfUrl } from "../../src/utils/pdf-resources.js";
 import { getUpcomingSchoolEvents, schoolCalendarSource } from "../../src/data/school-calendar.js";
@@ -27,6 +30,7 @@ let activeResourceId = null;
 let toastTimer;
 let pendingInstallPrompt = null;
 let quizState = { level: "primary", questions: [], index: 0, answers: [], submitted: false, resultSaved: false };
+let dailyChallengeAnswers = {};
 
 function t(key) { return translations[language]?.[key] ?? translations.ar[key] ?? key; }
 function escapeHTML(value) { return String(value).replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" })[char]); }
@@ -47,6 +51,7 @@ function setLanguage(next) {
   renderLevelCounts();
   renderCatalogFilters();
   renderQuiz();
+  renderDailyChallenge();
   renderQuizHistory();
   renderOfficialSources();
   renderSchoolCalendar();
@@ -175,6 +180,54 @@ function renderStudyDashboard() {
     focus.innerHTML = `<div class="dashboard-focus-copy"><span class="dashboard-focus-icon" aria-hidden="true">☀</span><div><h3>${escapeHTML(t("dashboardFocusTitle"))}</h3><p>${escapeHTML(t("dashboardPlanPrompt"))}</p></div></div><a class="button button-primary button-small" href="#tools">${escapeHTML(t("dashboardOpenPlan"))}</a>`;
   }
 }
+function renderDailyChallenge() {
+  const form = $("#learner-profile-form");
+  const root = $("#daily-challenge-content");
+  if (!form || !root) return;
+  const profile = getLearnerProfile();
+  const gradeSelect = $("#learner-grade");
+  const nameInput = $("#learner-name");
+  if (profile) {
+    if (gradeSelect && gradeSelect.dataset.profileLoaded !== "true") gradeSelect.value = profile.gradeId;
+    if (nameInput && nameInput.dataset.profileLoaded !== "true") nameInput.value = profile.name;
+    if (gradeSelect) gradeSelect.dataset.profileLoaded = "true";
+    if (nameInput) nameInput.dataset.profileLoaded = "true";
+  }
+  const saveButton = $("#learner-profile-save");
+  if (saveButton) saveButton.textContent = profile ? t("learnerProfileUpdate") : t("learnerProfileSave");
+  const status = $("#learner-profile-status");
+  if (!profile) {
+    status.textContent = t("learnerProfileNeeded");
+    root.innerHTML = `<div class="daily-challenge-empty"><h3>${escapeHTML(t("dailyChallengeLockedTitle"))}</h3><p>${escapeHTML(t("dailyChallengeLockedText"))}</p></div>`;
+    return;
+  }
+  const year = schoolYears.find(item => item.id === profile.gradeId);
+  const today = toLocalDateISO();
+  const completed = getDailyChallengeCompletion(today, profile.gradeId);
+  const questions = getDailyChallengeQuestions(dailyChallengeBank, profile.gradeId, today);
+  const subjectName = id => {
+    const key = ({arabic:"subjectArabic",french:"subjectFrench",english:"subjectEnglish",math:"subjectMath",science:"subjectScience","history-geography":"subjectHistory","islamic-education":"subjectIslamicStudies","civic-education":"subjectCivics",tamazight:"subjectAmazigh","daily-life":"dailySubjectLife"})[id];
+    if (key) return t(key);
+    return id.replaceAll("-", " ");
+  };
+  if (status) status.textContent = t("learnerProfileCurrent").replace("{grade}", year?.label?.[language] || year?.label?.en || profile.gradeId);
+  if (completed) {
+    root.innerHTML = `<div class="daily-challenge-complete"><span class="daily-challenge-check" aria-hidden="true">✓</span><div><h3>${escapeHTML(t("dailyChallengeCompleted"))}</h3><p>${escapeHTML(t("dailyChallengeScore").replace("{score}", String(completed.score)).replace("{total}", String(completed.total)))}</p><p class="small-note">${escapeHTML(t("dailyChallengeTomorrow"))}</p></div></div>`;
+    return;
+  }
+  if (!questions.length) {
+    root.innerHTML = `<div class="daily-challenge-empty"><h3>${escapeHTML(t("dailyChallengeNoQuestions"))}</h3><p>${escapeHTML(t("dailyChallengeCoverageNote"))}</p></div>`;
+    return;
+  }
+  const questionMarkup = questions.map((question, index) => {
+    const selected = dailyChallengeAnswers[question.id];
+    const prompt = question.prompt[language] || question.prompt.en;
+    const choices = (question.choices[language] || question.choices.en).map((choice, optionIndex) => `<label class="daily-challenge-option"><input type="radio" name="daily-${escapeHTML(question.id)}" value="${optionIndex}" ${selected === optionIndex ? "checked" : ""}><span>${escapeHTML(choice)}</span></label>`).join("");
+    return `<fieldset class="daily-challenge-question"><legend><span class="daily-question-number">${index + 1}</span><span class="daily-subject">${escapeHTML(subjectName(question.subject))}</span></legend><p>${escapeHTML(prompt)}</p><div class="daily-challenge-options">${choices}</div></fieldset>`;
+  }).join("");
+  root.innerHTML = `<div class="daily-challenge-heading"><div><h3>${escapeHTML(t("dailyChallengeFor").replace("{grade}", year?.label?.[language] || year?.label?.en || profile.gradeId))}</h3><p>${escapeHTML(t("dailyChallengeCount").replace("{count}", String(questions.length)))}</p></div><span class="daily-challenge-date">${escapeHTML(today)}</span></div><form id="daily-challenge-form">${questionMarkup}<button class="button button-primary" type="submit">${escapeHTML(t("dailyChallengeSubmit"))}</button></form><p class="small-note">${escapeHTML(t("dailyChallengeCoverageNote"))}</p>`;
+}
+
 function renderQuizHistory() {
   const root = $("#quiz-history");
   if (!root) return;

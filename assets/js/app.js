@@ -247,6 +247,21 @@ function renderResourceDetails(id) {
   const pdfUrl = getDirectPdfUrl(item);
   $("#resource-dialog-availability").textContent = pdfUrl ? t("pdfAvailable") : t("sampleOnly");
   $("#resource-dialog-note").textContent = pdfUrl ? t("pdfDetailNote") : t("sampleDetailNote");
+  const sourceLink = $("#resource-dialog-source");
+  const sourceUrl = typeof item.officialSourceUrl === "string" ? item.officialSourceUrl.trim() : "";
+  let safeSourceUrl = "";
+  try {
+    const parsedSourceUrl = new URL(sourceUrl);
+    if (parsedSourceUrl.protocol === "https:" && ["education.gov.dz", "www.education.gov.dz"].includes(parsedSourceUrl.hostname)) safeSourceUrl = parsedSourceUrl.href;
+  } catch {}
+  sourceLink.hidden = !safeSourceUrl;
+  if (safeSourceUrl) {
+    sourceLink.href = safeSourceUrl;
+    sourceLink.textContent = t("officialSourceLink");
+  } else {
+    sourceLink.removeAttribute("href");
+    sourceLink.textContent = "";
+  }
   const pdfFrame = $("#resource-dialog-pdf");
   const pdfDownload = $("#resource-dialog-download");
   pdfFrame.hidden = !pdfUrl;

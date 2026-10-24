@@ -134,3 +134,15 @@ test("official-source filters cover all twelve school years and year cards synch
   assert.match(app, /!source\.grade && source\.levels\.includes\(grade\.split\("-"\)\[0\]\)/);
   assert.ok(app.includes('$("#official-source-grade").value = `${level}-${year}`;'));
 });
+
+
+test("official-source subject filters have localized labels for the full subject set", () => {
+  for (const key of ["subjectMath", "subjectScience", "subjectGeography", "subjectCivics", "subjectAmazigh", "subjectTechnology"]) {
+    assert.match(arabic, new RegExp(key + ':'));
+    assert.match(french, new RegExp(key + ':'));
+    assert.match(english, new RegExp(key + ':'));
+  }
+  for (const key of ['math:"subjectMath"', 'science:"subjectScience"', 'geography:"subjectGeography"', 'civics:"subjectCivics"', 'amazigh:"subjectAmazigh"', 'technology:"subjectTechnology"']) {
+    assert.ok(app.includes(key), "missing subject mapping " + key);
+  }
+});

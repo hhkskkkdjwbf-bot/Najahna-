@@ -1141,6 +1141,27 @@ $("#official-source-grid")?.addEventListener("click", event => {
 });
 $("#official-pdf-close")?.addEventListener("click", () => $("#official-pdf-dialog")?.close());
 $("#official-pdf-dialog")?.addEventListener("close", () => { $("#official-pdf-frame")?.removeAttribute("src"); });
+$("#official-source-grid")?.addEventListener("click", event => {
+  const button = event.target.closest("[data-official-pdf]");
+  if (!button) return;
+  const source = officialSources.find(item => item.id === button.dataset.officialPdf);
+  const pdfUrl = getDirectPdfUrl(source);
+  if (!pdfUrl) return;
+  let safeUrl;
+  try {
+    const parsed = new URL(pdfUrl, location.href);
+    if (parsed.protocol !== "https:" && parsed.origin !== location.origin) return;
+    safeUrl = parsed.href;
+  } catch { return; }
+  const dialog = $("#official-pdf-dialog");
+  const frame = $("#official-pdf-frame");
+  $("#official-pdf-title").textContent = source.title[language] || source.title.fr || source.title.en;
+  frame.title = $("#official-pdf-title").textContent;
+  frame.src = safeUrl;
+  if (!dialog.open) dialog.showModal();
+});
+$("#official-pdf-close")?.addEventListener("click", () => $("#official-pdf-dialog")?.close());
+$("#official-pdf-dialog")?.addEventListener("close", () => { $("#official-pdf-frame")?.removeAttribute("src"); });
 $("#official-source-level")?.addEventListener("change", renderOfficialSources);
 $("#official-source-kind")?.addEventListener("change", renderOfficialSources);
 $("#official-source-grade")?.addEventListener("change", renderOfficialSources);

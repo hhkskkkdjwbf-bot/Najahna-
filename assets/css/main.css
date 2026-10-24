@@ -551,3 +551,43 @@ body.dark .site-header{box-shadow:0 8px 28px #0002}
   .button,.level-card,.resource-card,.tool-panel,.resource-category-card{border:1px solid ButtonText}
   :where(a,button,input,select,textarea):focus-visible{outline:2px solid Highlight}
 }
+
+
+/* Design refinement: clearer hierarchy, more intentional depth, and calmer interactions. */
+:root{--space-section:clamp(3.5rem,7vw,6.25rem);--radius-control:13px;--shadow-card:0 8px 24px rgba(23,61,41,.055);--shadow-hover:0 18px 42px rgba(23,61,41,.11);--focus-ring:0 0 0 3px color-mix(in srgb,var(--green) 24%,transparent)}
+body.dark{--shadow-card:0 8px 24px rgba(0,0,0,.12);--shadow-hover:0 18px 42px rgba(0,0,0,.24)}
+::selection{background:color-mix(in srgb,var(--lime) 58%,var(--surface));color:var(--text)}
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:3px solid var(--green);outline-offset:3px;box-shadow:var(--focus-ring)}
+:where(input,select,textarea){accent-color:var(--green)}
+.site-header{position:relative;z-index:5}
+.main-nav a{position:relative;padding-block:8px;transition:color .18s ease}
+.main-nav a::after{content:"";position:absolute;inset-inline:0;bottom:0;height:2px;border-radius:2px;background:var(--green);transform:scaleX(0);transform-origin:center;transition:transform .18s ease}
+.main-nav a:hover::after,.main-nav a:focus-visible::after{transform:scaleX(1)}
+.hero{isolation:isolate;position:relative}
+.hero::before{content:"";position:absolute;z-index:-1;inset:5% 2% 0;border-radius:36px;background:radial-gradient(ellipse at 78% 25%,color-mix(in srgb,var(--green) 8%,transparent),transparent 50%);pointer-events:none}
+.section{padding-block:var(--space-section)}
+.section-heading{margin-bottom:clamp(22px,3vw,34px)}
+.section-heading h2{line-height:1.35;text-wrap:balance}
+.section-heading>p{max-width:44ch}
+.level-card,.resource-card,.tool-panel,.school-calendar-card,.dashboard-metric,.achievement-panel,.official-source-card,.resource-category-card,.study-task,.collection-card,.note-card{box-shadow:var(--shadow-card);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.level-card:hover,.resource-card:hover,.school-calendar-card:hover,.official-source-card:hover,.resource-category-card:hover{box-shadow:var(--shadow-hover)}
+.level-card:active,.button:active,.icon-button:active{transform:translateY(1px)}
+.resource-card{display:flex;flex-direction:column}
+.resource-card p{line-height:1.85}
+.resource-meta{margin-top:auto}
+.button,.icon-button,.header-actions select,.resource-toolbar select,.search-box,.grade-row input,.tool-panel input,.tool-panel select,.tool-panel textarea{border-radius:var(--radius-control)}
+.button{min-height:42px}
+.button:focus-visible,.icon-button:focus-visible{outline-offset:4px}
+.search-box:focus-within{border-color:var(--green);box-shadow:var(--focus-ring)}
+.resource-toolbar select:focus-visible,.header-actions select:focus-visible,.grade-row input:focus-visible{border-color:var(--green)}
+.dashboard-metric{position:relative;overflow:hidden}
+.dashboard-metric::before{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:3px;background:var(--green);opacity:.7}
+.achievement-panel{gap:clamp(18px,3vw,32px)}
+.content-note{border:1px solid color-mix(in srgb,var(--green) 12%,var(--line))}
+.site-footer{border-top:1px solid var(--line)}
+:where(.resource-card,.level-card,.tool-panel,.achievement-panel,.school-calendar-card,.dashboard-metric,.resource-category-card,.official-source-card){overflow-wrap:anywhere}
+@media(min-width:1100px){.hero{padding-inline:clamp(48px,5vw,76px)}.resource-grid{gap:20px}.level-grid{gap:20px}}
+@media(max-width:760px){.hero::before{inset:0;border-radius:24px}.section{padding-block:3.5rem}.section-heading{align-items:flex-start}.main-nav a{padding-block:6px}.header-actions{flex-wrap:wrap}.resource-card{padding:17px}}
+@media(max-width:480px){.hero{padding-inline:20px}.section{padding-inline:18px}.section-heading h2{letter-spacing:-.3px}.hero-actions .button{flex:1}.trust-row{gap:10px 14px}.resource-toolbar select{min-width:0;max-width:44%}.button{max-width:100%}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+@media(forced-colors:active){.level-card,.resource-card,.tool-panel,.school-calendar-card,.dashboard-metric,.achievement-panel,.resource-category-card,.official-source-card{border:1px solid CanvasText}.main-nav a::after{background:LinkText}}

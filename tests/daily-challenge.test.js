@@ -107,7 +107,6 @@ test("every school year has a multi-subject daily challenge with complete locali
 });
 
 test("every year receives a distinct grade-specific set, not questions from another year", () => {
-  const { schoolYears } = await import("../src/data/curriculum.js");
   for (const year of schoolYears) {
     const questions = getDailyChallengeQuestions(dailyChallengeBank, year.id, "2026-10-24");
     assert.ok(questions.length > 0);

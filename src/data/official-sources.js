@@ -601,6 +601,20 @@ export const officialSources = [
     en: "Official decision dated 9 September 2026 cancelling Decision No. 20 on schedules and coefficients in general and technological secondary education. This official page is not a direct PDF; check for later decisions."
   }
   },
+,
+{
+  id: "onps-middle-math-year-1",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-1",
+  subject: "math",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/299",
+  title: { ar: "كتابي في الرياضيات — السنة الأولى متوسط", fr: "Manuel de mathématiques — 1re année moyenne", en: "Mathematics textbook — Middle School Year 1" },
+  description: { ar: "صفحة الكتاب لدى الديوان الوطني للمطبوعات المدرسية وليست ملف PDF مباشرًا. تحقق من الطبعة الحالية.", fr: "Fiche du manuel ONPS, pas un PDF direct. Vérifiez l’édition applicable au programme actuel.", en: "ONPS textbook entry, not a direct PDF. Check the edition against the current curriculum." }
+}
 
 ];
 

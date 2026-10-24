@@ -35,3 +35,12 @@ test("design enhancements do not remove the existing stylesheet or primary page 
   assert.match(html, /<header\b/);
   assert.match(html, /<footer\b/);
 });
+
+
+test("refined design adds clear hierarchy, consistent control radii, and calmer interaction states", () => {
+  for (const selector of ["--space-section:", "--radius-control:", "--shadow-card:", ".main-nav a::after", ".hero::before", ".search-box:focus-within", ".dashboard-metric::before", "@media(min-width:1100px)"]) {
+    assert.ok(css.includes(selector), `missing refinement ${selector}`);
+  }
+  assert.match(css, /\.resource-card\s*\{[^}]*display:flex/s);
+  assert.match(css, /@media\s*\(forced-colors:\s*active\)/);
+});

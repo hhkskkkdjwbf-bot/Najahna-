@@ -16,6 +16,8 @@ import { getDailyChallengeQuestions, gradeDailyChallenge } from "../../src/utils
 import { getLearnerProfile, saveLearnerProfile, getDailyChallengeCompletion, saveDailyChallengeCompletion } from "../../src/utils/learner-profile.js";
 import { officialSources } from "../../src/data/official-sources.js";
 import { getDirectPdfUrl } from "../../src/utils/pdf-resources.js";
+import { createExamSheet } from "../../src/utils/exam-sheet.js";
+import { getStudyAchievements } from "../../src/utils/gamification.js";
 import { getUpcomingSchoolEvents, schoolCalendarSource } from "../../src/data/school-calendar.js";
 import ar from "../../src/i18n/ar.js";
 import fr from "../../src/i18n/fr.js";
@@ -53,6 +55,8 @@ function setLanguage(next) {
   renderCatalogFilters();
   renderQuiz();
   renderDailyChallenge();
+  renderAchievements();
+  populateExamSheetFilters();
   renderQuizHistory();
   renderOfficialSources();
   renderSchoolCalendar();
@@ -105,6 +109,76 @@ function renderSchoolCalendar() {
   }).join("");
   if (!events.length) root.innerHTML = `<p class="empty-state">${escapeHTML(t("calendarNoUpcoming"))}</p>`;
   root.dataset.source = schoolCalendarSource;
+}
+
+function renderAchievements() {
+  const root = $("#achievement-summary");
+  if (!root) return;
+  const summary = getStudyAchievements(readJSON("daily-challenge-completions", {}), toLocalDateISO());
+  const badges = [
+    ["first-day", "badgeFirstDay"],
+    ["three-day-streak", "badgeThreeDay"],
+    ["seven-day-streak", "badgeSevenDay"],
+    ["perfect-score", "badgePerfect"],
+    ["ten-days", "badgeTenDays"]
+  ].filter(([id]) => summary.badges.includes(id));
+  root.innerHTML = `
+    <div class="achievement-stat"><strong>${summary.streak}</strong><span>${escapeHTML(t("achievementStreak"))}</span></div>
+    <div class="achievement-stat"><strong>${summary.completedDays}</strong><span>${escapeHTML(t("achievementDays"))}</span></div>
+    <div class="achievement-stat"><strong>${summary.perfectDays}</strong><span>${escapeHTML(t("achievementPerfect"))}</span></div>
+    <div class="achievement-badges">${badges.length ? badges.map(([, label]) => `<span class="achievement-badge">✦ ${escapeHTML(t(label))}</span>`).join("") : `<span class="empty-state">${escapeHTML(t("achievementNoBadges"))}</span>`}</div>`;
+}
+
+function populateExamSheetFilters() {
+  const grade = $("#exam-sheet-grade");
+  const subject = $("#exam-sheet-subject");
+  if (!grade || !subject) return;
+  const oldGrade = grade.value;
+  const oldSubject = subject.value || "all";
+  grade.innerHTML = schoolYears.map(year => `<option value="${escapeHTML(year.id)}">${escapeHTML(year.label[language] || year.label.en)}</option>`).join("");
+  grade.value = schoolYears.some(year => year.id === oldGrade) ? oldGrade : (getLearnerProfile()?.gradeId || "primary-1");
+  const subjects = [...new Set(dailyChallengeBank.filter(question => question.gradeId === grade.value).map(question => question.subject))];
+  const labels = {
+    arabic:"subjectArabic", french:"subjectFrench", english:"subjectEnglish", math:"subjectMath",
+    science:"subjectScience", physics:"subjectPhysics", "history-geography":"subjectHistory",
+    "islamic-education":"subjectIslamicStudies", "civic-education":"subjectCivics",
+    tamazight:"subjectAmazigh", "daily-life":"examSheetDailyLife"
+  };
+  subject.innerHTML = `<option value="all">${escapeHTML(t("examSheetAllSubjects"))}</option>` + subjects.map(id => {
+    const catalog = subjectCatalog.find(item => item.id === id);
+    const label = labels[id] ? t(labels[id]) : (catalog?.label?.[language] || catalog?.label?.en || id);
+    return `<option value="${escapeHTML(id)}">${escapeHTML(label)}</option>`;
+  }).join("");
+  subject.value = subjects.includes(oldSubject) ? oldSubject : "all";
+}
+
+function renderExamSheet(questions, gradeId, subjectId, includeAnswers) {
+  const root = $("#exam-sheet-output");
+  const status = $("#exam-sheet-status");
+  const year = schoolYears.find(item => item.id === gradeId);
+  if (!root || !status || !year) return;
+  if (!questions.length) {
+    root.hidden = true;
+    status.textContent = t("examSheetEmpty");
+    return;
+  }
+  const subjectNames = [...new Set(questions.map(question => {
+    const key = ({arabic:"subjectArabic",french:"subjectFrench",english:"subjectEnglish",math:"subjectMath",science:"subjectScience",physics:"subjectPhysics","history-geography":"subjectHistory","islamic-education":"subjectIslamicStudies","civic-education":"subjectCivics",tamazight:"subjectAmazigh","daily-life":"examSheetDailyLife"})[question.subject];
+    const catalog = subjectCatalog.find(item => item.id === question.subject);
+    return key ? t(key) : (catalog?.label?.[language] || catalog?.label?.en || question.subject);
+  }))];
+  const heading = `<header class="print-sheet-heading"><h1>${escapeHTML(t("examSheetTitle"))}</h1><p>${escapeHTML(year.label[language] || year.label.en)} · ${escapeHTML(subjectId === "all" ? t("examSheetAllSubjects") : subjectNames.join(" / "))}</p><div class="print-student-fields"><span>${escapeHTML(t("examSheetName"))}: ____________________</span><span>${escapeHTML(t("examSheetDate"))}: ______________</span><span>${escapeHTML(t("examSheetScore"))}: ______ / ${questions.length}</span></div></header>`;
+  const body = questions.map((question, index) => {
+    const prompt = question.prompt[language] || question.prompt.en || question.prompt.ar;
+    const choices = question.choices[language] || question.choices.en || question.choices.ar;
+    const key = ({arabic:"subjectArabic",french:"subjectFrench",english:"subjectEnglish",math:"subjectMath",science:"subjectScience",physics:"subjectPhysics","history-geography":"subjectHistory","islamic-education":"subjectIslamicStudies","civic-education":"subjectCivics",tamazight:"subjectAmazigh","daily-life":"examSheetDailyLife"})[question.subject];
+    const subjectLabel = key ? t(key) : question.subject;
+    return `<article class="print-question"><h3>${index + 1}. ${escapeHTML(prompt)}</h3>${subjectId === "all" ? `<small>${escapeHTML(subjectLabel)}</small>` : ""}<ol type="A">${choices.map(choice => `<li>${escapeHTML(choice)}</li>`).join("")}</ol><p class="print-answer-space">${escapeHTML(t("examSheetAnswerSpace"))}</p></article>`;
+  }).join("");
+  const answerKey = includeAnswers ? `<section class="print-answer-key"><h2>${escapeHTML(t("examSheetAnswerKeyTitle"))}</h2><ol>${questions.map(question => `<li>${escapeHTML((question.choices[language] || question.choices.en || question.choices.ar)[question.answer])}</li>`).join("")}</ol></section>` : "";
+  root.innerHTML = `<div class="print-sheet-content" dir="${language === "ar" ? "rtl" : "ltr"}">${heading}${body}${answerKey}<div class="exam-sheet-screen-actions"><button type="button" class="button button-primary button-small" id="print-exam-sheet">${escapeHTML(t("examSheetPrint"))}</button></div></div>`;
+  root.hidden = false;
+  status.textContent = t("examSheetGenerated").replace("{count}", String(questions.length));
 }
 
 function renderOfficialSources() {
@@ -831,6 +905,24 @@ $("#learner-profile-form")?.addEventListener("submit", event => {
     showToast(t("storageError"));
   }
 });
+$("#exam-sheet-grade")?.addEventListener("change", populateExamSheetFilters);
+$("#exam-sheet-form")?.addEventListener("submit", event => {
+  event.preventDefault();
+  const gradeId = $("#exam-sheet-grade").value;
+  const subjectId = $("#exam-sheet-subject").value;
+  const count = Number($("#exam-sheet-count").value);
+  const includeAnswers = $("#exam-sheet-answer-key").checked;
+  try {
+    const questions = createExamSheet(dailyChallengeBank, gradeId, subjectId, count);
+    renderExamSheet(questions, gradeId, subjectId, includeAnswers);
+  } catch {
+    $("#exam-sheet-status").textContent = t("examSheetEmpty");
+  }
+});
+$("#exam-sheet-output")?.addEventListener("click", event => {
+  if (event.target.closest("#print-exam-sheet")) window.print();
+});
+
 $("#daily-challenge-content")?.addEventListener("change", event => {
   const input = event.target.closest('input[type="radio"][name^="daily-"]');
   if (!input) return;
@@ -854,6 +946,7 @@ $("#daily-challenge-content")?.addEventListener("submit", event => {
     saveDailyChallengeCompletion(toLocalDateISO(), profile.gradeId, result.score, result.total);
     dailyChallengeAnswers = {};
     renderDailyChallenge();
+    renderAchievements();
     showToast(t("dailyChallengeSaved"));
   } catch {
     showToast(t("storageError"));

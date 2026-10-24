@@ -114,13 +114,13 @@ function renderOfficialSources() {
     const searchable = [...localizedText(source.title), ...localizedText(source.description), source.publisher, source.kind, source.grade, source.subject].filter(Boolean).join(" ");
     return (level === "all" || source.levels.includes(level)) &&
       (kind === "all" || source.kind === kind) &&
-      (grade === "all" || source.grade === grade) &&
+      (grade === "all" || source.grade === grade || (!source.grade && source.levels.includes(grade.split("-")[0]))) &&
       (subject === "all" || source.subject === subject) &&
       (!query || normalize(searchable).includes(normalize(query)));
   });
   const kindLabel = kind => t(({books:"officialSourceBooks", "exam-papers":"officialSourceExamPapers", "pedagogical-docs":"officialSourcePedagogical"})[kind] || "officialSourceBooks");
   const levelLabel = levels => levels.map(item => t(({primary:"primary",middle:"middle",secondary:"secondary"})[item])).join(" · ");
-  const gradeLabel = value => t(({ "primary-3":"gradePrimary3", "primary-4":"gradePrimary4", "primary-5":"gradePrimary5", "middle-4":"gradeMiddle4", "secondary-1":"gradeSecondary1" })[value] || "officialSourceAllGrades");
+  const gradeLabel = value => t(({ "primary-1":"gradePrimary1", "primary-2":"gradePrimary2", "primary-3":"gradePrimary3", "primary-4":"gradePrimary4", "primary-5":"gradePrimary5", "middle-1":"gradeMiddle1", "middle-2":"gradeMiddle2", "middle-3":"gradeMiddle3", "middle-4":"gradeMiddle4", "secondary-1":"gradeSecondary1", "secondary-2":"gradeSecondary2", "secondary-3":"gradeSecondary3" })[value] || "officialSourceAllGrades");
   const subjectLabel = value => t(({arabic:"subjectArabic",english:"subjectEnglish",french:"subjectFrench",physics:"subjectPhysics","islamic-studies":"subjectIslamicStudies",history:"subjectHistory"})[value] || "officialSourceAllSubjects");
   const pageTypeLabel = source => t(({catalog:"officialSourceCatalogPage",publication:"officialSourcePublicationPage",archive:"officialSourceArchivePage",guide:"officialSourceGuidePage"})[source.pageType] || "officialSourceCatalogPage");
   const dateLabel = date => {
@@ -407,6 +407,8 @@ $("#year-category-grid")?.addEventListener("click", event => {
     card.setAttribute("aria-pressed", String(active));
   });
   renderYearCategories();
+  $("#official-source-grade").value = `${level}-${year}`;
+  renderOfficialSources();
   renderResources();
 });
 $("#subject-filter")?.addEventListener("change", renderResources);

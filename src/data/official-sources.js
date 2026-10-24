@@ -575,9 +575,30 @@ export const officialSources = [
     en: "Official teaching arrangements — 2026–2027 school year"
   },
   description: {
-    ar: "بيان رسمي من وزارة التربية الوطنية حول ترتيبات الموسم 2026–2027، بما فيها تنظيم تدريس اللغات في الابتدائي وتعديلات التعليم الثانوي. صفحة ويب وليست ملف PDF؛ راجع آخر التحديثات الوزارية قبل اتخاذ أي قرار.",
-    fr: "Annonce officielle du ministère sur les dispositions de 2026–2027 : progression des langues au primaire et organisation du secondaire. C’est une page web, pas un PDF ; vérifiez les mises à jour ministérielles avant de prendre une décision.",
+    ar: "بيان رسمي حول ترتيبات الموسم 2026–2027. وفق توضيح الوزارة في سبتمبر 2026، تمت المصادقة على ترتيبات التعليم الابتدائي فقط، وجُمّدت الترتيبات الأخرى إلى حين المصادقة عليها من مجلس الوزراء. هذه صفحة ويب وليست ملف PDF.",
+    fr: "Annonce officielle sur les dispositions de 2026–2027. Selon la clarification ministérielle de septembre 2026, seules les dispositions du primaire ont été approuvées ; les autres ont été suspendues jusqu’à leur validation par le Conseil des ministres. Cette page web n’est pas un PDF.",
     en: "Official ministry announcement on 2026–2027 arrangements, including primary language progression and secondary-school organization. This is a web page, not a PDF; check for newer ministry updates before relying on it."
+  }
+}
+,
+{
+  id: "ministry-secondary-arrangements-cancelled-2026",
+  publisher: "Ministry of National Education",
+  kind: "pedagogical-docs",
+  levels: ["secondary"],
+  pageType: "archive",
+  checkedOn: "2026-10-24",
+  publishedOn: "2026-09-10",
+  url: "https://www.education.gov.dz/2026/09/10/%D9%82%D8%B1%D8%A7%D8%B1-%D8%B1%D9%82%D9%85-36-%D9%85%D8%A4%D8%B1%D8%AE-%D9%81%D9%8A-27-%D8%B1%D8%A8%D9%8A%D8%B9-%D8%A7%D9%84%D8%A3%D9%88%D9%84-%D8%B9%D8%A7%D9%85-1448-%D8%A7%D9%84%D9%85%D9%88%D8%A7/",
+  title: {
+    ar: "القرار رقم 36: إلغاء ترتيبات المواقيت والمعاملات للثانوي",
+    fr: "Décision n° 36 : annulation des nouveaux horaires et coefficients du secondaire",
+    en: "Decision No. 36: cancellation of new secondary-school schedules and coefficients"
+  },
+  description: {
+    ar: "قرار رسمي مؤرخ في 9 سبتمبر 2026 يلغي القرار رقم 20 المتعلق بالمواقيت والمعاملات في التعليم الثانوي العام والتكنولوجي. صفحة القرار الرسمية وليست ملف PDF مباشرًا؛ اعتمد النص الرسمي وأي تحديث لاحق.",
+    fr: "Décision officielle du 9 septembre 2026 annulant la décision n° 20 sur les horaires et coefficients du secondaire général et technologique. La page officielle n’est pas un PDF direct ; vérifiez tout texte ultérieur.",
+    en: "Official decision dated 9 September 2026 cancelling Decision No. 20 on schedules and coefficients in general and technological secondary education. This official page is not a direct PDF; check for later decisions."
   }
 }
 

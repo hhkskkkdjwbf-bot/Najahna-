@@ -22,18 +22,16 @@ export function getStudyAchievements(records, today) {
   const completedDays = days.size;
   const perfectDays = [...days.values()].filter(day => day.perfect).length;
   let streak = 0;
-  const cursor = new Date(validToday.getTime());
-  const todayISO = today;
-  const yesterday = new Date(cursor.getTime());
-  yesterday.setUTCDate(yesterday.getUTCDate() - 1);
-  const yesterdayISO = [yesterday.getUTCFullYear(), String(yesterday.getUTCMonth()+1).padStart(2,"0"), String(yesterday.getUTCDate()).padStart(2,"0")].join("-");
-  let date = days.has(todayISO) ? todayISO : days.has(yesterdayISO) ? yesterdayISO : "";
+  const previousDay = value => {
+    const [year, month, day] = value.split("-").map(Number);
+    const date = new Date(Date.UTC(year, month - 1, day - 1));
+    return [date.getUTCFullYear(), String(date.getUTCMonth() + 1).padStart(2, "0"), String(date.getUTCDate()).padStart(2, "0")].join("-");
+  };
+  const yesterdayISO = previousDay(today);
+  let date = days.has(today) ? today : days.has(yesterdayISO) ? yesterdayISO : "";
   while (date && days.has(date)) {
     streak += 1;
-    const d = parseLocalCalendarDate(date);
-    d.setUTCDate(d.getUTCDate() - 1);
-    const previous = [d.getUTCFullYear(), String(d.getUTCMonth()+1).padStart(2,"0"), String(d.getUTCDate()).padStart(2,"0")].join("-");
-    date = previous;
+    date = previousDay(date);
   }
   const badges = [];
   if (completedDays >= 1) badges.push("first-day");

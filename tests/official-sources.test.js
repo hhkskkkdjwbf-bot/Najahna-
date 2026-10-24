@@ -275,3 +275,22 @@ test("secondary year-one ONPS geography, science and Tamazight records remain di
     assert.equal(validateOfficialSources([source]).valid, true);
   }
 });
+
+
+test("middle-school ONPS French Year 2 and Mathematics Year 3 pages are correctly catalogued", () => {
+  const expected = [
+    ["onps-middle-french-year-2", "middle-2", "french", "https://www.onps.dz/fr/408"],
+    ["onps-middle-math-year-3", "middle-3", "math", "https://www.onps.dz/fr/425"]
+  ];
+  for (const [id, grade, subject, url] of expected) {
+    const source = officialSources.find(item => item.id === id);
+    assert.ok(source, "missing source " + id);
+    assert.equal(source.grade, grade);
+    assert.equal(source.subject, subject);
+    assert.deepEqual(source.levels, ["middle"]);
+    assert.equal(source.url, url);
+    assert.equal(source.pageType, "publication");
+    assert.match(source.description.fr, /pas un PDF direct/i);
+    assert.equal(validateOfficialSources([source]).valid, true);
+  }
+});

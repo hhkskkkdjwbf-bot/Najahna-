@@ -86,6 +86,13 @@
 .official-pdf-note{margin:8px 0 12px;color:var(--muted);font-size:.85rem;line-height:1.6}
 #official-pdf-frame{display:block;width:100%;height:calc(100% - 112px);min-height:280px;border:1px solid var(--line);border-radius:12px;background:#fff}
 @media(max-width:480px){.official-pdf-dialog{padding:12px;border-radius:16px}#official-pdf-frame{height:calc(100% - 135px);min-height:240px}}
+.official-pdf-dialog{width:min(1100px,calc(100% - 24px));height:min(92dvh,1000px);max-width:1100px;max-height:92dvh;overflow:hidden;padding:clamp(14px,2.5vw,26px);border:1px solid var(--line);border-radius:22px;background:var(--surface);color:var(--text);box-shadow:0 28px 100px #0005}
+.official-pdf-dialog::backdrop{background:#09150fcc;backdrop-filter:blur(7px)}
+.official-pdf-header{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.official-pdf-header h2{margin:5px 0 0;font-size:clamp(1.05rem,2.5vw,1.5rem);overflow-wrap:anywhere}
+.official-pdf-note{margin:8px 0 12px;color:var(--muted);font-size:.85rem;line-height:1.6}
+#official-pdf-frame{display:block;width:100%;height:calc(100% - 112px);min-height:280px;border:1px solid var(--line);border-radius:12px;background:#fff}
+@media(max-width:480px){.official-pdf-dialog{padding:12px;border-radius:16px}#official-pdf-frame{height:calc(100% - 135px);min-height:240px}}
 @media(max-width:480px){.resource-pdf-frame{height:62vh;min-height:320px}}
 
 /* Personalized study dashboard: a single, actionable view of local learning activity */

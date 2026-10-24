@@ -122,7 +122,7 @@ function renderOfficialSources() {
   const kindLabel = kind => t(({books:"officialSourceBooks", "exam-papers":"officialSourceExamPapers", "pedagogical-docs":"officialSourcePedagogical"})[kind] || "officialSourceBooks");
   const levelLabel = levels => levels.map(item => t(({primary:"primary",middle:"middle",secondary:"secondary"})[item])).join(" · ");
   const gradeLabel = value => t(({ "primary-1":"gradePrimary1", "primary-2":"gradePrimary2", "primary-3":"gradePrimary3", "primary-4":"gradePrimary4", "primary-5":"gradePrimary5", "middle-1":"gradeMiddle1", "middle-2":"gradeMiddle2", "middle-3":"gradeMiddle3", "middle-4":"gradeMiddle4", "secondary-1":"gradeSecondary1", "secondary-2":"gradeSecondary2", "secondary-3":"gradeSecondary3" })[value] || "officialSourceAllGrades");
-  const subjectLabel = value => t(({arabic:"subjectArabic",english:"subjectEnglish",french:"subjectFrench",physics:"subjectPhysics","islamic-studies":"subjectIslamicStudies",history:"subjectHistory"})[value] || "officialSourceAllSubjects");
+  const subjectLabel = value => t(({arabic:"subjectArabic",english:"subjectEnglish",french:"subjectFrench",math:"subjectMath",science:"subjectScience",physics:"subjectPhysics","islamic-studies":"subjectIslamicStudies",history:"subjectHistory",geography:"subjectGeography",civics:"subjectCivics",amazigh:"subjectAmazigh",technology:"subjectTechnology"})[value] || "officialSourceAllSubjects");
   const pageTypeLabel = source => t(({catalog:"officialSourceCatalogPage",publication:"officialSourcePublicationPage",archive:"officialSourceArchivePage",guide:"officialSourceGuidePage"})[source.pageType] || "officialSourceCatalogPage");
   const dateLabel = date => {
     const parsed = new Date(`${date}T12:00:00`);

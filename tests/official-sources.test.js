@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { officialSources, validateOfficialSources } from "../src/data/official-sources.js";
+import { getDirectPdfUrl } from "../src/utils/pdf-resources.js";
 
 test("official source directory contains curated records with valid metadata", () => {
   const result = validateOfficialSources();
@@ -198,4 +199,14 @@ test("new primary textbook entries match their official ONPS publication pages",
     return source;
   });
   assert.equal(validateOfficialSources(entries).valid, true);
+});
+
+
+test("official ONPS digital-library guide is exposed as a genuine direct PDF", () => {
+  const source = officialSources.find(item => item.id === "onps-digital-library-pdf-guide");
+  assert.ok(source);
+  assert.equal(source.url, "https://www.onps.dz/guide.pdf");
+  assert.equal(source.pageType, "guide");
+  assert.equal(getDirectPdfUrl({ pdfUrl: source.url }), source.url);
+  assert.match(source.description.fr, /n’est pas un manuel scolaire/i);
 });

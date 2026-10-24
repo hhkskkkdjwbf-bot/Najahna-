@@ -102,7 +102,9 @@ function renderOfficialSources() {
   const subject = $("#official-source-subject")?.value || "all";
   const normalize = value => String(value ?? "").normalize("NFD").replace(/\p{M}/gu, "").replace(/ـ/g, "").toLocaleLowerCase();
   const matches = officialSources.filter(source => {
-    const searchable = [source.title[language], source.description[language], source.publisher, source.kind, source.grade, source.subject].join(" ");
+    // Search all localized titles and descriptions so learners can find sources in another language.
+    const localizedText = value => value && typeof value === "object" ? Object.values(value).filter(item => typeof item === "string") : [value];
+    const searchable = [...localizedText(source.title), ...localizedText(source.description), source.publisher, source.kind, source.grade, source.subject].filter(Boolean).join(" ");
     return (level === "all" || source.levels.includes(level)) &&
       (kind === "all" || source.kind === kind) &&
       (grade === "all" || source.grade === grade) &&

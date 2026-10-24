@@ -613,3 +613,18 @@ body.dark{--shadow-card:0 8px 24px rgba(0,0,0,.12);--shadow-hover:0 18px 42px rg
 .account-security p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.75}
 #account-delete{margin-top:2px}
 @media(max-width:460px){.account-dialog{padding:17px;border-radius:19px}.account-dialog-heading{grid-template-columns:48px minmax(0,1fr) 34px;gap:10px}.account-avatar{width:48px;height:48px;border-radius:15px}.account-id-row{align-items:flex-start;flex-direction:column}.account-id-row .button{width:100%}}
+
+
+/* Cloud identity controls */
+.cloud-account-panel{margin-top:22px;padding:16px;border:1px solid var(--line);border-radius:16px;background:color-mix(in srgb,var(--surface) 94%,var(--green) 6%)}
+.cloud-account-panel h3{margin:0 0 8px;font-size:1.05rem}
+.cloud-account-panel>p{font-size:.9rem;line-height:1.7;color:var(--muted)}
+.cloud-account-status{padding:11px 12px;border-radius:11px;border:1px solid var(--line);overflow-wrap:anywhere}
+.cloud-auth-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.cloud-auth-actions .button{flex:1 1 180px;min-width:0;white-space:normal}
+.cloud-account-session{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.cloud-account-session>p{overflow-wrap:anywhere}
+.button-danger{background:#a12d36;color:#fff;border:1px solid #a12d36}
+.button-danger:hover{background:#81212a}
+.cloud-account-panel input:disabled,.cloud-auth-actions button:disabled{opacity:.6;cursor:not-allowed}
+@media(max-width:460px){.cloud-account-panel{padding:12px}.cloud-auth-actions{display:grid;grid-template-columns:1fr}.cloud-auth-actions .button{width:100%}}

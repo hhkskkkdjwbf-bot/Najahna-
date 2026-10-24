@@ -2,6 +2,8 @@ const BACKUP_VERSION = 1;
 const OWNED_PREFIX = "najahna:";
 const EXPLICIT_KEYS = new Set(["najahna-language", "najahna-theme", "najahna-favorites"]);
 const MAX_BACKUP_BYTES = 5 * 1024 * 1024;
+const MAX_BACKUP_ENTRIES = 20000;
+const MAX_KEY_LENGTH = 200;
 
 function isOwnedKey(key) {
   return typeof key === "string" && (key.startsWith(OWNED_PREFIX) || EXPLICIT_KEYS.has(key));
@@ -32,12 +34,13 @@ export function restoreBackup(json, storage = globalThis.localStorage) {
   }
   let backup;
   try { backup = JSON.parse(json); } catch { throw new TypeError("Backup is not valid JSON."); }
-  if (!backup || backup.app !== "Najahna" || backup.version !== BACKUP_VERSION || !Array.isArray(backup.entries)) {
+  if (!backup || backup.app !== "Najahna" || backup.version !== BACKUP_VERSION || !Array.isArray(backup.entries) || backup.entries.length > MAX_BACKUP_ENTRIES ||
+      (backup.exportedAt !== undefined && (typeof backup.exportedAt !== "string" || Number.isNaN(Date.parse(backup.exportedAt))))) {
     throw new TypeError("Unsupported Najahna backup format.");
   }
   const seen = new Set();
   for (const entry of backup.entries) {
-    if (!Array.isArray(entry) || entry.length !== 2 || !isOwnedKey(entry[0]) ||
+    if (!Array.isArray(entry) || entry.length !== 2 || !isOwnedKey(entry[0]) || entry[0].length > MAX_KEY_LENGTH ||
         typeof entry[1] !== "string" || seen.has(entry[0])) {
       throw new TypeError("Backup contains invalid or duplicate entries.");
     }

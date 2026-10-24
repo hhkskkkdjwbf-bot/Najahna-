@@ -105,7 +105,8 @@ test("sample resources never claim official downloads and the official PDF entry
     assert.equal(item.sourceName, "DzExams");
     assert.equal(new URL(item.sourceUrl).hostname, "www.dzexams.com");
     assert.equal(getDirectPdfUrl(item), item.pdfUrl);
-    assert.ok(item.description.fr.includes("droits de réutilisation") || item.description.fr.includes("droits de réutilisation ne sont pas confirmés"));
+    const frenchDescription = item.description.fr.toLocaleLowerCase("fr");
+    assert.ok(frenchDescription.includes("droits de réutilisation"), `${item.id}: reuse-rights caveat must be visible`);
   }
 });
 

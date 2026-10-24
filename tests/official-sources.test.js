@@ -228,3 +228,31 @@ test("additional ONPS mathematics publication pages are correctly classified", (
     assert.match(source.description.fr, /PDF direct/i);
   }
 });
+
+
+test("secondary year-one ONPS textbooks are mapped to their official publication pages", () => {
+  const expected = [
+    ["onps-secondary-math-year-1", "math", "https://www.onps.dz/585"],
+    ["onps-secondary-physics-year-1", "physics", "https://www.onps.dz/587"],
+    ["onps-secondary-french-year-1", "french", "https://www.onps.dz/589"]
+  ];
+  for (const [id, subject, url] of expected) {
+    const source = officialSources.find(item => item.id === id);
+    assert.ok(source, "missing source " + id);
+    assert.equal(source.grade, "secondary-1");
+    assert.equal(source.subject, subject);
+    assert.deepEqual(source.levels, ["secondary"]);
+    assert.equal(source.url, url);
+    assert.equal(source.pageType, "publication");
+    assert.match(source.description.fr, /pas un PDF direct/i);
+    assert.equal(validateOfficialSources([source]).valid, true);
+  }
+});
+
+test("source validator accepts all subjects exposed by the official-source filters", () => {
+  const sample = officialSources.find(source => source.pageType === "publication" && source.grade === "middle-4");
+  for (const subject of ["geography", "technology"]) {
+    const candidate = { ...sample, id: "test-subject-" + subject, subject };
+    assert.equal(validateOfficialSources([candidate]).valid, true, subject);
+  }
+});

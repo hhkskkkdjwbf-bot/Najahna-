@@ -770,6 +770,47 @@ $$("[data-level]").forEach(button => button.addEventListener("click", () => {
   });
   renderResources(); $("#resources").scrollIntoView({ behavior: "smooth" }); showToast(t("levelSelected"));
 }));
+$("#learner-profile-form")?.addEventListener("submit", event => {
+  event.preventDefault();
+  try {
+    saveLearnerProfile({ name: $("#learner-name").value, gradeId: $("#learner-grade").value });
+    dailyChallengeAnswers = {};
+    $("#learner-grade").dataset.profileLoaded = "true";
+    $("#learner-name").dataset.profileLoaded = "true";
+    renderDailyChallenge();
+    showToast(t("learnerProfileSaved"));
+  } catch {
+    showToast(t("storageError"));
+  }
+});
+$("#daily-challenge-content")?.addEventListener("change", event => {
+  const input = event.target.closest('input[type="radio"][name^="daily-"]');
+  if (!input) return;
+  const id = input.name.slice("daily-".length);
+  dailyChallengeAnswers[id] = Number(input.value);
+});
+$("#daily-challenge-content")?.addEventListener("submit", event => {
+  if (event.target.id !== "daily-challenge-form") return;
+  event.preventDefault();
+  const profile = getLearnerProfile();
+  if (!profile) return;
+  const questions = getDailyChallengeQuestions(dailyChallengeBank, profile.gradeId, toLocalDateISO());
+  if (!questions.length) return;
+  const answers = questions.map(question => dailyChallengeAnswers[question.id]);
+  if (answers.some(answer => !Number.isInteger(answer))) {
+    showToast(t("dailyChallengeAnswerAll"));
+    return;
+  }
+  try {
+    const result = gradeDailyChallenge(questions, answers);
+    saveDailyChallengeCompletion(toLocalDateISO(), profile.gradeId, result.score, result.total);
+    dailyChallengeAnswers = {};
+    renderDailyChallenge();
+    showToast(t("dailyChallengeSaved"));
+  } catch {
+    showToast(t("storageError"));
+  }
+});
 document.body.classList.toggle("dark", localStorage.getItem("najahna-theme") === "dark");
 $("#theme-toggle").textContent = document.body.classList.contains("dark") ? "☀" : "☾";
 $("#year").textContent = new Date().getFullYear();

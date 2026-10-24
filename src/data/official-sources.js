@@ -653,6 +653,58 @@ export const officialSources = [
   url: "https://www.onps.dz/322",
   title: { ar: "كتابي في الإنجليزية — السنة الأولى متوسط", fr: "Manuel d’anglais — 1re année moyenne", en: "English textbook — Middle School Year 1" },
   description: { ar: "صفحة كتاب لدى الديوان وليست ملف PDF مباشرًا؛ تحقق من الطبعة.", fr: "Fiche du manuel ONPS, pas un PDF direct ; vérifiez l’édition.", en: "ONPS textbook entry, not a direct PDF; verify the edition." }
+},
+{
+  id: "onps-primary-math-year-2",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["primary"],
+  grade: "primary-2",
+  subject: "math",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/fr/158",
+  title: { ar: "كتابي في الرياضيات — السنة الثانية ابتدائي", fr: "Manuel de mathématiques — 2e année primaire", en: "Mathematics textbook — Primary Year 2" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف الكتاب. ليست ملف PDF مباشرًا؛ تحقق من الطبعة والبرنامج الحالي.", fr: "Fiche officielle de l’ONPS présentant la couverture du manuel. Ce n’est pas un PDF direct ; vérifiez l’édition et le programme actuel.", en: "Official ONPS publication page showing the textbook cover. It is not a direct PDF; check the edition and current curriculum." }
+},
+{
+  id: "onps-primary-arabic-year-2",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["primary"],
+  grade: "primary-2",
+  subject: "arabic",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/fr/151",
+  title: { ar: "كتابي في اللغة العربية — السنة الثانية ابتدائي", fr: "Manuel d’arabe — 2e année primaire", en: "Arabic textbook — Primary Year 2" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان للغة العربية والتربية الإسلامية والمدنية. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS pour l’arabe, l’éducation islamique et civique. Ce n’est pas un PDF direct ; vérifiez l’édition actuelle.", en: "Official ONPS entry for Arabic, Islamic education, and civics. It is not a direct PDF; verify the current edition." }
+},
+{
+  id: "onps-middle-math-year-2",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-2",
+  subject: "math",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/393",
+  title: { ar: "كتاب الرياضيات — السنة الثانية متوسط", fr: "Manuel de mathématiques — 2e année moyenne", en: "Mathematics textbook — Middle School Year 2" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض عنوان الكتاب. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS identifiant le manuel. Ce n’est pas un PDF direct ; vérifiez l’édition actuelle.", en: "Official ONPS publication page identifying the textbook. It is not a direct PDF; check the current edition." }
+},
+{
+  id: "onps-middle-arabic-year-2",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-2",
+  subject: "arabic",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/335",
+  title: { ar: "كتاب اللغة العربية — السنة الثانية متوسط", fr: "Manuel d’arabe — 2e année moyenne", en: "Arabic textbook — Middle School Year 2" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تحدد كتاب اللغة العربية. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS pour le manuel d’arabe. Ce n’est pas un PDF direct ; vérifiez l’édition actuelle.", en: "Official ONPS entry for the Arabic textbook. It is not a direct PDF; check the current edition." }
 }
 
 ];

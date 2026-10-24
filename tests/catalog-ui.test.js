@@ -123,5 +123,5 @@ test("keyboard shortcuts use query-all selection safely during language changes"
   assert.match(app, /\$\$\("\[data-i18n-title\]"\)\.forEach/);
   assert.match(app, /\$\$\("\[data-i18n-aria-label\]"\)\.forEach/);
   assert.match(app, /\$\$\("#level-filter option, #type-filter option/);
-  assert.doesNotMatch(app, /\$\("\[data-i18n-title\]"\)\.forEach/);
+  assert.doesNotMatch(app, /^\s*\$\("\[data-i18n-title\]"\)\.forEach/m);
 });

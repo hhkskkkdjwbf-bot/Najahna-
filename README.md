@@ -2,7 +2,7 @@
 
 **A student-first Algerian education platform.** Najahna is designed to help primary, middle-school (CEM), and secondary-school learners discover learning materials and organize their revision in Arabic, French, and English.
 
-> **Current status:** early front-end prototype. The visible resource cards are demonstration templates, not official exam papers or downloadable PDFs. The school-year and subject catalog is a navigation starter and must be checked against current official programs before being presented as exhaustive.
+> **Current status:** early front-end prototype with an initial PDF library. Five older Ministry of Education pedagogical PDFs and five third-party PDFs hosted by DzExams can be read in an in-page viewer when the host allows embedding. The DzExams files are externally hosted; reuse rights are not confirmed, and their age/curriculum fit must be checked. Most other resource cards remain clearly labelled demonstration templates, not official exam papers. The school-year and subject catalog is a navigation starter and must be checked against current official programs before being presented as exhaustive.
 
 ## Account backend setup
 

@@ -403,12 +403,26 @@ function renderStudyPlan() {
   const completionRate = allTasks.length ? Math.round(completed / allTasks.length * 100) : 0;
   $("#study-plan-summary").textContent = t("studyPlanSummary").replace("{done}", String(completed)).replace("{total}", String(allTasks.length)).replace("{minutes}", String(minutes));
   const progress = $("#study-progress");
+  const nextSevenDays = new Date();
+  nextSevenDays.setDate(nextSevenDays.getDate() + 7);
+  const nextSevenDaysISO = toLocalDateISO(nextSevenDays);
+  const upcomingCount = allTasks.filter(task => !task.completed && task.date >= today && task.date <= nextSevenDaysISO).length;
+  const overdueCount = allTasks.filter(task => !task.completed && task.date < today).length;
   if (progress) progress.innerHTML = [
     ["progressRate", `${completionRate}%`],
     ["progressCompleted", `${completed}/${allTasks.length}`],
     ["progressMinutes", String(completedMinutes)],
-    ["progressToday", `${todayDone}/${todayTasks.length}`]
+    ["progressToday", `${todayDone}/${todayTasks.length}`],
+    ["progressNextWeek", String(upcomingCount)],
+    ["progressOverdue", String(overdueCount)]
   ].map(([key, value]) => `<div class="progress-metric"><span>${escapeHTML(t(key))}</span><strong>${escapeHTML(value)}</strong></div>`).join("");
+  const progressBar = $("#study-progress-bar");
+  if (progressBar) {
+    progressBar.setAttribute("aria-valuenow", String(completionRate));
+    progressBar.setAttribute("aria-label", t("progressRate"));
+    const fill = $("span", progressBar);
+    if (fill) fill.style.width = `${completionRate}%`;
+  }
   const filter = $("#study-plan-filter")?.value || "all";
   const tasks = allTasks.filter(task => filter === "completed" ? task.completed : filter === "pending" ? !task.completed : filter === "overdue" ? !task.completed && task.date < today : true);
   list.innerHTML = tasks.length ? tasks.map(task => {

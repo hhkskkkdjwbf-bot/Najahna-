@@ -146,3 +146,14 @@ test("official-source subject filters have localized labels for the full subject
     assert.ok(app.includes(key), "missing subject mapping " + key);
   }
 });
+
+
+test("official-source subject filter exposes all supported catalog subjects", () => {
+  for (const subject of ["math", "science", "physics", "islamic-studies", "history", "geography", "civics", "amazigh", "technology"]) {
+    assert.match(html, new RegExp('option value="' + subject + '"'));
+  }
+});
+
+test("resource cards display localized subject names instead of raw identifiers", () => {
+  assert.match(app, /subjectCatalog\.find\(subject => subject\.id === item\.subject\)\?\.label\?\.\[language\]/);
+});

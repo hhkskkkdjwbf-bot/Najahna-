@@ -75,7 +75,7 @@ test("official-source badge does not imply that every link or PDF was verified",
 });
 
 test("source-directory controls are translated in Arabic, French and English", () => {
-  for (const key of ["officialSourceSearchLabel", "officialSourceLevelLabel", "officialSourceKindLabel", "officialSourceGradeLabel", "officialSourceSubjectLabel", "officialSourceRightsUnknown", "officialSourceCheckedOn", "officialSourceEmpty", "officialSourceGuidePage", "officialSourcePublishedOn"]) {
+  for (const key of ["officialSourceSearchLabel", "officialSourceLevelLabel", "officialSourceKindLabel", "officialSourceGradeLabel", "officialSourceSubjectLabel", "officialSourceRightsUnknown", "officialSourcePageOnly", "officialSourceCheckedOn", "officialSourceEmpty", "officialSourceGuidePage", "officialSourcePublishedOn"]) {
     assert.ok(arabic.includes(key), `Arabic translation missing ${key}`);
     assert.ok(french.includes(key), `French translation missing ${key}`);
     assert.ok(english.includes(key), `English translation missing ${key}`);

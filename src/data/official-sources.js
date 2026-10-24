@@ -856,6 +856,46 @@ export const officialSources = [
   description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف كتاب الرياضيات. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS présentant la couverture du manuel de mathématiques. Ce n’est pas un PDF direct ; vérifiez l’édition actuelle.", en: "Official ONPS publication page showing the mathematics textbook cover. It is not a direct PDF; check the current edition." }
 }
 
+,
+{
+  id: "onps-secondary-math-year-1",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["secondary"],
+  grade: "secondary-1",
+  subject: "math",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/585",
+  title: { ar: "كتاب الرياضيات — السنة الأولى ثانوي، جذع مشترك آداب", fr: "Manuel de mathématiques — 1re secondaire, tronc commun lettres", en: "Mathematics textbook — Secondary Year 1, Arts common core" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان لكتاب الرياضيات الخاص بجذع الآداب المشترك. ليست ملف PDF مباشرًا؛ تحقق من الشعبة والطبعة.", fr: "Fiche officielle ONPS du manuel de mathématiques pour le tronc commun lettres. Ce n’est pas un PDF direct ; vérifiez la filière et l’édition.", en: "Official ONPS entry for the mathematics textbook for the Arts common core. This is not a direct PDF; verify the stream and edition." }
+},
+{
+  id: "onps-secondary-physics-year-1",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["secondary"],
+  grade: "secondary-1",
+  subject: "physics",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/587",
+  title: { ar: "كتاب العلوم الفيزيائية — السنة الأولى ثانوي، جذع مشترك آداب", fr: "Manuel de sciences physiques — 1re secondaire, tronc commun lettres", en: "Physics textbook — Secondary Year 1, Arts common core" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان لكتاب العلوم الفيزيائية الخاص بجذع الآداب المشترك. ليست ملف PDF مباشرًا؛ تحقق من الشعبة والطبعة.", fr: "Fiche officielle ONPS du manuel de sciences physiques pour le tronc commun lettres. Ce n’est pas un PDF direct ; vérifiez la filière et l’édition.", en: "Official ONPS entry for the physics textbook for the Arts common core. This is not a direct PDF; verify the stream and edition." }
+},
+{
+  id: "onps-secondary-french-year-1",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["secondary"],
+  grade: "secondary-1",
+  subject: "french",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/589",
+  title: { ar: "كتاب اللغة الفرنسية — السنة الأولى ثانوي، جذع مشترك آداب", fr: "Manuel de français — 1re secondaire, tronc commun lettres", en: "French textbook — Secondary Year 1, Arts common core" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان لكتاب الفرنسية الخاص بجذع الآداب المشترك. ليست ملف PDF مباشرًا؛ تحقق من الشعبة والطبعة.", fr: "Fiche officielle ONPS du manuel de français pour le tronc commun lettres. Ce n’est pas un PDF direct ; vérifiez la filière et l’édition.", en: "Official ONPS entry for the French textbook for the Arts common core. This is not a direct PDF; verify the stream and edition." }
+}
 ];
 
 function isValidISODate(value) {
@@ -882,7 +922,7 @@ export function validateOfficialSources(records = officialSources) {
     if (!Array.isArray(source.levels) || !source.levels.length || source.levels.some(level => !["primary", "middle", "secondary"].includes(level))) fail("invalid school levels");
     if (!["catalog", "publication", "archive", "guide"].includes(source.pageType)) fail("invalid page type");
     const allowedGrades = ["primary-1", "primary-2", "primary-3", "primary-4", "primary-5", "middle-1", "middle-2", "middle-3", "middle-4", "secondary-1", "secondary-2", "secondary-3"];
-    const allowedSubjects = ["arabic", "english", "french", "math", "science", "physics", "islamic-studies", "history", "amazigh", "civics"];
+    const allowedSubjects = ["arabic", "english", "french", "math", "science", "physics", "islamic-studies", "history", "amazigh", "civics", "geography", "technology"];
     if (source.grade !== undefined && !allowedGrades.includes(source.grade)) fail("invalid grade");
     if (source.subject !== undefined && !allowedSubjects.includes(source.subject)) fail("invalid subject");
     if (source.pageType !== "catalog" && (source.grade === undefined) !== (source.subject === undefined)) fail("grade and subject must be provided together");

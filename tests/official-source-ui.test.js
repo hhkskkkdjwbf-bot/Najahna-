@@ -54,6 +54,11 @@ test("source-directory controls are translated in Arabic, French and English", (
   }
 });
 
+test("school calendar renders enough upcoming events to include the full published schedule", () => {
+  assert.match(app, /getUpcomingSchoolEvents\(todayISO, 12\)/);
+  assert.match(html, /id="school-calendar-list"[^>]*aria-live="polite"/);
+});
+
 test("school calendar section is translated and connected to the official source", () => {
   assert.match(html, /id="school-calendar-list"/);
   assert.match(html, /education\.gov\.dz/);

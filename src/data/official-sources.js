@@ -325,6 +325,7 @@ export function validateOfficialSources(records = officialSources) {
     if (source.grade !== undefined && !allowedGrades.includes(source.grade)) fail("invalid grade");
     if (source.subject !== undefined && !allowedSubjects.includes(source.subject)) fail("invalid subject");
     if ((source.grade === undefined) !== (source.subject === undefined)) fail("grade and subject must be provided together");
+    if (source.grade && !source.levels?.includes(source.grade.split("-")[0])) fail("grade does not match declared school levels");
     if (source.pageType === "publication" && (!source.grade || !source.subject)) fail("publication entries require grade and subject metadata");
     if (typeof source.url !== "string") fail("URL is required");
     else {

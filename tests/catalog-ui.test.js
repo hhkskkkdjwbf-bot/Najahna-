@@ -38,3 +38,14 @@ test("service worker increments its shell cache after UI assets change", () => {
   assert.match(serviceWorker, /"\.\/assets\/css\/main\.css"/);
   assert.match(serviceWorker, /"\.\/assets\/js\/app\.js"/);
 });
+
+test("revision history offers a translated resume action and avoids duplicate source-link IDs", () => {
+  assert.match(app, /data-history-resource/);
+  assert.match(app, /\$\("#history-list"\)\?\.addEventListener\("click"/);
+  assert.match(app, /historyResume/);
+  assert.equal((html.match(/id="resource-dialog-source"/g) || []).length, 1);
+  for (const path of ["../src/i18n/en.js", "../src/i18n/fr.js", "../src/i18n/ar.js"]) {
+    const translation = readFileSync(new URL(path, import.meta.url), "utf8");
+    assert.match(translation, /historyResume:/);
+  }
+});

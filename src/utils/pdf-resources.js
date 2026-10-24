@@ -6,6 +6,7 @@ export function getDirectPdfUrl(resource) {
   if (!candidate || /[\r\n]/.test(candidate)) return null;
   if (!/\.pdf(?:[?#].*)?$/i.test(candidate)) return null;
   if (/^https:\/\//i.test(candidate)) return candidate;
+  if (candidate.startsWith("//")) return null;
   if (/^(?:\.\/|\.\.\/|\/)[^\s]*\.pdf(?:[?#].*)?$/i.test(candidate)) return candidate;
   return null;
 }

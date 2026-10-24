@@ -961,6 +961,71 @@ export const officialSources = [
   url: "https://www.onps.dz/fr/425",
   title: { ar: "كتاب الرياضيات — السنة الثالثة من التعليم المتوسط", fr: "Manuel de mathématiques — 3e année moyenne", en: "Mathematics textbook — Middle School Year 3" },
   description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف كتاب الرياضيات للسنة الثالثة متوسط. ليست ملف PDF مباشرًا؛ تحقق من الطبعة.", fr: "Fiche officielle ONPS présentant la couverture du manuel de mathématiques de 3e année moyenne. Ce n’est pas un PDF direct ; vérifiez l’édition.", en: "Official ONPS publication page for the Middle School Year 3 mathematics textbook. It is not a direct PDF; verify the edition." }
+},
+{
+  id: "onps-middle-physics-year-2",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-2",
+  subject: "physics",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/fr/405",
+  title: { ar: "كتاب العلوم الفيزيائية والتكنولوجيا — السنة الثانية متوسط", fr: "Manuel de physique et technologie — 2e année moyenne", en: "Physics and Technology textbook — Middle School Year 2" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف الكتاب. ليست ملف PDF مباشرًا؛ تحقق من الطبعة والبرنامج.", fr: "Fiche officielle ONPS présentant la couverture du manuel. Ce n’est pas un PDF direct ; vérifiez l’édition et le programme.", en: "Official ONPS publication page showing the textbook cover. This is not a direct PDF; verify the edition and curriculum." }
+},
+{
+  id: "onps-middle-geography-year-2",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-2",
+  subject: "geography",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/402",
+  title: { ar: "كتاب الجغرافيا — السنة الثانية متوسط", fr: "Manuel de géographie — 2e année moyenne", en: "Geography textbook — Middle School Year 2" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف الكتاب. ليست ملف PDF مباشرًا؛ تحقق من الطبعة والبرنامج.", fr: "Fiche officielle ONPS présentant la couverture du manuel. Ce n’est pas un PDF direct ; vérifiez l’édition et le programme.", en: "Official ONPS publication page showing the textbook cover. This is not a direct PDF; verify the edition and curriculum." }
+},
+{
+  id: "onps-middle-history-year-3",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-3",
+  subject: "history",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/431",
+  title: { ar: "كتاب التاريخ — السنة الثالثة متوسط", fr: "Manuel d’histoire — 3e année moyenne", en: "History textbook — Middle School Year 3" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف الكتاب. ليست ملف PDF مباشرًا؛ تحقق من الطبعة والبرنامج.", fr: "Fiche officielle ONPS présentant la couverture du manuel. Ce n’est pas un PDF direct ; vérifiez l’édition et le programme.", en: "Official ONPS publication page showing the textbook cover. This is not a direct PDF; verify the edition and curriculum." }
+},
+{
+  id: "onps-middle-islamic-studies-year-3",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-3",
+  subject: "islamic-studies",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/428",
+  title: { ar: "كتاب التربية الإسلامية — السنة الثالثة متوسط", fr: "Manuel d’éducation islamique — 3e année moyenne", en: "Islamic Studies textbook — Middle School Year 3" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف الكتاب. ليست ملف PDF مباشرًا؛ تحقق من الطبعة والبرنامج.", fr: "Fiche officielle ONPS présentant la couverture du manuel. Ce n’est pas un PDF direct ; vérifiez l’édition et le programme.", en: "Official ONPS publication page showing the textbook cover. This is not a direct PDF; verify the edition and curriculum." }
+},
+{
+  id: "onps-middle-geography-year-3",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-3",
+  subject: "geography",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/fr/434",
+  title: { ar: "كتاب الجغرافيا — السنة الثالثة متوسط", fr: "Manuel de géographie — 3e année moyenne", en: "Geography textbook — Middle School Year 3" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف الكتاب. ليست ملف PDF مباشرًا؛ تحقق من الطبعة والبرنامج.", fr: "Fiche officielle ONPS présentant la couverture du manuel. Ce n’est pas un PDF direct ; vérifiez l’édition et le programme.", en: "Official ONPS publication page showing the textbook cover. This is not a direct PDF; verify the edition and curriculum." }
 }
 ];
 

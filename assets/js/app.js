@@ -54,6 +54,7 @@ function setLanguage(next) {
   $$("#level-filter option, #type-filter option, #study-plan-filter option, #official-source-level option, #official-source-kind option, #official-source-grade option, #official-source-subject option, #learner-grade option").forEach(option => { if (option.dataset.i18n) option.textContent = t(option.dataset.i18n); });
   renderLevelCounts();
   renderCatalogFilters();
+  renderResourceCategoryGuide();
   renderQuiz();
   renderDailyChallenge();
   renderAchievements();

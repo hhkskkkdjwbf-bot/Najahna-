@@ -43,6 +43,12 @@ test("official-source search includes every translated title and description", (
   assert.match(app, /localizedText\(source\.description\)/);
 });
 
+test("storage failure feedback is translated in all supported interface languages", () => {
+  assert.match(arabic, /storageError:/);
+  assert.match(french, /storageError:/);
+  assert.match(english, /storageError:/);
+});
+
 test("official-source badge does not imply that every link or PDF was verified", () => {
   assert.match(arabic, /officialSourceChecked:"جهة نشر رسمية"/);
   assert.match(french, /officialSourceChecked:"Éditeur officiel"/);

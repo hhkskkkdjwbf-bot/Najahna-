@@ -3,7 +3,7 @@ import { schoolYears, subjectCatalog } from "../../src/data/curriculum.js";
 import { filterResources } from "../../src/data/resource-filters.js";
 import { getCollections, createCollection, moveResourceToCollection, removeResourceFromCollection, deleteCollection } from "../../src/utils/collections.js";
 import { getNotes, saveNote, deleteNote, clearNotes } from "../../src/utils/notes.js";
-import { createStudyTask, toggleStudyTask, removeStudyTask, clearCompletedStudyTasks } from "../../src/utils/study-plan.js";
+import { createStudyTask, toggleStudyTask, removeStudyTask, clearCompletedStudyTasks, sortStudyTasks } from "../../src/utils/study-plan.js";
 import { readJSON, writeJSON } from "../../src/utils/storage.js";
 import { recordResourceView, getResourceHistory, clearResourceHistory } from "../../src/utils/history.js";
 import { serializeBackup, restoreBackup } from "../../src/utils/backup.js";
@@ -394,11 +394,11 @@ function getStudyTasks() {
 function renderStudyPlan() {
   const list = $("#study-plan-list");
   if (!list) return;
-  const allTasks = getStudyTasks().sort((a, b) => a.date.localeCompare(b.date) || Number(a.completed) - Number(b.completed));
+  const today = toLocalDateISO();
+  const allTasks = sortStudyTasks(getStudyTasks(), today);
   const completed = allTasks.filter(task => task.completed).length;
   const minutes = allTasks.filter(task => !task.completed).reduce((total, task) => total + Number(task.minutes || 0), 0);
   const completedMinutes = allTasks.filter(task => task.completed).reduce((total, task) => total + Number(task.minutes || 0), 0);
-  const today = toLocalDateISO();
   const todayTasks = allTasks.filter(task => task.date === today);
   const todayDone = todayTasks.filter(task => task.completed).length;
   const completionRate = allTasks.length ? Math.round(completed / allTasks.length * 100) : 0;

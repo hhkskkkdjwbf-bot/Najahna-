@@ -337,14 +337,17 @@ function renderOfficialSources() {
     const parsed = new Date(`${date}T12:00:00`);
     return Number.isNaN(parsed.getTime()) ? date : parsed.toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { year:"numeric", month:"short", day:"numeric" });
   };
-  root.innerHTML = matches.map(source => `<article class="official-source-card">
-    <div class="official-source-card-top"><span class="official-source-icon" aria-hidden="true">${source.kind === "books" ? "▤" : source.kind === "exam-papers" ? "✎" : "✓"}</span><span class="source-verified-label">${escapeHTML(t("officialSourceChecked"))}</span></div>
-    <span class="official-source-kind">${escapeHTML(kindLabel(source.kind))} · ${escapeHTML(levelLabel(source.levels))}</span>
-    <h3>${escapeHTML(source.title[language])}</h3><p>${escapeHTML(source.description[language])}</p>
-    <div class="official-source-tags">${source.grade ? `<span>${escapeHTML(gradeLabel(source.grade))}</span>` : ""}${source.subject ? `<span>${escapeHTML(subjectLabel(source.subject))}</span>` : ""}<span>${escapeHTML(pageTypeLabel(source))}</span><span>${escapeHTML(t("officialSourceRightsUnknown"))}</span><span>${escapeHTML(t("officialSourcePageOnly"))}</span></div>
-    <div class="official-source-meta"><span>${escapeHTML(source.publisher)}</span><span>${escapeHTML(t("officialSourceCheckedOn"))}: ${escapeHTML(dateLabel(source.checkedOn))}</span>${source.publishedOn ? `<span>${escapeHTML(t("officialSourcePublishedOn"))}: ${escapeHTML(dateLabel(source.publishedOn))}</span>` : ""}</div>
-    <a href="${escapeHTML(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(t("openOfficialSource"))} ↗</a>
-  </article>`).join("");
+  root.innerHTML = matches.map(source => {
+    const pdfUrl = getDirectPdfUrl(source);
+    return `<article class="official-source-card">
+      <div class="official-source-card-top"><span class="official-source-icon" aria-hidden="true">${source.kind === "books" ? "▤" : source.kind === "exam-papers" ? "✎" : "✓"}</span><span class="source-verified-label">${escapeHTML(t("officialSourceChecked"))}</span></div>
+      <span class="official-source-kind">${escapeHTML(kindLabel(source.kind))} · ${escapeHTML(levelLabel(source.levels))}</span>
+      <h3>${escapeHTML(source.title[language])}</h3><p>${escapeHTML(source.description[language])}</p>
+      <div class="official-source-tags">${source.grade ? `<span>${escapeHTML(gradeLabel(source.grade))}</span>` : ""}${source.subject ? `<span>${escapeHTML(subjectLabel(source.subject))}</span>` : ""}<span>${escapeHTML(pageTypeLabel(source))}</span><span>${escapeHTML(t("officialSourceRightsUnknown"))}</span><span>${escapeHTML(pdfUrl ? t("officialPdfAvailable") : t("officialSourcePageOnly"))}</span></div>
+      <div class="official-source-meta"><span>${escapeHTML(source.publisher)}</span><span>${escapeHTML(t("officialSourceCheckedOn"))}: ${escapeHTML(dateLabel(source.checkedOn))}</span>${source.publishedOn ? `<span>${escapeHTML(t("officialSourcePublishedOn"))}: ${escapeHTML(dateLabel(source.publishedOn))}</span>` : ""}</div>
+      ${pdfUrl ? `<button type="button" class="button button-primary button-small" data-official-pdf="${escapeHTML(source.id)}">${escapeHTML(t("officialPdfRead"))}</button>` : `<a href="${escapeHTML(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(t("openOfficialSource"))} ↗</a>`}
+    </article>`;
+  }).join("");
   $("#official-source-count").textContent = t("officialSourceCount").replace("{count}", String(matches.length));
   $("#official-source-empty").hidden = matches.length !== 0;
 }
@@ -1117,6 +1120,27 @@ $("#theme-toggle").textContent = document.body.classList.contains("dark") ? "☀
 $("#year").textContent = new Date().getFullYear();
 $("#quiz-level")?.addEventListener("change", event => resetQuiz(event.target.value));
 $("#official-source-search")?.addEventListener("input", renderOfficialSources);
+$("#official-source-grid")?.addEventListener("click", event => {
+  const button = event.target.closest("[data-official-pdf]");
+  if (!button) return;
+  const source = officialSources.find(item => item.id === button.dataset.officialPdf);
+  const pdfUrl = getDirectPdfUrl(source);
+  if (!pdfUrl) return;
+  let safeUrl;
+  try {
+    const parsed = new URL(pdfUrl, location.href);
+    if (parsed.protocol !== "https:" && parsed.origin !== location.origin) return;
+    safeUrl = parsed.href;
+  } catch { return; }
+  const dialog = $("#official-pdf-dialog");
+  const frame = $("#official-pdf-frame");
+  $("#official-pdf-title").textContent = source.title[language] || source.title.fr || source.title.en;
+  frame.title = $("#official-pdf-title").textContent;
+  frame.src = safeUrl;
+  if (!dialog.open) dialog.showModal();
+});
+$("#official-pdf-close")?.addEventListener("click", () => $("#official-pdf-dialog")?.close());
+$("#official-pdf-dialog")?.addEventListener("close", () => { $("#official-pdf-frame")?.removeAttribute("src"); });
 $("#official-source-level")?.addEventListener("change", renderOfficialSources);
 $("#official-source-kind")?.addEventListener("change", renderOfficialSources);
 $("#official-source-grade")?.addEventListener("change", renderOfficialSources);

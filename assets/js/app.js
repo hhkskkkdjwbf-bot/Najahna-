@@ -4,7 +4,7 @@ import { schoolYears, subjectCatalog } from "../../src/data/curriculum.js";
 import { filterResources } from "../../src/data/resource-filters.js";
 import { getCollections, createCollection, moveResourceToCollection, removeResourceFromCollection, deleteCollection } from "../../src/utils/collections.js";
 import { getNotes, saveNote, deleteNote, clearNotes } from "../../src/utils/notes.js";
-import { createStudyTask, toggleStudyTask, removeStudyTask, clearCompletedStudyTasks, sortStudyTasks } from "../../src/utils/study-plan.js";
+import { createStudyTask, toggleStudyTask, removeStudyTask, clearCompletedStudyTasks, sortStudyTasks, rescheduleOverdueStudyTasks } from "../../src/utils/study-plan.js";
 import { readJSON, writeJSON } from "../../src/utils/storage.js";
 import { recordResourceView, getResourceHistory, clearResourceHistory } from "../../src/utils/history.js";
 import { serializeBackup, restoreBackup } from "../../src/utils/backup.js";
@@ -551,6 +551,8 @@ function renderStudyPlan() {
   const nextSevenDaysISO = toLocalDateISO(nextSevenDays);
   const upcomingCount = allTasks.filter(task => !task.completed && task.date >= today && task.date <= nextSevenDaysISO).length;
   const overdueCount = allTasks.filter(task => !task.completed && task.date < today).length;
+  const rescheduleButton = $("#reschedule-overdue-study");
+  if (rescheduleButton) rescheduleButton.disabled = overdueCount === 0;
   if (progress) progress.innerHTML = [
     ["progressRate", `${completionRate}%`],
     ["progressCompleted", `${completed}/${allTasks.length}`],
@@ -808,6 +810,17 @@ $("#study-plan-form")?.addEventListener("submit", event => {
   } catch { showToast(t("studyPlanInvalid")); }
 });
 $("#study-plan-filter")?.addEventListener("change", renderStudyPlan);
+$("#reschedule-overdue-study")?.addEventListener("click", () => {
+  const tasks = getStudyTasks();
+  const today = toLocalDateISO();
+  const overdueCount = tasks.filter(task => !task.completed && task.date < today).length;
+  if (!overdueCount) { showToast(t("noOverdueStudy")); return; }
+  if (!window.confirm(t("confirmRescheduleOverdueStudy").replace("{count}", String(overdueCount)))) return;
+  const updated = rescheduleOverdueStudyTasks(tasks, today);
+  if (!writeJSON("study-plan", updated)) { showToast(t("saveFailed")); return; }
+  renderStudyPlan();
+  showToast(t("overdueStudyRescheduled").replace("{count}", String(overdueCount)));
+});
 $("#clear-completed-study")?.addEventListener("click", () => {
   const tasks = getStudyTasks();
   const remaining = clearCompletedStudyTasks(tasks);

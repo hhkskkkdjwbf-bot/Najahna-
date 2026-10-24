@@ -1,4 +1,4 @@
-const CACHE_NAME = "najahna-shell-v55";
+const CACHE_NAME = "najahna-shell-v56";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -23,6 +23,7 @@ const APP_SHELL = [
   "./src/utils/history.js",
   "./src/utils/quiz-history.js",
   "./src/utils/learner-profile.js",
+  "./src/utils/account-profile.js",
   "./src/utils/daily-challenge.js",
   "./src/utils/exam-sheet.js",
   "./src/utils/gamification.js",

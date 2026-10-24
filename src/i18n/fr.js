@@ -27,4 +27,5 @@ historyTitle:"Historique de révision",historyIntro:"Les dernières ressources m
  progressNextWeek:"Séances prévues dans les 7 prochains jours",progressOverdue:"Séances en retard",
   storageError:"Impossible d’enregistrer les modifications dans ce navigateur. Vérifiez l’espace disponible.",progressRate:"Taux d’avancement",progressCompleted:"Séances terminées",progressMinutes:"Minutes révisées",progressToday:"Séances du jour",
   historyResume:"Reprendre",
+  quizHistoryTrend:"Tendance récente (3 dernières vs 3 précédentes)",
 };

@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { dailyChallengeBank } from "../src/data/daily-challenge.js";
-import { getDailyChallengeQuestions, gradeDailyChallenge } from "../src/utils/daily-challenge.js";
+import { getDailyChallengeQuestions, gradeDailyChallenge, isValidChallengeDate } from "../src/utils/daily-challenge.js";
 import { getDailyChallengeCompletion, getLearnerProfile, saveDailyChallengeCompletion, saveLearnerProfile } from "../src/utils/learner-profile.js";
 
 class MemoryStorage {
@@ -55,4 +55,33 @@ test("learner profile and daily result are stored per year and date", () => {
   );
   assert.equal(getDailyChallengeCompletion("2026-10-24", "primary-2"), null);
   assert.throws(() => saveDailyChallengeCompletion("2026-10-24", "primary-1", 11, 10), /score/);
+});
+
+test("challenge dates reject impossible calendar days", () => {
+  assert.equal(isValidChallengeDate("2026-10-24"), true);
+  assert.equal(isValidChallengeDate("2026-02-29"), false);
+  assert.equal(isValidChallengeDate("2026-13-01"), false);
+  assert.equal(isValidChallengeDate("2026-04-31"), false);
+  assert.equal(isValidChallengeDate(null), false);
+  assert.deepEqual(getDailyChallengeQuestions(dailyChallengeBank, "primary-1", "2026-02-29"), []);
+});
+
+test("challenge ignores incomplete translations and rejects corrupted answer keys", () => {
+  const base = dailyChallengeBank[0];
+  const incomplete = { ...base, id: "incomplete", choices: { ...base.choices, fr: ["une seule option"] } };
+  assert.deepEqual(getDailyChallengeQuestions([incomplete], base.gradeId, "2026-10-24"), []);
+  assert.throws(() => gradeDailyChallenge([{ ...base, answer: 99 }], [0]), /invalid question/i);
+});
+
+test("corrupted stored challenge results are ignored instead of shown as valid", () => {
+  localStorage.clear();
+  localStorage.setItem("najahna:daily-challenge-completions", JSON.stringify({
+    "primary-1": {
+      "2026-10-24": { score: 11, total: 10 },
+      "2026-02-30": { score: 1, total: 2 }
+    }
+  }));
+  assert.equal(getDailyChallengeCompletion("2026-10-24", "primary-1"), null);
+  assert.equal(getDailyChallengeCompletion("2026-02-30", "primary-1"), null);
+  assert.throws(() => saveDailyChallengeCompletion("2026-02-30", "primary-1", 1, 2), /date/i);
 });

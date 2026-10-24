@@ -97,3 +97,110 @@
 .dashboard-privacy{margin-top:12px}
 @media(max-width:850px){.dashboard-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.study-dashboard-section{padding-top:34px;padding-bottom:34px}.dashboard-metrics{gap:10px}.dashboard-metric{padding:15px}.dashboard-focus{align-items:stretch;flex-direction:column;padding:18px}.dashboard-focus .button{align-self:flex-start;max-width:100%}}
+
+
+/* Najahna design refresh: clearer hierarchy, calmer surfaces, and responsive controls. */
+:root{
+  --content-width:1200px;
+  --focus-ring:0 0 0 3px color-mix(in srgb,var(--green) 28%,transparent);
+}
+html{scroll-padding-top:105px}
+body{line-height:1.65}
+.site-header{
+  position:sticky;top:0;z-index:20;max-width:none;padding:12px max(24px,calc((100vw - var(--content-width))/2));
+  min-height:76px;background:color-mix(in srgb,var(--bg) 88%,transparent);
+  border-bottom:1px solid color-mix(in srgb,var(--line) 75%,transparent);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+}
+.brand-mark{box-shadow:0 7px 18px color-mix(in srgb,var(--green) 20%,transparent)}
+.main-nav{padding:6px;border:1px solid var(--line);border-radius:15px;background:var(--surface-soft);gap:4px}
+.main-nav a{padding:9px 13px;border-radius:10px;transition:background .18s,color .18s}
+.main-nav a:hover,.main-nav a:focus-visible{background:var(--surface);color:var(--green);outline:none}
+.header-actions{gap:8px}
+.header-actions select{min-height:38px}
+.hero{
+  position:relative;isolation:isolate;overflow:hidden;max-width:var(--content-width);
+  margin:22px auto 34px;padding:clamp(30px,5vw,64px);border:1px solid var(--line);
+  border-radius:32px;background:
+    radial-gradient(ellipse at 12% 12%,color-mix(in srgb,var(--lime) 18%,transparent),transparent 44%),
+    linear-gradient(135deg,var(--surface),var(--bg) 70%);
+}
+.hero:before{content:"";position:absolute;z-index:-1;inset:auto auto -140px -110px;width:330px;height:330px;border:1px solid color-mix(in srgb,var(--green) 12%,transparent);border-radius:50%;box-shadow:0 0 0 35px color-mix(in srgb,var(--green) 3%,transparent),0 0 0 70px color-mix(in srgb,var(--green) 2%,transparent)}
+.hero h1{line-height:1.23;letter-spacing:-1.3px}
+.hero-copy>p{line-height:1.85}
+.hero-art{min-width:0}
+.study-card{box-shadow:0 22px 60px color-mix(in srgb,var(--text) 9%,transparent)}
+.stats-strip{position:relative;z-index:1;margin-top:-2px}
+.section{padding-block:clamp(48px,7vw,88px)}
+.section-heading{margin-bottom:26px}
+.section-heading h2{line-height:1.25}
+.level-card,.resource-card,.official-source-card,.dashboard-metric,.school-calendar-card,.tool-card{
+  box-shadow:0 8px 28px color-mix(in srgb,var(--text) 4%,transparent);
+}
+.level-card,.resource-card,.official-source-card,.school-calendar-card{
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.level-card:hover,.resource-card:hover,.official-source-card:hover,.school-calendar-card:hover{
+  box-shadow:0 15px 36px color-mix(in srgb,var(--text) 9%,transparent);
+}
+.resource-toolbar,.official-source-toolbar{
+  padding:16px;border:1px solid var(--line);border-radius:18px;background:var(--surface);
+  box-shadow:0 8px 24px color-mix(in srgb,var(--text) 3%,transparent);
+}
+.resource-toolbar input,.resource-toolbar select,.official-source-toolbar input,.official-source-toolbar select{
+  min-height:44px;border-radius:12px;transition:border-color .15s,box-shadow .15s;
+}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
+  outline:2px solid var(--green);outline-offset:3px;
+}
+input:focus-visible,select:focus-visible,textarea:focus-visible{
+  border-color:var(--green);box-shadow:var(--focus-ring);
+}
+.button{min-height:42px}
+.button-primary{box-shadow:0 7px 18px color-mix(in srgb,var(--green) 18%,transparent)}
+.button-primary:hover{box-shadow:0 10px 25px color-mix(in srgb,var(--green) 26%,transparent)}
+.dashboard-metric{border-radius:18px}
+.dashboard-metric strong{font-variant-numeric:tabular-nums}
+.site-footer{border-top:1px solid var(--line)}
+.skip-link{border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+@media(max-width:900px){
+  .site-header{padding-inline:20px;gap:16px}
+  .main-nav{gap:2px}
+  .main-nav a{padding:8px 9px;font-size:12px}
+  .hero{margin-inline:18px;padding:32px;border-radius:26px}
+}
+@media(max-width:760px){
+  .site-header{position:relative;flex-wrap:wrap;justify-content:space-between;min-height:0;padding:12px 18px;gap:12px}
+  .main-nav{order:3;width:100%;margin:0;justify-content:space-around}
+  .main-nav a{flex:1;text-align:center}
+  .header-actions{margin-inline-start:auto}
+  .hero{margin:14px 12px 24px;padding:28px 22px;gap:12px;min-height:0}
+  .hero-art{height:270px;transform:scale(.92);transform-origin:center}
+  .stats-strip{margin-inline:12px;padding:18px 12px;gap:14px}
+  .stats-strip>div{gap:7px}
+  .stats-strip strong{font-size:21px}
+  .stats-strip span{font-size:11px}
+  .section{padding-inline:18px}
+  .section-heading{align-items:flex-start;flex-direction:column;gap:10px}
+}
+@media(max-width:480px){
+  .brand-mark{width:38px;height:38px}
+  .header-actions{gap:6px}
+  .header-actions select{max-width:112px;padding:8px}
+  .header-actions .button{padding:8px 10px;font-size:11px}
+  .hero{border-radius:20px;padding:24px 18px}
+  .hero h1{font-size:clamp(34px,10vw,44px);letter-spacing:-.7px}
+  .hero-copy>p{font-size:14px}
+  .hero-actions{align-items:stretch;flex-wrap:wrap}
+  .hero-actions .button{flex:1}
+  .hero-art{height:235px;transform:scale(.82);margin-inline:-24px}
+  .trust-row{gap:10px}
+  .stats-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats-strip>div{border:0;justify-content:flex-start;padding:4px}
+  .section{padding-block:44px;padding-inline:14px}
+  .resource-toolbar,.official-source-toolbar{padding:12px;border-radius:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}

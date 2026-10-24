@@ -49,3 +49,7 @@ test("revision history offers a translated resume action and avoids duplicate so
     assert.match(translation, /historyResume:/);
   }
 });
+
+test("revision history ignores entries whose resource was removed from the catalogue", () => {
+  assert.match(app, /getResourceHistory\(\)\.filter\(entry => resources\.some\(resource => resource\.id === entry\.resourceId\)\)/);
+});

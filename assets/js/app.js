@@ -12,6 +12,7 @@ import { calculateWeightedAverage } from "../../src/calculators/average.js";
 import { getQuizQuestions, gradeQuiz } from "../../src/data/quiz.js";
 import { getQuizHistory, recordQuizAttempt, clearQuizHistory } from "../../src/utils/quiz-history.js";
 import { officialSources } from "../../src/data/official-sources.js";
+import { getDirectPdfUrl } from "../../src/utils/pdf-resources.js";
 import { getUpcomingSchoolEvents, schoolCalendarSource } from "../../src/data/school-calendar.js";
 import ar from "../../src/i18n/ar.js";
 import fr from "../../src/i18n/fr.js";
@@ -227,8 +228,8 @@ function renderResources() {
   const filtered = filterResources(resources, { query, level, type, year, subject, language, subjectCatalog });
   $("#resource-grid").innerHTML = filtered.map(item => `<article class="resource-card">
     <div class="resource-card-top"><span class="resource-icon" aria-hidden="true">${item.icon}</span><button class="favorite-button ${favorites.includes(item.id) ? "saved" : ""}" type="button" data-favorite="${item.id}" aria-label="${favorites.includes(item.id) ? t("removed") : t("saved")}" aria-pressed="${favorites.includes(item.id)}">${favorites.includes(item.id) ? "♥" : "♡"}</button></div>
-    <span class="resource-type">${escapeHTML(typeLabel(item.type))} · ${escapeHTML(t("sample"))}</span><h3>${escapeHTML(item.title[language])}</h3><p>${escapeHTML(item.description[language])}</p>
-    <div class="resource-meta"><span>${escapeHTML(item.grade[language])}</span><span>${escapeHTML(item.subject.toUpperCase())}</span></div><div class="resource-actions"><button type="button" class="button button-outline button-small" data-details-resource="${item.id}">${t("viewDetails")}</button><button type="button" class="button button-outline button-small" data-view-resource="${item.id}">${t("markViewed")}</button><button type="button" class="button button-quiet button-small" data-collect-resource="${item.id}">${t("addToCollection")}</button></div></article>`).join("");
+    <span class="resource-type">${escapeHTML(typeLabel(item.type))} · ${escapeHTML(item.pdfUrl ? t("pdfAvailable") : t("sample"))}</span><h3>${escapeHTML(item.title[language])}</h3><p>${escapeHTML(item.description[language])}</p>
+    <div class="resource-meta"><span>${escapeHTML(item.grade[language])}</span><span>${escapeHTML(item.subject.toUpperCase())}</span></div><div class="resource-actions">${getDirectPdfUrl(item) ? '<button type="button" class="button button-primary button-small" data-read-pdf="' + item.id + '">' + t("readPdf") + '</button>' : ""}<button type="button" class="button button-outline button-small" data-details-resource="${item.id}">${t("viewDetails")}</button><button type="button" class="button button-outline button-small" data-view-resource="${item.id}">${t("markViewed")}</button><button type="button" class="button button-quiet button-small" data-collect-resource="${item.id}">${t("addToCollection")}</button></div></article>`).join("");
   $("#empty-state").hidden = filtered.length !== 0;
   $("#resource-count").textContent = t("resourceCount").replace("{count}", String(filtered.length));
 }
@@ -243,8 +244,24 @@ function renderResourceDetails(id) {
   const years = schoolYears.filter(year => year.level === item.level && (item.grades || []).includes(year.year));
   $("#resource-dialog-years").textContent = years.map(year => year.label[language]).join("، ") || "—";
   $("#resource-dialog-subject").textContent = subjectCatalog.find(subject => subject.id === item.subject)?.label?.[language] || item.subject;
-  $("#resource-dialog-availability").textContent = t("sampleOnly");
-  $("#resource-dialog-note").textContent = t("sampleDetailNote");
+  const pdfUrl = getDirectPdfUrl(item);
+  $("#resource-dialog-availability").textContent = pdfUrl ? t("pdfAvailable") : t("sampleOnly");
+  $("#resource-dialog-note").textContent = pdfUrl ? t("pdfDetailNote") : t("sampleDetailNote");
+  const pdfFrame = $("#resource-dialog-pdf");
+  const pdfDownload = $("#resource-dialog-download");
+  pdfFrame.hidden = !pdfUrl;
+  pdfFrame.removeAttribute("src");
+  if (pdfUrl) {
+    pdfFrame.src = pdfUrl;
+    pdfFrame.title = item.title[language];
+    pdfDownload.hidden = false;
+    pdfDownload.href = pdfUrl;
+    pdfDownload.download = "";
+    pdfDownload.textContent = t("downloadPdf");
+  } else {
+    pdfDownload.hidden = true;
+    pdfDownload.removeAttribute("href");
+  }
   $("#resource-dialog-reviewed").textContent = t("markViewed");
   $("#resource-dialog-add").textContent = t("addToCollection");
   $("#resource-dialog-add").onclick = () => {
@@ -414,6 +431,8 @@ $("#year-category-grid")?.addEventListener("click", event => {
 $("#subject-filter")?.addEventListener("change", renderResources);
 $("#type-filter").addEventListener("change", renderResources);
 $("#resource-grid").addEventListener("click", event => {
+  const pdfButton = event.target.closest("[data-read-pdf]");
+  if (pdfButton) { renderResourceDetails(pdfButton.dataset.readPdf); $("#resource-dialog").showModal(); $("#resource-dialog-pdf").scrollIntoView({ behavior: "smooth", block: "nearest" }); return; }
   const details = event.target.closest("[data-details-resource]");
   if (details) { renderResourceDetails(details.dataset.detailsResource); $("#resource-dialog").showModal(); return; }
   const viewed = event.target.closest("[data-view-resource]");

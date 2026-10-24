@@ -935,6 +935,32 @@ export const officialSources = [
   url: "https://www.onps.dz/581",
   title: { ar: "كتاب تامازيغت — السنة الأولى ثانوي، جذع مشترك آداب", fr: "Manuel de tamazight — 1re secondaire, tronc commun lettres", en: "Tamazight textbook — Secondary Year 1, Arts common core" },
   description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف كتاب تامازيغت. ليست ملف PDF مباشرًا؛ تحقق من الشعبة والطبعة.", fr: "Fiche officielle ONPS présentant la couverture du manuel de tamazight. Ce n’est pas un PDF direct ; vérifiez la filière et l’édition.", en: "Official ONPS publication page showing the Tamazight textbook cover. This is not a direct PDF; verify the stream and edition." }
+},
+{
+  id: "onps-middle-french-year-2",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-2",
+  subject: "french",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/fr/408",
+  title: { ar: "كتاب الفرنسية — السنة الثانية من التعليم المتوسط", fr: "Manuel de français — 2e année moyenne", en: "French textbook — Middle School Year 2" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض بيانات وغلاف كتاب الفرنسية للسنة الثانية متوسط. ليست ملف PDF مباشرًا؛ تحقق من الطبعة.", fr: "Fiche officielle ONPS présentant les informations et la couverture du manuel de français de 2e année moyenne. Ce n’est pas un PDF direct ; vérifiez l’édition.", en: "Official ONPS publication page for the Middle School Year 2 French textbook. It is not a direct PDF; verify the edition." }
+},
+{
+  id: "onps-middle-math-year-3",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["middle"],
+  grade: "middle-3",
+  subject: "math",
+  pageType: "publication",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/fr/425",
+  title: { ar: "كتاب الرياضيات — السنة الثالثة من التعليم المتوسط", fr: "Manuel de mathématiques — 3e année moyenne", en: "Mathematics textbook — Middle School Year 3" },
+  description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف كتاب الرياضيات للسنة الثالثة متوسط. ليست ملف PDF مباشرًا؛ تحقق من الطبعة.", fr: "Fiche officielle ONPS présentant la couverture du manuel de mathématiques de 3e année moyenne. Ce n’est pas un PDF direct ; vérifiez l’édition.", en: "Official ONPS publication page for the Middle School Year 3 mathematics textbook. It is not a direct PDF; verify the edition." }
 }
 ];
 

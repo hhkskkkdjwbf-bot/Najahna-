@@ -26,7 +26,7 @@ If the repository is renamed or hosted under another domain, update the site URL
 
 Run the SQL in `supabase/migrations/202610240001_secure_learner_accounts.sql` in the Supabase SQL Editor, or apply it with the Supabase CLI. Confirm that Row Level Security is enabled and test with two different user accounts that neither account can read or write the other's row.
 
-The client currently limits a cloud backup to 5 MiB of serialized data and 20,000 entries. Cloud restores validate the complete payload before replacing local study data.
+The client currently limits a cloud backup to 4 MiB of serialized data and 20,000 entries. Cloud restores validate the complete payload before replacing local study data.
 
 ## 4. Configure account deletion
 

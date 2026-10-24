@@ -56,6 +56,11 @@
         <article class="dashboard-metric"><span data-i18n="dashboardSaved">Saved resources</span><strong id="dashboard-favorites">0</strong><small data-i18n="dashboardSavedHint">Your favorites in this browser</small></article>
         <article class="dashboard-metric"><span data-i18n="dashboardMinutes">Study minutes completed</span><strong id="dashboard-minutes">0</strong><small data-i18n="dashboardMinutesHint">From completed plan tasks</small></article>
       </div>
+      <article class="achievement-panel" aria-labelledby="achievement-title">
+        <div><span class="eyebrow" data-i18n="achievementEyebrow">خطوات صغيرة تصنع فرقاً</span><h3 id="achievement-title" data-i18n="achievementTitle">إنجازات المراجعة</h3><p data-i18n="achievementIntro">شجّع نفسك على الاستمرار، بلا ضغط أو منافسة.</p></div>
+        <div id="achievement-summary" class="achievement-summary" aria-live="polite"></div>
+        <p class="small-note" data-i18n="achievementLocalNote">تُحسب السلسلة والإنجازات من التحديات المكتملة على هذا الجهاز فقط.</p>
+      </article>
       <article id="dashboard-focus" class="dashboard-focus" aria-live="polite"></article>
       <p class="small-note dashboard-privacy" data-i18n="dashboardLocalNote">Your activity is stored on this device; it is not synced to an account.</p>
     </section>
@@ -158,6 +163,21 @@
       </article>
       <article class="tool-panel history-panel"><div class="tool-heading"><span class="tool-icon">◷</span><div><h3 data-i18n="historyTitle">سجل المراجعة</h3><p data-i18n="historyIntro">آخر الموارد التي سجلت مراجعتها على هذا الجهاز.</p></div></div><div id="history-list" class="history-list"></div><button id="clear-history" class="button button-quiet button-small" type="button" data-i18n="clearHistory">Effacer l’historique</button></article>
       <article class="tool-panel backup-panel"><div class="tool-heading"><span class="tool-icon">⇄</span><div><h3 data-i18n="backupTitle">نسخة احتياطية لبياناتك</h3><p data-i18n="backupIntro">صدّر ملاحظاتك ومجلداتك وخطتك وسجلّك لاستعادتها لاحقاً.</p></div></div><div class="form-actions"><button id="export-backup" class="button button-primary button-small" type="button" data-i18n="backupExport">تصدير نسخة احتياطية</button><label for="import-backup" class="button button-outline button-small" data-i18n="backupImport">استعادة نسخة احتياطية</label><input id="import-backup" class="sr-only" type="file" accept="application/json,.json"></div><p class="small-note" data-i18n="backupWarning">النسخة تحتوي على بياناتك المحلية. احفظها في مكان آمن؛ الاستعادة تستبدل بيانات نجاحنا المحفوظة في هذا المتصفح.</p></article>
+    </section>
+    <section id="exam-sheet" class="section exam-sheet-section">
+      <div class="section-heading"><div><span class="eyebrow" data-i18n="examSheetEyebrow">أداة للطلاب والمعلمين</span><h2 data-i18n="examSheetTitle">منشئ ورقة تمارين للطباعة</h2></div><p data-i18n="examSheetIntro">اختر السنة والمادة لتجميع ورقة من الأسئلة المتاحة في البنك الحالي.</p></div>
+      <div class="tool-panel exam-sheet-builder">
+        <form id="exam-sheet-form" class="exam-sheet-form">
+          <label><span data-i18n="examSheetGrade">السنة الدراسية</span><select id="exam-sheet-grade" required></select></label>
+          <label><span data-i18n="examSheetSubject">المادة</span><select id="exam-sheet-subject" required><option value="all" data-i18n="examSheetAllSubjects">كل المواد المتاحة</option></select></label>
+          <label><span data-i18n="examSheetCount">عدد الأسئلة</span><select id="exam-sheet-count"><option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option></select></label>
+          <label class="exam-sheet-check"><input id="exam-sheet-answer-key" type="checkbox"><span data-i18n="examSheetAnswerKey">Inclure le corrigé sur une page séparée</span></label>
+          <button class="button button-primary" type="submit" data-i18n="examSheetGenerate">Générer la fiche</button>
+        </form>
+        <p class="small-note" data-i18n="examSheetDisclaimer">Le générateur utilise uniquement les questions déjà disponibles. Ce n’est pas un sujet officiel et certaines années ou matières peuvent proposer peu de questions.</p>
+        <div id="exam-sheet-status" class="small-note" aria-live="polite"></div>
+        <div id="exam-sheet-output" class="exam-sheet-print-area" hidden></div>
+      </div>
     </section>
     <section class="closing-banner"><div><span class="eyebrow" data-i18n="oneStep">كل يوم فرصة جديدة</span><h2 data-i18n="closingTitle">مستقبلك يستحق أفضل بداية.</h2><p data-i18n="closingText">ابدأ بخطوة بسيطة اليوم، وواصل التقدم نحو أهدافك.</p></div><a class="button button-light" href="#levels" data-i18n="chooseMyLevel">اختر مرحلتك <span aria-hidden="true">←</span></a></section>
   </main>

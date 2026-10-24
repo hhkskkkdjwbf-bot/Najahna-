@@ -2,8 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createCollection, deleteCollection, getCollections, moveResourceToCollection, removeResourceFromCollection } from "../src/utils/collections.js";
 
-function installStorage() {
-  const values = new Map();
+function installStorage(seed = {}) {
+  const values = new Map(Object.entries(seed));
   globalThis.localStorage = {
     getItem(key) { return values.has(key) ? values.get(key) : null; },
     setItem(key, value) { values.set(key, String(value)); },
@@ -42,4 +42,22 @@ test("a collection can be deleted and a missing collection is unchanged", () => 
 test("collection names cannot be empty", () => {
   installStorage();
   assert.throws(() => createCollection("   "), /required/);
+});
+
+
+test("malformed saved collections are normalized without breaking the library", () => {
+  installStorage({
+    "najahna:collections": JSON.stringify([
+      { id: "ok", name: "  Maths  ", resourceIds: ["math-1", "", 4, "math-1"] },
+      { id: "broken-items", name: "Recovered folder", resourceIds: null },
+      { id: "ok", name: "Duplicate ID", resourceIds: ["math-2"] },
+      { id: "missing-name", resourceIds: [] },
+      null,
+      ["not", "a", "collection"]
+    ])
+  });
+  assert.deepEqual(getCollections(), [
+    { id: "ok", name: "Maths", resourceIds: ["math-1"] },
+    { id: "broken-items", name: "Recovered folder", resourceIds: [] }
+  ]);
 });

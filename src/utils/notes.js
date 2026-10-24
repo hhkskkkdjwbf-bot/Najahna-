@@ -2,8 +2,24 @@ import { readJSON, writeJSON } from "./storage.js";
 const KEY = "notes";
 
 export function getNotes() {
-  const notes = readJSON(KEY, []);
-  return Array.isArray(notes) ? notes : [];
+  const stored = readJSON(KEY, []);
+  if (!Array.isArray(stored)) return [];
+  const seen = new Set();
+  return stored.filter(note => {
+    if (!note || typeof note !== "object" || Array.isArray(note) ||
+        typeof note.id !== "string" || !note.id.trim() || seen.has(note.id) ||
+        typeof note.title !== "string" || !note.title.trim() ||
+        typeof note.body !== "string" || !note.body.trim() ||
+        typeof note.updatedAt !== "string" || !Number.isFinite(Date.parse(note.updatedAt))) return false;
+    seen.add(note.id);
+    return true;
+  }).slice(0, 200).map(note => ({
+    id: note.id,
+    resourceId: typeof note.resourceId === "string" && note.resourceId.trim() ? note.resourceId : null,
+    title: note.title.trim().slice(0, 120),
+    body: note.body.trim().slice(0, 5000),
+    updatedAt: note.updatedAt
+  }));
 }
 
 export function saveNote({ resourceId = null, title, body }) {

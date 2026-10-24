@@ -53,3 +53,16 @@ test("revision history offers a translated resume action and avoids duplicate so
 test("revision history ignores entries whose resource was removed from the catalogue", () => {
   assert.match(app, /getResourceHistory\(\)\.filter\(entry => resources\.some\(resource => resource\.id === entry\.resourceId\)\)/);
 });
+
+test("study plan can isolate overdue pending sessions and shows localized urgency cues", () => {
+  assert.match(html, /value="overdue" data-i18n="studyPlanFilterOverdue"/);
+  assert.match(app, /filter === "overdue" \? !task\.completed && task\.date < today/);
+  assert.match(app, /studyTaskOverdue/);
+  assert.match(app, /studyTaskToday/);
+  assert.match(css, /\.study-task-status\.is-overdue/);
+  for (const path of ["../src/i18n/en.js", "../src/i18n/fr.js", "../src/i18n/ar.js"]) {
+    const translation = readFileSync(new URL(path, import.meta.url), "utf8");
+    assert.match(translation, /studyPlanFilterOverdue:/);
+    assert.match(translation, /studyTaskToday:/);
+  }
+});

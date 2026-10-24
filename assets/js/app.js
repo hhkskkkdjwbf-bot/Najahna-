@@ -1,4 +1,5 @@
 import { resources } from "../../src/data/resources.js";
+import { resourceCategories } from "../../src/data/resource-categories.js";
 import { schoolYears, subjectCatalog } from "../../src/data/curriculum.js";
 import { filterResources } from "../../src/data/resource-filters.js";
 import { getCollections, createCollection, moveResourceToCollection, removeResourceFromCollection, deleteCollection } from "../../src/utils/collections.js";
@@ -393,6 +394,16 @@ function syncQuickTypeFilters() {
     button.classList.toggle("active", active);
     button.setAttribute("aria-pressed", String(active));
   });
+}
+
+function renderResourceCategoryGuide() {
+  const root = $("#resource-category-guide-grid");
+  if (!root) return;
+  root.innerHTML = resourceCategories.map(category => {
+    const title = category.title[language] || category.title.en;
+    const description = category.description[language] || category.description.en;
+    return `<article class="resource-category-card" data-resource-category="${escapeHTML(category.id)}"><span class="resource-category-card-icon" aria-hidden="true">${({lesson:"▤",summary:"≡",exercise:"✎",exam:"✓",book:"▧",flashcard:"▣",mindmap:"⌘","pedagogical-doc":"◎"})[category.id] || "•"}</span><h4>${escapeHTML(title)}</h4><p>${escapeHTML(description)}</p></article>`;
+  }).join("");
 }
 
 function renderResources() {

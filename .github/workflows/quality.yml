@@ -45,6 +45,8 @@ jobs:
           test -s assets/js/app.js
           test -s src/utils/account-profile.js
           test -s src/utils/cloud-account.js
+          test -s src/utils/cloud-backup-validation.js
+          test -s docs/SUPABASE_SETUP.md
           test -s src/config/supabase.js
           test -s supabase/migrations/202610240001_secure_learner_accounts.sql
           test -s src/data/curriculum.js

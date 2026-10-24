@@ -10,7 +10,7 @@ import { serializeBackup, restoreBackup } from "../../src/utils/backup.js";
 import { toLocalDateISO, parseLocalCalendarDate } from "../../src/utils/dates.js";
 import { calculateWeightedAverage } from "../../src/calculators/average.js";
 import { getQuizQuestions, gradeQuiz } from "../../src/data/quiz.js";
-import { getQuizHistory, recordQuizAttempt, clearQuizHistory } from "../../src/utils/quiz-history.js";
+import { getQuizHistory, recordQuizAttempt, clearQuizHistory, getQuizTrend } from "../../src/utils/quiz-history.js";
 import { officialSources } from "../../src/data/official-sources.js";
 import { getDirectPdfUrl } from "../../src/utils/pdf-resources.js";
 import { getUpcomingSchoolEvents, schoolCalendarSource } from "../../src/data/school-calendar.js";
@@ -186,13 +186,15 @@ function renderQuizHistory() {
   }
   const average = Math.round(attempts.reduce((sum, item) => sum + item.percentage, 0) / attempts.length);
   const best = Math.max(...attempts.map(item => item.percentage));
+  const trend = getQuizTrend(attempts);
+  const trendLabel = trend ? `${trend.change > 0 ? "+" : ""}${trend.change} pp` : "—";
   const levelName = level => t(({primary:"primary",middle:"middle",secondary:"secondary",all:"quizHistoryMixed"})[level] || "primary");
   const recent = attempts.slice(0, 5).map(item => {
     const date = new Date(item.completedAt);
     const dateLabel = Number.isNaN(date.getTime()) ? "" : date.toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { day:"numeric", month:"short", year:"numeric" });
     return `<li class="quiz-attempt"><span><strong>${escapeHTML(levelName(item.level))}</strong><small>${escapeHTML(dateLabel)}</small></span><span class="quiz-attempt-score">${item.score}/${item.total}<small>${item.percentage}%</small></span></li>`;
   }).join("");
-  root.innerHTML = `<div class="quiz-history-heading"><div><h3>${escapeHTML(t("quizHistoryTitle"))}</h3><p>${escapeHTML(t("quizHistoryRecent"))}</p></div><button type="button" class="button button-quiet button-small" data-clear-quiz-history>${escapeHTML(t("quizHistoryClear"))}</button></div><div class="quiz-history-metrics"><div><span>${escapeHTML(t("quizHistoryAttempts"))}</span><strong>${attempts.length}</strong></div><div><span>${escapeHTML(t("quizHistoryBest"))}</span><strong>${best}%</strong></div><div><span>${escapeHTML(t("quizHistoryAverage"))}</span><strong>${average}%</strong></div></div><ol class="quiz-attempt-list">${recent}</ol><p class="small-note">${escapeHTML(t("quizHistoryLocal"))}</p>`;
+  root.innerHTML = `<div class="quiz-history-heading"><div><h3>${escapeHTML(t("quizHistoryTitle"))}</h3><p>${escapeHTML(t("quizHistoryRecent"))}</p></div><button type="button" class="button button-quiet button-small" data-clear-quiz-history>${escapeHTML(t("quizHistoryClear"))}</button></div><div class="quiz-history-metrics"><div><span>${escapeHTML(t("quizHistoryAttempts"))}</span><strong>${attempts.length}</strong></div><div><span>${escapeHTML(t("quizHistoryBest"))}</span><strong>${best}%</strong></div><div><span>${escapeHTML(t("quizHistoryAverage"))}</span><strong>${average}%</strong></div><div><span>${escapeHTML(t("quizHistoryTrend"))}</span><strong class="quiz-trend-${trend?.direction || "unknown"}">${escapeHTML(trendLabel)}</strong></div></div><ol class="quiz-attempt-list">${recent}</ol><p class="small-note">${escapeHTML(t("quizHistoryLocal"))}</p>`;
   renderStudyDashboard();
 }
 function renderQuiz() {

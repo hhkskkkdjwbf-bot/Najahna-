@@ -561,6 +561,7 @@ function openKeyboardHelp() {
 
 $("#keyboard-help-button")?.addEventListener("click", openKeyboardHelp);
 $("#keyboard-shortcuts-close")?.addEventListener("click", () => $("#keyboard-shortcuts-dialog")?.close());
+$("#keyboard-shortcuts-close-secondary")?.addEventListener("click", () => $("#keyboard-shortcuts-dialog")?.close());
 $("#keyboard-shortcuts-dialog")?.addEventListener("click", event => {
   if (event.target === event.currentTarget) event.currentTarget.close();
 });
@@ -598,7 +599,7 @@ document.addEventListener("keydown", event => {
   if (key === "/" && search) {
     event.preventDefault();
     search.focus();
-  } else if (event.key === "?" ) {
+  } else if (event.key === "?" || event.key === "؟") {
     event.preventDefault();
     openKeyboardHelp();
   }

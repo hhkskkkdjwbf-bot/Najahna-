@@ -809,6 +809,26 @@ export const officialSources = [
   url: "https://www.onps.dz/243",
   title: { ar: "كتاب التربية العلمية والتكنولوجية — السنة الرابعة ابتدائي", fr: "Manuel de sciences et technologie — 4e année primaire", en: "Science and Technology textbook — Primary Year 4" },
   description: { ar: "صفحة منشور رسمية لدى الديوان تعرض غلاف الكتاب. ليست ملف PDF مباشرًا؛ تحقق من الطبعة الحالية.", fr: "Fiche officielle de l’ONPS présentant la couverture. Ce n’est pas un PDF direct ; vérifiez l’édition actuelle.", en: "Official ONPS publication page showing the cover. It is not a direct PDF; check the current edition." }
+},
+{
+  id: "onps-digital-library-pdf-guide",
+  publisher: "ONPS",
+  kind: "books",
+  levels: ["primary", "middle", "secondary"],
+  pageType: "guide",
+  publishedOn: "2022-10-24",
+  checkedOn: "2026-10-24",
+  url: "https://www.onps.dz/guide.pdf",
+  title: {
+    ar: "دليل PDF للمكتبة الرقمية للكتب المدرسية",
+    fr: "Guide PDF officiel de la bibliothèque numérique scolaire",
+    en: "Official school digital-library PDF guide"
+  },
+  description: {
+    ar: "ملف PDF إرشادي رسمي يشرح خطوات تنزيل الكتب من تطبيق مكتبتي الرقمية. هذا الدليل ليس كتابًا مدرسيًا ولا يضمن توفر كل عنوان أو طبعة.",
+    fr: "PDF officiel d’aide expliquant comment télécharger des manuels via l’application Ma Bibliothèque numérique. Ce guide n’est pas un manuel scolaire et ne garantit pas la disponibilité de chaque titre ou édition.",
+    en: "Official help PDF explaining how to download textbooks through the My Digital Library app. This guide is not a textbook and does not guarantee every title or edition is available."
+  }
 }
 
 ];

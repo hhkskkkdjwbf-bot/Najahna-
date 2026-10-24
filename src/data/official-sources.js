@@ -328,6 +328,7 @@ export function validateOfficialSources(records = officialSources) {
       } catch { fail("invalid source URL"); }
     }
     if (typeof source.checkedOn !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(source.checkedOn)) fail("checkedOn must use YYYY-MM-DD");
+    if (source.publishedOn !== undefined && (typeof source.publishedOn !== "string" || !/^\\d{4}-\\d{2}-\\d{2}$/.test(source.publishedOn))) fail("publishedOn must use YYYY-MM-DD");
     for (const language of ["ar", "fr", "en"]) {
       if (typeof source.title?.[language] !== "string" || !source.title[language].trim()) fail(`missing ${language} title`);
       if (typeof source.description?.[language] !== "string" || !source.description[language].trim()) fail(`missing ${language} description`);

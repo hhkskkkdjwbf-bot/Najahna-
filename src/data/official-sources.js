@@ -238,6 +238,26 @@ export const officialSources = [
     }
   },
   {
+    id: "onps-digital-library-guide",
+    publisher: "ONPS",
+    kind: "books",
+    levels: ["primary"],
+    pageType: "guide",
+    publishedOn: "2023-09-25",
+    checkedOn: "2026-10-23",
+    url: "https://www.onps.dz/1581",
+    title: {
+      ar: "دليل الوصول إلى الكتب المدرسية الرقمية",
+      fr: "Guide officiel d’accès aux manuels numériques",
+      en: "Official digital textbook access guide"
+    },
+    description: {
+      ar: "صفحة إرشادية رسمية تشرح تطبيق مكتبتي الرقمية وتفعيله على أندرويد أو ويندوز. ليست ملف PDF لكتاب مدرسي، وتذكر أن التفعيل مرتبط بجهاز واحد.",
+      fr: "Page officielle expliquant l’application Ma Bibliothèque numérique et son activation sur Android ou Windows. Ce n’est pas un manuel PDF ; la page indique une activation limitée à un appareil.",
+      en: "Official guide to the My Digital Library app and activation on Android or Windows. This is not a textbook PDF; the page states activation is limited to one device."
+    }
+  },
+  {
     id: "ministry-bac-annals",
     publisher: "Ministry of National Education",
     kind: "exam-papers",
@@ -293,7 +313,7 @@ export function validateOfficialSources(records = officialSources) {
     if (!["ONPS", "Ministry of National Education"].includes(source.publisher)) fail("publisher must be an approved official publisher");
     if (!officialSourceKinds.includes(source.kind)) fail("unsupported source kind");
     if (!Array.isArray(source.levels) || !source.levels.length || source.levels.some(level => !["primary", "middle", "secondary"].includes(level))) fail("invalid school levels");
-    if (!["catalog", "publication", "archive"].includes(source.pageType)) fail("invalid page type");
+    if (!["catalog", "publication", "archive", "guide"].includes(source.pageType)) fail("invalid page type");
     const allowedGrades = ["primary-3", "primary-4", "primary-5", "middle-4", "secondary-1"];
     const allowedSubjects = ["arabic", "english", "french", "physics", "islamic-studies", "history"];
     if (source.grade !== undefined && !allowedGrades.includes(source.grade)) fail("invalid grade");

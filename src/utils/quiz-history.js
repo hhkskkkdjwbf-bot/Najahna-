@@ -47,3 +47,18 @@ export function clearQuizHistory(storage = globalThis.localStorage) {
   try { storage.removeItem(STORAGE_KEY); return true; }
   catch { return false; }
 }
+
+
+/**
+ * Compare the three most recent quiz attempts with the three before them.
+ * Returns null until there is enough history for a meaningful comparison.
+ */
+export function getQuizTrend(attempts) {
+  if (!Array.isArray(attempts) || attempts.length < 4) return null;
+  const recent = attempts.slice(0, 3);
+  const previous = attempts.slice(3, 6);
+  if (previous.length < 3) return null;
+  const average = group => group.reduce((sum, item) => sum + item.score / item.total * 100, 0) / group.length;
+  const change = Math.round(average(recent) - average(previous));
+  return { change, direction: change > 0 ? "up" : change < 0 ? "down" : "stable" };
+}

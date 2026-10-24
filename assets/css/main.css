@@ -591,3 +591,25 @@ body.dark{--shadow-card:0 8px 24px rgba(0,0,0,.12);--shadow-hover:0 18px 42px rg
 @media(max-width:480px){.hero{padding-inline:20px}.section{padding-inline:18px}.section-heading h2{letter-spacing:-.3px}.hero-actions .button{flex:1}.trust-row{gap:10px 14px}.resource-toolbar select{min-width:0;max-width:44%}.button{max-width:100%}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 @media(forced-colors:active){.level-card,.resource-card,.tool-panel,.school-calendar-card,.dashboard-metric,.achievement-panel,.resource-category-card,.official-source-card{border:1px solid CanvasText}.main-nav a::after{background:LinkText}}
+
+
+/* Account profile: clear local-only state, accessible forms, and responsive identity card. */
+.account-dialog{width:min(620px,calc(100% - 28px));max-height:min(90dvh,850px);overflow:auto;border:1px solid var(--line);border-radius:24px;padding:clamp(18px,4vw,30px);background:var(--surface);color:var(--text);box-shadow:0 24px 90px rgba(0,0,0,.25)}
+.account-dialog::backdrop{background:rgba(10,24,19,.58);backdrop-filter:blur(4px)}
+.account-dialog-heading{display:grid;grid-template-columns:58px minmax(0,1fr) 38px;gap:14px;align-items:center;margin-bottom:18px}
+.account-dialog-heading h2{margin:3px 0 4px;font-size:clamp(1.25rem,4vw,1.7rem)}
+.account-dialog-heading p{margin:0;color:var(--muted);font-size:.92rem}
+.account-avatar{width:58px;height:58px;display:grid;place-items:center;border-radius:19px;background:#176b55;color:#fff;font-size:1.25rem;font-weight:800;box-shadow:inset 0 0 0 1px rgba(255,255,255,.22)}
+.account-status{padding:11px 13px;margin-bottom:20px;border-radius:12px;background:color-mix(in srgb,var(--green) 9%,var(--surface));border:1px solid color-mix(in srgb,var(--green) 22%,var(--line));font-size:.88rem;line-height:1.6}
+.account-form{display:grid;gap:9px}
+.account-form>label{font-weight:650;font-size:.9rem;margin-top:4px}
+.account-form input,.account-form select{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text);font:inherit}
+.account-id-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0;padding:13px;border:1px solid var(--line);border-radius:14px;background:var(--surface-raised,var(--surface));overflow-wrap:anywhere}
+.account-id-row>div{display:grid;gap:4px;min-width:0}
+.account-id-row span{color:var(--muted);font-size:.8rem}
+.account-id-row strong{font-size:.95rem;letter-spacing:.04em}
+.account-security{margin-top:22px;padding:15px;border:1px solid var(--line);border-radius:14px}
+.account-security h3{margin:0 0 7px;font-size:1rem}
+.account-security p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.75}
+#account-delete{margin-top:2px}
+@media(max-width:460px){.account-dialog{padding:17px;border-radius:19px}.account-dialog-heading{grid-template-columns:48px minmax(0,1fr) 34px;gap:10px}.account-avatar{width:48px;height:48px;border-radius:15px}.account-id-row{align-items:flex-start;flex-direction:column}.account-id-row .button{width:100%}}

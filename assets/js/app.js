@@ -16,6 +16,7 @@ import { dailyChallengeBank } from "../../src/data/daily-challenge.js";
 import { getDailyChallengeQuestions, gradeDailyChallenge } from "../../src/utils/daily-challenge.js";
 import { getLearnerProfile, saveLearnerProfile, getDailyChallengeCompletion, saveDailyChallengeCompletion } from "../../src/utils/learner-profile.js";
 import { getAccountProfile, saveAccountProfile, deleteAccountProfile, getAvatarInitials, accountAvatarColors } from "../../src/utils/account-profile.js";
+import { cloudAccountConfigured, registerCloudAccount, signInCloudAccount, signOutCloudAccount, sendPasswordReset, updateCloudPassword, getCloudSession, onCloudAuthStateChange, uploadLocalStudyData, downloadCloudStudyData, deleteCloudAccount } from "../../src/utils/cloud-account.js";
 import { officialSources } from "../../src/data/official-sources.js";
 import { getDirectPdfUrl } from "../../src/utils/pdf-resources.js";
 import { createExamSheet } from "../../src/utils/exam-sheet.js";
@@ -26,6 +27,10 @@ import fr from "../../src/i18n/fr.js";
 import en from "../../src/i18n/en.js";
 
 const translations = { ar, fr, en };
+let cloudSession = null;
+let cloudAuthNotice = "";
+let cloudResetMode = location.hash.includes("reset-password");
+let cloudAuthUnsubscribe = null;
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 let language = localStorage.getItem("najahna-language") || "ar";
@@ -41,6 +46,27 @@ const accountCopy = {
   ar: { open:"حسابي", eyebrow:"ملفي الشخصي", title:"مساحتي في نجاحنا", intro:"خصص ملفك الدراسي.", status:"ملف محلي — محفوظ على هذا الجهاز فقط.", name:"الاسم الظاهر", email:"البريد الإلكتروني (اختياري)", grade:"السنة الدراسية", later:"اختر لاحقاً", color:"لون الصورة الرمزية", colors:["أخضر","أزرق","بنفسجي","برتقالي","فيروزي"], id:"معرّف نجاحنا", idNew:"سيُنشأ عند الحفظ", copy:"نسخ المعرّف", save:"حفظ الملف الشخصي", delete:"حذف الملف المحلي", security:"أمان الحساب", securityText:"تسجيل الدخول بالبريد وكلمة المرور، والتحقق من البريد، واستعادة كلمة المرور، والمزامنة بين الأجهزة غير مفعّلة بعد. الموقع حالياً ثابت؛ لن نطلب كلمة مرور ولن نخزنها هنا. يبقى الملف على هذا الجهاز.", close:"إغلاق", saved:"تم حفظ الملف على هذا الجهاز.", deleted:"تم حذف الملف المحلي.", deleteConfirm:"هل تريد حذف الملف الشخصي المحلي؟ لن تُحذف الملاحظات أو بيانات الدراسة الأخرى.", copyOk:"تم نسخ المعرّف.", copyFail:"تعذر النسخ؛ حدد المعرّف وانسخه يدوياً.", colorsLabel:["أخضر","أزرق","بنفسجي","برتقالي","فيروزي"] },
   fr: { open:"Mon compte", eyebrow:"Profil personnel", title:"Mon espace Najahna", intro:"Personnalise ton profil d’apprentissage.", status:"Profil local — enregistré sur cet appareil uniquement.", name:"Nom affiché", email:"Adresse e-mail (facultatif)", grade:"Année scolaire", later:"Choisir plus tard", color:"Couleur de l’avatar", colors:["Vert","Bleu","Violet","Orange","Turquoise"], id:"Identifiant Najahna", idNew:"Créé lors de l’enregistrement", copy:"Copier l’ID", save:"Enregistrer le profil", delete:"Supprimer le profil local", security:"Sécurité du compte", securityText:"La connexion par e-mail et mot de passe, la vérification d’e-mail, la récupération de mot de passe et la synchronisation entre appareils ne sont pas encore activées. Najahna est actuellement un site statique : aucun mot de passe ne sera demandé ni enregistré ici. Le profil ci-dessus reste sur cet appareil.", close:"Fermer", saved:"Profil enregistré sur cet appareil.", deleted:"Profil local supprimé.", deleteConfirm:"Supprimer ce profil local ? Les notes et autres données d’étude ne seront pas supprimées.", copyOk:"Identifiant copié.", copyFail:"Copie impossible ; sélectionne et copie l’identifiant manuellement." },
   en: { open:"My account", eyebrow:"Personal profile", title:"My Najahna space", intro:"Personalize your learning profile.", status:"Local profile — saved on this device only.", name:"Display name", email:"Email address (optional)", grade:"School year", later:"Choose later", color:"Avatar color", colors:["Green","Blue","Purple","Orange","Teal"], id:"Najahna ID", idNew:"Created when you save", copy:"Copy ID", save:"Save profile", delete:"Delete local profile", security:"Account security", securityText:"Email/password sign-in, email verification, password recovery, and cross-device sync are not enabled yet. Najahna is currently a static site: no password will be requested or stored here. This profile stays on this device.", close:"Close", saved:"Profile saved on this device.", deleted:"Local profile deleted.", deleteConfirm:"Delete this local profile? Your notes and other study data will not be deleted.", copyOk:"ID copied.", copyFail:"Could not copy; select and copy the ID manually." }
+};
+
+const cloudAccountCopy = {
+  ar: {
+    title:"تسجيل دخول آمن", notConfigured:"لم يفعّل مالك الموقع الاتصال الآمن بعد. لن تُرسل كلمة المرور إلى أي مكان قبل إعداد الخدمة.",
+    email:"البريد الإلكتروني", password:"كلمة المرور (10 أحرف على الأقل)", confirm:"تأكيد كلمة المرور", signin:"تسجيل الدخول", signup:"إنشاء حساب", reset:"نسيت كلمة المرور؟", update:"حفظ كلمة المرور الجديدة",
+    session:"أنت متصل", upload:"رفع بيانات هذا الجهاز إلى السحابة", download:"استعادة بيانات السحابة إلى هذا الجهاز", signout:"تسجيل الخروج", delete:"حذف حسابي نهائياً",
+    syncNote:"المزامنة يدوية حتى لا يتم استبدال بياناتك دون إذنك.", notSigned:"لم تسجل الدخول.", signupOk:"تحقق من بريدك الإلكتروني لإكمال إنشاء الحساب.", signinOk:"تم تسجيل الدخول بنجاح.", resetOk:"إذا كان البريد مسجلاً، فستصلك رسالة لاستعادة كلمة المرور.", updateOk:"تم تحديث كلمة المرور.", signoutOk:"تم تسجيل الخروج.", uploadOk:"تم حفظ بياناتك في السحابة.", downloadOk:"تمت استعادة البيانات من السحابة.", noCloudData:"لا توجد نسخة سحابية لهذا الحساب بعد.", deleteConfirm:"سيتم حذف حسابك وبياناته السحابية نهائياً. تبقى البيانات المحلية على هذا الجهاز. هل تريد المتابعة؟", deleteOk:"تم حذف الحساب السحابي.", emailRequired:"أدخل بريدك الإلكتروني.", passwordMismatch:"كلمتا المرور غير متطابقتين.", weakPassword:"استخدم كلمة مرور من 10 أحرف على الأقل.", configNeeded:"الاتصال السحابي غير مهيأ. لا يمكن إنشاء الحساب الآن.", genericError:"تعذر إكمال العملية. تحقق من البيانات والاتصال ثم أعد المحاولة.", emailUnverified:"افتح رابط التحقق المرسل إلى بريدك الإلكتروني ثم سجّل الدخول.", restoreConfirm:"ستستبدل بيانات الدراسة الموجودة على هذا الجهاز بالنسخة السحابية. هل تريد المتابعة؟", uploadConfirm:"سيتم حفظ بيانات الدراسة الموجودة على هذا الجهاز كنسخة الحساب السحابية. هل تريد المتابعة؟", passwordResetMode:"اختر كلمة مرور جديدة ثم احفظها.", signedOut:"غير متصل", cloudReady:"الاتصال السحابي مهيأ؛ سجّل الدخول أو أنشئ حساباً."
+  },
+  fr: {
+    title:"Connexion sécurisée", notConfigured:"Le propriétaire du site doit encore configurer le service sécurisé. Aucun mot de passe ne sera envoyé avant cette configuration.",
+    email:"Adresse e-mail", password:"Mot de passe (10 caractères minimum)", confirm:"Confirmer le mot de passe", signin:"Se connecter", signup:"Créer un compte", reset:"Mot de passe oublié ?", update:"Enregistrer le nouveau mot de passe",
+    session:"Session connectée", upload:"Sauvegarder cet appareil dans le cloud", download:"Restaurer le cloud sur cet appareil", signout:"Se déconnecter", delete:"Supprimer définitivement mon compte",
+    syncNote:"La synchronisation est manuelle pour éviter d’écraser tes données sans ton accord.", notSigned:"Tu n’es pas connecté.", signupOk:"Consulte ta boîte e-mail pour confirmer la création du compte.", signinOk:"Connexion réussie.", resetOk:"Si cette adresse existe, un lien de récupération va être envoyé.", updateOk:"Mot de passe mis à jour.", signoutOk:"Déconnexion effectuée.", uploadOk:"Données enregistrées dans le cloud.", downloadOk:"Données cloud restaurées.", noCloudData:"Aucune sauvegarde cloud n’existe encore pour ce compte.", deleteConfirm:"Ton compte et ses données cloud seront supprimés définitivement. Les données locales resteront sur cet appareil. Continuer ?", deleteOk:"Compte cloud supprimé.", emailRequired:"Saisis ton adresse e-mail.", passwordMismatch:"Les deux mots de passe ne correspondent pas.", weakPassword:"Utilise un mot de passe d’au moins 10 caractères.", configNeeded:"Le service cloud n’est pas configuré. La création du compte est indisponible.", genericError:"Impossible de terminer l’opération. Vérifie les informations et la connexion, puis réessaie.", emailUnverified:"Ouvre le lien de vérification reçu par e-mail, puis connecte-toi.", restoreConfirm:"Les données d’étude de cet appareil seront remplacées par la sauvegarde cloud. Continuer ?", uploadConfirm:"Les données de cet appareil seront enregistrées comme sauvegarde cloud du compte. Continuer ?", passwordResetMode:"Choisis un nouveau mot de passe puis enregistre-le.", signedOut:"Non connecté", cloudReady:"Le service cloud est configuré. Connecte-toi ou crée un compte."
+  },
+  en: {
+    title:"Secure sign-in", notConfigured:"The site owner still needs to configure the secure provider. No password will be sent anywhere until setup is complete.",
+    email:"Email address", password:"Password (at least 10 characters)", confirm:"Confirm password", signin:"Sign in", signup:"Create account", reset:"Forgot password?", update:"Save new password",
+    session:"Signed in", upload:"Back up this device to the cloud", download:"Restore cloud data to this device", signout:"Sign out", delete:"Permanently delete my account",
+    syncNote:"Sync is manual so your data is never overwritten without your consent.", notSigned:"You are not signed in.", signupOk:"Check your inbox to verify your email and finish creating the account.", signinOk:"Signed in successfully.", resetOk:"If that email is registered, a recovery link will be sent.", updateOk:"Password updated.", signoutOk:"Signed out.", uploadOk:"Your data is backed up to the cloud.", downloadOk:"Cloud data restored.", noCloudData:"No cloud backup exists for this account yet.", deleteConfirm:"Your account and cloud data will be permanently deleted. Local data will remain on this device. Continue?", deleteOk:"Cloud account deleted.", emailRequired:"Enter your email address.", passwordMismatch:"The passwords do not match.", weakPassword:"Use a password at least 10 characters long.", configNeeded:"Cloud authentication is not configured. Account creation is unavailable.", genericError:"Could not complete the action. Check your details and connection, then try again.", emailUnverified:"Open the verification link sent to your email, then sign in.", restoreConfirm:"This will replace study data on this device with the cloud backup. Continue?", uploadConfirm:"Study data on this device will become the cloud backup for this account. Continue?", passwordResetMode:"Choose a new password and save it.", signedOut:"Signed out", cloudReady:"Cloud authentication is configured. Sign in or create an account."
+  }
 };
 
 function escapeHTML(value) { return String(value).replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" })[char]); }
@@ -79,9 +105,62 @@ function setLanguage(next) {
   if (activeResourceId && $("#resource-dialog").open) renderResourceDetails(activeResourceId);
   updateRemoveButtons();
 }
+function renderCloudAccount() {
+  const copy = cloudAccountCopy[language] || cloudAccountCopy.en;
+  const configured = cloudAccountConfigured();
+  const status = $("#cloud-account-status");
+  if (status) status.textContent = cloudAuthNotice || (!configured ? copy.notConfigured : cloudSession ? copy.session + ": " + (cloudSession.user?.email || "") : cloudResetMode ? copy.passwordResetMode : copy.cloudReady);
+  const signedIn = Boolean(cloudSession?.user);
+  $("#cloud-account-session").hidden = !signedIn;
+  $("#cloud-auth-form").hidden = signedIn;
+  $("#cloud-account-user").textContent = signedIn ? (copy.session + ": " + (cloudSession.user.email || "")) : copy.notSigned;
+  $("#cloud-auth-email-label").textContent = copy.email;
+  $("#cloud-auth-password-label").textContent = copy.password;
+  $("#cloud-auth-confirm-label").textContent = copy.confirm;
+  $("#cloud-auth-signin").textContent = copy.signin;
+  $("#cloud-auth-signup").textContent = copy.signup;
+  $("#cloud-auth-reset").textContent = copy.reset;
+  $("#cloud-auth-update").textContent = copy.update;
+  $("#cloud-sync-upload").textContent = copy.upload;
+  $("#cloud-sync-download").textContent = copy.download;
+  $("#cloud-auth-signout").textContent = copy.signout;
+  $("#cloud-account-delete").textContent = copy.delete;
+  $("#cloud-sync-note").textContent = copy.syncNote;
+  $("#cloud-account-title").textContent = copy.title;
+  $("#cloud-auth-password-confirm").hidden = !cloudResetMode && !$("#cloud-auth-password-confirm").dataset.signupMode;
+  $("#cloud-auth-confirm-label").hidden = $("#cloud-auth-password-confirm").hidden;
+  $("#cloud-auth-signin").hidden = cloudResetMode;
+  $("#cloud-auth-signup").hidden = cloudResetMode;
+  $("#cloud-auth-reset").hidden = cloudResetMode;
+  $("#cloud-auth-update").hidden = !cloudResetMode;
+  ["#cloud-auth-email", "#cloud-auth-password", "#cloud-auth-password-confirm", "#cloud-auth-signin", "#cloud-auth-signup", "#cloud-auth-reset", "#cloud-auth-update"].forEach(selector => {
+    const node = $(selector);
+    if (node) node.disabled = !configured;
+  });
+  $("#cloud-auth-password").autocomplete = cloudResetMode ? "new-password" : "current-password";
+}
+async function refreshCloudSession(notice = "") {
+  cloudAuthNotice = notice;
+  if (!cloudAccountConfigured()) { cloudSession = null; renderCloudAccount(); return; }
+  try { cloudSession = await getCloudSession(); }
+  catch { cloudSession = null; }
+  renderCloudAccount();
+}
+function cloudErrorMessage(error) {
+  const copy = cloudAccountCopy[language] || cloudAccountCopy.en;
+  const code = String(error?.message || "");
+  if (code === "CLOUD_ACCOUNT_NOT_CONFIGURED") return copy.configNeeded;
+  if (code === "AUTHENTICATION_REQUIRED") return copy.notSigned;
+  if (/invalid login credentials|invalid email or password/i.test(code)) return language === "fr" ? "Adresse e-mail ou mot de passe incorrect." : language === "ar" ? "البريد الإلكتروني أو كلمة المرور غير صحيحة." : "Incorrect email or password.";
+  if (/email not confirmed/i.test(code)) return copy.emailUnverified;
+  if (/user already registered/i.test(code)) return language === "fr" ? "Cette adresse e-mail possède déjà un compte." : language === "ar" ? "هذا البريد الإلكتروني مسجل بالفعل." : "An account already exists for this email.";
+  return copy.genericError;
+}
+
 function renderAccountDialog() {
   const copy = accountCopy[language] || accountCopy.ar;
   const profile = getAccountProfile();
+  renderCloudAccount();
   const fields = {
     "#account-open": profile?.name || copy.open,
     "#account-eyebrow": copy.eyebrow, "#account-title": copy.title, "#account-intro": copy.intro,
@@ -1096,6 +1175,110 @@ $("#account-copy-id")?.addEventListener("click", async () => {
   }
 });
 
+
+$("#cloud-auth-signin")?.addEventListener("click", async () => {
+  const copy = cloudAccountCopy[language] || cloudAccountCopy.en;
+  try {
+    if (!cloudAccountConfigured()) throw new Error("CLOUD_ACCOUNT_NOT_CONFIGURED");
+    const email = $("#cloud-auth-email").value.trim();
+    const password = $("#cloud-auth-password").value;
+    if (!email) { cloudAuthNotice = copy.emailRequired; renderCloudAccount(); return; }
+    await signInCloudAccount({ email, password });
+    await refreshCloudSession(copy.signinOk);
+    renderAccountDialog();
+  } catch (error) { cloudAuthNotice = cloudErrorMessage(error); renderCloudAccount(); }
+});
+$("#cloud-auth-signup")?.addEventListener("click", async () => {
+  const copy = cloudAccountCopy[language] || cloudAccountCopy.en;
+  try {
+    if (!cloudAccountConfigured()) throw new Error("CLOUD_ACCOUNT_NOT_CONFIGURED");
+    const email = $("#cloud-auth-email").value.trim();
+    const password = $("#cloud-auth-password").value;
+    const profile = getAccountProfile();
+    const displayName = $("#account-name").value.trim() || profile?.name || email.split("@")[0];
+    if (!email) { cloudAuthNotice = copy.emailRequired; renderCloudAccount(); return; }
+    if (password.length < 10) { cloudAuthNotice = copy.weakPassword; renderCloudAccount(); return; }
+    const result = await registerCloudAccount({ email, password, displayName, gradeId: $("#account-grade").value || profile?.gradeId || "" });
+    if (result.session) await refreshCloudSession(copy.signinOk);
+    else { cloudSession = null; cloudAuthNotice = copy.signupOk; renderCloudAccount(); }
+  } catch (error) { cloudAuthNotice = cloudErrorMessage(error); renderCloudAccount(); }
+});
+$("#cloud-auth-reset")?.addEventListener("click", async () => {
+  const copy = cloudAccountCopy[language] || cloudAccountCopy.en;
+  try {
+    const email = $("#cloud-auth-email").value.trim();
+    if (!email) { cloudAuthNotice = copy.emailRequired; renderCloudAccount(); return; }
+    await sendPasswordReset(email);
+    cloudAuthNotice = copy.resetOk;
+    renderCloudAccount();
+  } catch (error) { cloudAuthNotice = cloudErrorMessage(error); renderCloudAccount(); }
+});
+$("#cloud-auth-update")?.addEventListener("click", async () => {
+  const copy = cloudAccountCopy[language] || cloudAccountCopy.en;
+  const password = $("#cloud-auth-password").value;
+  if (password.length < 10) { cloudAuthNotice = copy.weakPassword; renderCloudAccount(); return; }
+  try {
+    await updateCloudPassword(password);
+    cloudResetMode = false;
+    history.replaceState(null, "", location.pathname + location.search);
+    $("#cloud-auth-password").value = "";
+    cloudAuthNotice = copy.updateOk;
+    await refreshCloudSession(cloudAuthNotice);
+  } catch (error) { cloudAuthNotice = cloudErrorMessage(error); renderCloudAccount(); }
+});
+$("#cloud-auth-password-confirm")?.addEventListener("input", () => {
+  const password = $("#cloud-auth-password").value;
+  const confirmation = $("#cloud-auth-password-confirm").value;
+  $("#cloud-auth-signup").disabled = password.length < 10 || password !== confirmation || !cloudAccountConfigured();
+});
+$("#cloud-auth-signup")?.addEventListener("click", async event => {
+  const confirmField = $("#cloud-auth-password-confirm");
+  if (!confirmField.hidden && $("#cloud-auth-password").value !== confirmField.value) {
+    event.preventDefault();
+    cloudAuthNotice = (cloudAccountCopy[language] || cloudAccountCopy.en).passwordMismatch;
+    renderCloudAccount();
+  }
+});
+$("#cloud-auth-signout")?.addEventListener("click", async () => {
+  try {
+    await signOutCloudAccount();
+    cloudSession = null;
+    cloudAuthNotice = (cloudAccountCopy[language] || cloudAccountCopy.en).signoutOk;
+    renderCloudAccount();
+  } catch (error) { cloudAuthNotice = cloudErrorMessage(error); renderCloudAccount(); }
+});
+$("#cloud-sync-upload")?.addEventListener("click", async () => {
+  const copy = cloudAccountCopy[language] || cloudAccountCopy.en;
+  if (!window.confirm(copy.uploadConfirm)) return;
+  try {
+    const result = await uploadLocalStudyData();
+    cloudAuthNotice = copy.uploadOk + " (" + result.count + ")";
+    renderCloudAccount();
+  } catch (error) { cloudAuthNotice = cloudErrorMessage(error); renderCloudAccount(); }
+});
+$("#cloud-sync-download")?.addEventListener("click", async () => {
+  const copy = cloudAccountCopy[language] || cloudAccountCopy.en;
+  if (!window.confirm(copy.restoreConfirm)) return;
+  try {
+    const result = await downloadCloudStudyData();
+    if (!result.count) { cloudAuthNotice = copy.noCloudData; renderCloudAccount(); return; }
+    cloudAuthNotice = copy.downloadOk + " (" + result.count + ")";
+    renderCloudAccount();
+    window.location.reload();
+  } catch (error) { cloudAuthNotice = cloudErrorMessage(error); renderCloudAccount(); }
+});
+$("#cloud-account-delete")?.addEventListener("click", async () => {
+  const copy = cloudAccountCopy[language] || cloudAccountCopy.en;
+  if (!window.confirm(copy.deleteConfirm)) return;
+  try {
+    await deleteCloudAccount();
+    cloudSession = null;
+    deleteAccountProfile();
+    cloudAuthNotice = copy.deleteOk;
+    renderAccountDialog();
+  } catch (error) { cloudAuthNotice = cloudErrorMessage(error); renderCloudAccount(); }
+});
+
 const installButton = $("#install-app");
 window.addEventListener("beforeinstallprompt", event => {
   event.preventDefault();
@@ -1124,6 +1307,14 @@ if ("serviceWorker" in navigator && (location.protocol === "https:" || location.
 
 setLanguage(language);
 renderAccountDialog();
+if (cloudAccountConfigured()) {
+  refreshCloudSession();
+  onCloudAuthStateChange((event, session) => {
+    cloudSession = session;
+    if (event === "PASSWORD_RECOVERY") cloudResetMode = true;
+    renderCloudAccount();
+  }).then(unsubscribe => { cloudAuthUnsubscribe = unsubscribe; }).catch(() => { cloudAuthNotice = cloudErrorMessage(new Error("CLOUD_ACCOUNT_NOT_CONFIGURED")); renderCloudAccount(); });
+}
 renderOfficialSources();
 renderSchoolCalendar();
 renderQuizHistory();

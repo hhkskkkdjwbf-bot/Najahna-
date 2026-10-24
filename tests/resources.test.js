@@ -17,7 +17,10 @@ test("sample resource catalogue uses unique stable IDs and known types/levels", 
     assert.ok(["sample", "pdf"].includes(item.availability), "availability must be sample or a verified direct PDF");
     if (item.availability === "pdf") {
       assert.ok(getDirectPdfUrl(item), `${item.id}: PDF availability requires a direct PDF URL`);
-      if (item.sourceName === "DzExams") {
+      if (item.sourceName === "Najahna") {
+        assert.ok(item.pdfUrl.startsWith("./assets/pdfs/"), `${item.id}: original PDF must be hosted in the repository`);
+        assert.equal(item.sourceUrl, undefined, `${item.id}: original content must not be mislabelled as an external source`);
+      } else if (item.sourceName === "DzExams") {
         assert.ok(item.sourceUrl?.startsWith("https://"), `${item.id}: external source attribution required`);
         assert.equal(new URL(item.sourceUrl).hostname, "www.dzexams.com", `${item.id}: external source must be the attributed publisher`);
       } else {
@@ -72,6 +75,18 @@ test("sample resources never claim official downloads and the official PDF entry
     assert.ok(item.pdfUrl.startsWith("https://"));
     const sourceUrl = new URL(item.officialSourceUrl);
     assert.ok(["education.gov.dz", "www.education.gov.dz"].includes(sourceUrl.hostname));
+  }
+
+  const localPdfs = resources.filter(item => item.availability === "pdf" && item.sourceName === "Najahna");
+  assert.equal(localPdfs.length, 3);
+  assert.deepEqual(localPdfs.map(item => item.id).sort(), [
+    "najahna-french-5ap-adjectives",
+    "najahna-maths-4am-equations",
+    "najahna-sciences-4am-nutrition"
+  ].sort());
+  for (const item of localPdfs) {
+    assert.ok(getDirectPdfUrl(item).startsWith("./assets/pdfs/"));
+    assert.ok(item.description.fr.includes("originale") || item.description.fr.includes("original"));
   }
 
   const externalPdfs = resources.filter(item => item.availability === "pdf" && item.sourceUrl);

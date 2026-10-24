@@ -81,3 +81,17 @@ test("school calendar section is translated and connected to the official source
     assert.ok(english.includes(key), `English translation missing ${key}`);
   }
 });
+
+
+test("library exposes twelve accessible school-year category controls", () => {
+  assert.match(html, /id="year-category-grid"/);
+  assert.match(app, /function renderYearCategories\(\)/);
+  assert.match(app, /data-school-year/);
+  assert.match(app, /aria-pressed=\$\{selected\}/);
+  assert.match(app, /year-category-grid.*addEventListener\("click"/s);
+  for (const key of ["yearCategoriesTitle", "yearCategoriesIntro", "yearResourceCount"]) {
+    assert.ok(arabic.includes(key), `Arabic translation missing ${key}`);
+    assert.ok(french.includes(key), `French translation missing ${key}`);
+    assert.ok(english.includes(key), `English translation missing ${key}`);
+  }
+});

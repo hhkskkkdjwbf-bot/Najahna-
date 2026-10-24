@@ -132,7 +132,7 @@ function renderOfficialSources() {
     <div class="official-source-card-top"><span class="official-source-icon" aria-hidden="true">${source.kind === "books" ? "▤" : source.kind === "exam-papers" ? "✎" : "✓"}</span><span class="source-verified-label">${escapeHTML(t("officialSourceChecked"))}</span></div>
     <span class="official-source-kind">${escapeHTML(kindLabel(source.kind))} · ${escapeHTML(levelLabel(source.levels))}</span>
     <h3>${escapeHTML(source.title[language])}</h3><p>${escapeHTML(source.description[language])}</p>
-    <div class="official-source-tags">${source.grade ? `<span>${escapeHTML(gradeLabel(source.grade))}</span>` : ""}${source.subject ? `<span>${escapeHTML(subjectLabel(source.subject))}</span>` : ""}<span>${escapeHTML(pageTypeLabel(source))}</span><span>${escapeHTML(t("officialSourceRightsUnknown"))}</span></div>
+    <div class="official-source-tags">${source.grade ? `<span>${escapeHTML(gradeLabel(source.grade))}</span>` : ""}${source.subject ? `<span>${escapeHTML(subjectLabel(source.subject))}</span>` : ""}<span>${escapeHTML(pageTypeLabel(source))}</span><span>${escapeHTML(t("officialSourceRightsUnknown"))}</span><span>${escapeHTML(t("officialSourcePageOnly"))}</span></div>
     <div class="official-source-meta"><span>${escapeHTML(source.publisher)}</span><span>${escapeHTML(t("officialSourceCheckedOn"))}: ${escapeHTML(dateLabel(source.checkedOn))}</span>${source.publishedOn ? `<span>${escapeHTML(t("officialSourcePublishedOn"))}: ${escapeHTML(dateLabel(source.publishedOn))}</span>` : ""}</div>
     <a href="${escapeHTML(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(t("openOfficialSource"))} ↗</a>
   </article>`).join("");

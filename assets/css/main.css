@@ -214,3 +214,12 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
 body.dark .resource-quick-filter.active{color:#10231a}
 .resource-quick-filter:focus-visible{outline:2px solid var(--green);outline-offset:3px}
 @media(max-width:480px){.resource-quick-filters{gap:6px}.resource-quick-filter{padding:7px 11px;font-size:11px;min-height:36px}}
+
+/* Revision history: make resuming a resource an obvious, keyboard-accessible action. */
+.history-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.history-item:last-child{border-bottom:0}
+.history-item-copy{display:grid;gap:4px;min-width:0}
+.history-item-copy strong{font-size:13px;overflow-wrap:anywhere}
+.history-item-copy small{font-size:11px;color:var(--muted)}
+.history-resume{flex-shrink:0;white-space:nowrap}
+@media(max-width:480px){.history-item{align-items:flex-start;flex-direction:column}.history-resume{align-self:flex-start}}

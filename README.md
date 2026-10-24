@@ -4,6 +4,10 @@
 
 > **Current status:** early front-end prototype. The visible resource cards are demonstration templates, not official exam papers or downloadable PDFs. The school-year and subject catalog is a navigation starter and must be checked against current official programs before being presented as exhaustive.
 
+## Account backend setup
+
+The Supabase account integration is prepared but remains disabled until the project owner configures a Supabase project, applies the RLS migration, configures email redirects, and deploys the server-side account-deletion function. Follow [the Supabase setup and release checklist](docs/SUPABASE_SETUP.md). Never put a service-role key in browser code or the public repository. Cloud backups are validated and limited to 5 MiB before upload or restore.
+
 ## Current features
 
 - Arabic-first responsive interface, with French and English translations.

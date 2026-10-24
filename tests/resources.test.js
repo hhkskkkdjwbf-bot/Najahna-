@@ -1,5 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { resources, resourceTypes, schoolLevels } from "../src/data/resources.js";
 import { schoolYears } from "../src/data/curriculum.js";
 import { getDirectPdfUrl } from "../src/utils/pdf-resources.js";
@@ -152,4 +154,25 @@ test("metadata validator catches vague descriptions, invalid subjects, and misma
   source.level = "middle";
   assert.ok(validateResourceCatalog([source]).some(error => error.includes("does not match level middle")));
   assert.ok(validateResourceCatalog([source]).some(error => error.includes("description missing/short")));
+});
+
+
+test("every Najahna-hosted PDF exists, has a PDF signature, and is cached for offline use", () => {
+  const localPdfs = resources.filter(item => item.availability === "pdf" && item.sourceName === "Najahna");
+  const serviceWorker = readFileSync(resolve(process.cwd(), "service-worker.js"), "utf8");
+  assert.equal(localPdfs.length, 3, "update this integrity test when adding or removing local PDFs");
+
+  const uniquePaths = new Set(localPdfs.map(item => item.pdfUrl));
+  assert.equal(uniquePaths.size, localPdfs.length, "each local PDF must have a unique path");
+
+  for (const item of localPdfs) {
+    const relativePath = item.pdfUrl.replace(/^\.\//, "");
+    const filePath = resolve(process.cwd(), relativePath);
+    assert.ok(existsSync(filePath), `${item.id}: local PDF file is missing at ${relativePath}`);
+    const bytes = readFileSync(filePath);
+    assert.ok(bytes.length > 500, `${item.id}: PDF unexpectedly small or empty`);
+    assert.equal(bytes.subarray(0, 5).toString("ascii"), "%PDF-", `${item.id}: invalid PDF signature`);
+    assert.ok(bytes.subarray(-1024).toString("latin1").includes("%%EOF"), `${item.id}: missing PDF end marker`);
+    assert.ok(serviceWorker.includes(`"./${relativePath}"`), `${item.id}: add local PDF to the offline app-shell cache`);
+  }
 });

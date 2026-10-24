@@ -365,3 +365,189 @@ body.dark .hero::before{background:radial-gradient(ellipse at 85% 10%,#d5f17a0c,
 .resource-category-browse { margin-top: .85rem; max-width: 100%; white-space: normal; }
 .resource-category-card { display: flex; flex-direction: column; align-items: flex-start; }
 .resource-category-card p { flex: 1 1 auto; }
+
+
+/* Najahna design system refresh — consistent tones, depth, focus and responsive rhythm. */
+:root{
+  color-scheme:light;
+  --bg:#f5f8f5;
+  --surface:#ffffff;
+  --surface-soft:#edf4ef;
+  --text:#172b25;
+  --muted:#62736a;
+  --line:#dce7df;
+  --green:#12684f;
+  --green-dark:#0b513d;
+  --lime:#d8f18a;
+  --accent:#b9e4d1;
+  --accent-strong:#347f67;
+  --surface-raised:#ffffff;
+  --radius:20px;
+  --radius-card:20px;
+  --focus-ring:0 0 0 3px color-mix(in srgb,var(--green) 24%,transparent);
+  --shadow:0 12px 34px #173d290b;
+  --shadow-hover:0 20px 46px #173d2915;
+  --section-space:clamp(44px,6vw,82px);
+}
+body.dark{
+  color-scheme:dark;
+  --bg:#101a16;
+  --surface:#18251f;
+  --surface-soft:#202f27;
+  --text:#edf5ef;
+  --muted:#adbbb1;
+  --line:#304239;
+  --green:#8bd7b3;
+  --green-dark:#b3efd0;
+  --lime:#d8f18a;
+  --accent:#304b3e;
+  --accent-strong:#9cddbc;
+  --surface-raised:#1b2a23;
+  --focus-ring:0 0 0 3px #8bd7b34a;
+  --shadow:0 12px 34px #0000001c;
+  --shadow-hover:0 20px 46px #00000035;
+}
+html{scroll-padding-top:100px}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse at 4% 0%,color-mix(in srgb,var(--accent) 23%,transparent),transparent 28rem),
+    var(--bg);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:color-mix(in srgb,var(--green) 22%,var(--surface));color:var(--text)}
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:2px solid var(--green);outline-offset:3px}
+:where(input,select,textarea){
+  border-color:var(--line);
+  background:var(--surface);
+  color:var(--text);
+  border-radius:12px;
+  transition:border-color .18s,box-shadow .18s,background .18s;
+}
+:where(input,select,textarea):focus{border-color:var(--green);box-shadow:var(--focus-ring);outline:0}
+:where(input,select,textarea)::placeholder{color:color-mix(in srgb,var(--muted) 78%,transparent)}
+.site-header{
+  min-height:76px;
+  padding-block:13px;
+  border-bottom-color:var(--line);
+  box-shadow:0 8px 28px #173d2908;
+}
+body.dark .site-header{box-shadow:0 8px 28px #0002}
+.brand-mark{box-shadow:0 7px 18px color-mix(in srgb,var(--green) 22%,transparent);border-radius:14px}
+.main-nav{align-items:center}
+.main-nav a{border-radius:10px}
+.main-nav a:hover{color:var(--green)}
+.header-actions{gap:9px}
+.header-actions select,.resource-toolbar select{min-height:42px;border-radius:12px;padding-inline:12px}
+.hero{padding-block:clamp(20px,3vw,38px)}
+.hero::before{background:radial-gradient(ellipse at 85% 10%,color-mix(in srgb,var(--lime) 26%,transparent),transparent 44%),linear-gradient(130deg,var(--surface-soft),var(--bg) 78%);box-shadow:var(--shadow)}
+.hero-copy{max-width:650px}
+.hero h1{letter-spacing:-.035em;text-wrap:balance}
+.hero-copy>p,.section-heading>p{max-width:68ch;line-height:1.9}
+.eyebrow{font-weight:800;color:var(--green);text-transform:none}
+.button{
+  min-height:42px;
+  border-radius:12px;
+  padding:10px 16px;
+  font-weight:700;
+  transition:transform .18s,box-shadow .18s,background .18s,border-color .18s;
+}
+.button:hover{transform:translateY(-1px);box-shadow:0 9px 20px #173d2910}
+.button:active{transform:translateY(0)}
+.button-primary{box-shadow:0 8px 18px color-mix(in srgb,var(--green) 18%,transparent)}
+.button-outline,.button-quiet{border-color:var(--line)}
+.icon-button,.favorite-button{border:1px solid var(--line);background:var(--surface);color:var(--text);transition:background .18s,border-color .18s,transform .18s}
+.icon-button:hover,.favorite-button:hover{background:var(--surface-soft);border-color:var(--green)}
+.stats-strip{border:1px solid var(--line);border-radius:var(--radius-card);background:var(--surface);box-shadow:var(--shadow);overflow:hidden}
+.stats-strip>div{padding:18px 12px}
+.stats-strip strong{letter-spacing:-.03em}
+.section{padding-block:var(--section-space)}
+.section-heading{margin-bottom:clamp(18px,3vw,30px)}
+.section-heading h2{letter-spacing:-.025em;text-wrap:balance}
+.level-grid,.resource-grid,.tools-grid,.resource-category-guide-grid{gap:clamp(12px,1.7vw,20px)}
+.level-card,.resource-card,.tool-panel,.resource-category-card,.official-source-card,.achievement-panel,.study-task,.resource-dialog,.exam-sheet-print-area{
+  border:1px solid var(--line);
+  border-radius:var(--radius-card);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+.level-card,.resource-card,.resource-category-card,.official-source-card{transition:transform .2s,border-color .2s,box-shadow .2s,background .2s}
+.level-card:hover,.resource-category-card:hover,.official-source-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:color-mix(in srgb,var(--green) 35%,var(--line))}
+.level-card.active,.level-card[aria-pressed="true"]{border-color:var(--green);box-shadow:0 0 0 2px color-mix(in srgb,var(--green) 12%,transparent),var(--shadow)}
+.level-card{padding:clamp(16px,2vw,24px)}
+.level-symbol,.card-icon,.tool-icon,.resource-icon,.resource-category-card-icon,.official-source-icon{
+  border-radius:14px;
+  background:color-mix(in srgb,var(--green) 10%,var(--surface-soft));
+  color:var(--green);
+}
+.resource-toolbar{gap:12px;margin-block:20px}
+.search-box{min-height:48px;border-radius:14px;background:var(--surface);border-color:var(--line);box-shadow:0 4px 14px #173d2905}
+.search-box input{background:transparent;border:0;box-shadow:none}
+.resource-card{padding:clamp(15px,1.8vw,22px)}
+.resource-card::before{height:4px}
+.resource-card h3{line-height:1.45;text-wrap:balance}
+.resource-card p,.resource-category-card p,.official-source-card p{line-height:1.8}
+.resource-type,.resource-meta span{border-radius:999px}
+.resource-meta{gap:8px}
+.resource-results-bar{border-radius:12px;background:var(--surface-soft);padding:10px 14px}
+.resource-category-guide{padding:clamp(16px,2.2vw,24px);border:1px solid var(--line);border-radius:24px;background:color-mix(in srgb,var(--surface) 78%,var(--surface-soft));}
+.resource-category-card{width:100%;padding:18px}
+.resource-category-card-icon{width:42px;height:42px}
+.tool-panel{padding:clamp(16px,2.2vw,24px)}
+.tool-heading{align-items:flex-start}
+.tool-heading h3{line-height:1.4}
+.grade-row{border-radius:12px}
+.grade-row input,.inline-form input,.note-form input,.note-form textarea{min-height:42px}
+.form-actions{gap:10px;flex-wrap:wrap}
+.average-result,.study-plan-summary{border:1px solid var(--line);border-radius:16px;background:var(--surface-soft);padding:16px}
+.workspace-grid{gap:clamp(14px,2vw,22px)}
+.collection-item,.note-item,.favorite-item{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:14px}
+.study-planner{border:1px solid var(--line);border-radius:24px;background:color-mix(in srgb,var(--surface) 88%,var(--surface-soft));padding:clamp(16px,2.4vw,26px)}
+.study-plan-form{gap:14px}
+.study-plan-form input,.study-plan-form select{min-height:44px}
+.study-task{padding:14px;box-shadow:none}
+.study-task:hover{border-color:color-mix(in srgb,var(--green) 34%,var(--line))}
+.achievement-panel{padding:clamp(16px,2.4vw,26px)}
+.achievement-stat{border:1px solid color-mix(in srgb,var(--line) 75%,transparent);border-radius:14px}
+.achievement-badge{border:1px solid color-mix(in srgb,#a7cb62 35%,var(--line))}
+.exam-sheet-form select{min-height:44px}
+.exam-sheet-print-area{box-shadow:none}
+.official-source-grid{gap:16px}
+.official-source-card{padding:18px}
+.resource-dialog{max-width:min(760px,calc(100vw - 24px));box-shadow:0 28px 100px #0004}
+.resource-dialog::backdrop{background:#09150fcc;backdrop-filter:blur(7px)}
+.keyboard-shortcuts-dialog{box-shadow:0 28px 100px #0004}
+.content-note,.empty-state,.daily-challenge-empty,.daily-challenge-complete{border:1px solid var(--line);border-radius:16px;background:var(--surface-soft);padding:16px}
+.closing-banner{border-radius:26px;overflow:hidden;box-shadow:var(--shadow-hover)}
+.site-footer{border-top:1px solid var(--line);margin-top:clamp(28px,5vw,64px)}
+.toast{border:1px solid color-mix(in srgb,var(--line) 70%,transparent);border-radius:14px;box-shadow:0 16px 48px #0002;backdrop-filter:blur(16px)}
+:where(.resource-card,.tool-panel,.level-card,.resource-category-card,.official-source-card,.study-task,.collection-item,.note-item,.favorite-item){min-width:0}
+:where(.resource-card p,.resource-category-card p,.official-source-card p,.note-item p){overflow-wrap:anywhere}
+@media(max-width:760px){
+  :root{--section-space:48px}
+  .site-header{padding-inline:16px}
+  .hero{padding-block:18px}
+  .stats-strip{border-radius:16px}
+  .stats-strip>div{padding:14px 8px}
+  .resource-category-guide{padding:14px;border-radius:18px}
+}
+@media(max-width:480px){
+  :root{--section-space:40px}
+  .site-header{gap:10px}
+  .brand-mark{width:39px;height:39px}
+  .hero h1{font-size:clamp(30px,8vw,42px)}
+  .hero::before{inset:3px 0}
+  .section-heading h2{font-size:clamp(23px,6vw,30px)}
+  .resource-card,.tool-panel,.level-card{border-radius:16px}
+  .stats-strip>div{padding:12px 5px}
+  .stats-strip strong{font-size:clamp(19px,5vw,26px)}
+  .button{min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+@media(forced-colors:active){
+  .button,.level-card,.resource-card,.tool-panel,.resource-category-card{border:1px solid ButtonText}
+  :where(a,button,input,select,textarea):focus-visible{outline:2px solid Highlight}
+}

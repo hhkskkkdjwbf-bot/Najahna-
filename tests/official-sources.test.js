@@ -294,3 +294,27 @@ test("middle-school ONPS French Year 2 and Mathematics Year 3 pages are correctl
     assert.equal(validateOfficialSources([source]).valid, true);
   }
 });
+
+
+test("additional ONPS middle-school books use exact official publication pages, not PDF claims", () => {
+  const expected = [
+    ["onps-middle-physics-year-2", "middle-2", "physics", "https://www.onps.dz/fr/405"],
+    ["onps-middle-geography-year-2", "middle-2", "geography", "https://www.onps.dz/402"],
+    ["onps-middle-history-year-3", "middle-3", "history", "https://www.onps.dz/431"],
+    ["onps-middle-islamic-studies-year-3", "middle-3", "islamic-studies", "https://www.onps.dz/428"],
+    ["onps-middle-geography-year-3", "middle-3", "geography", "https://www.onps.dz/fr/434"]
+  ];
+  const entries = expected.map(([id, grade, subject, url]) => {
+    const source = officialSources.find(item => item.id === id);
+    assert.ok(source, "missing source " + id);
+    assert.equal(source.grade, grade);
+    assert.equal(source.subject, subject);
+    assert.deepEqual(source.levels, ["middle"]);
+    assert.equal(source.url, url);
+    assert.equal(source.pageType, "publication");
+    assert.match(source.description.fr, /pas un PDF direct/i);
+    assert.equal(validateOfficialSources([source]).valid, true);
+    return source;
+  });
+  assert.equal(new Set(entries.map(source => source.id)).size, expected.length);
+});

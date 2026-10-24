@@ -27,3 +27,16 @@ export function removeStudyTask(tasks, id) {
 export function clearCompletedStudyTasks(tasks) {
   return tasks.filter(task => !task.completed);
 }
+
+/**
+ * Prioritize unfinished work by urgency without mutating the caller's array.
+ * Overdue tasks come first, then today's work, upcoming work, and completed tasks.
+ */
+export function sortStudyTasks(tasks, today) {
+  const priority = task => task.completed ? 3 : task.date < today ? 0 : task.date === today ? 1 : 2;
+  return [...tasks].sort((a, b) =>
+    priority(a) - priority(b) ||
+    a.date.localeCompare(b.date) ||
+    String(a.subject).localeCompare(String(b.subject))
+  );
+}

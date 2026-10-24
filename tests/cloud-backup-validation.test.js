@@ -10,7 +10,9 @@ test("accepts valid Najahna study data and returns the same entries", () => {
 test("rejects non-arrays, unrelated keys, account profile, and duplicate keys", () => {
   assert.throws(() => validateCloudBackupEntries(null), /INVALID_CLOUD_BACKUP/);
   assert.throws(() => validateCloudBackupEntries([["other-app:token", "{}"]]), /INVALID_CLOUD_BACKUP/);
+  assert.throws(() => validateCloudBackupEntries([["najahna:", "{}"]]), /INVALID_CLOUD_BACKUP/);
   assert.throws(() => validateCloudBackupEntries([["najahna:account-profile", "{}"]]), /INVALID_CLOUD_BACKUP/);
+  assert.throws(() => validateCloudBackupEntries([["najahna:" + "x".repeat(200), "{}"]]), /INVALID_CLOUD_BACKUP/);
   assert.throws(() => validateCloudBackupEntries([["najahna:notes", "[]"], ["najahna:notes", "[]"]]), /INVALID_CLOUD_BACKUP/);
 });
 

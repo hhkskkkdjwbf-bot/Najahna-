@@ -23,6 +23,7 @@ historyTitle:"سجل المراجعة",historyIntro:"آخر الموارد ال�
   deleteCollection:"حذف المجلد",confirmDeleteCollection:"هل تريد حذف هذا المجلد وارتباطاته المحلية؟",collectionDeleted:"تم حذف المجلد.",removeFromCollection:"إزالة المورد من المجلد",removedFromCollection:"تمت إزالة المورد من المجلد.",collectionEmpty:"هذا المجلد فارغ.",noCollections:"لا توجد مجلدات حالياً.",
   clearNotes:"مسح جميع الملاحظات",confirmClearNotes:"هل تريد حذف جميع الملاحظات المحفوظة في هذا المتصفح نهائياً؟",notesCleared:"تم حذف جميع الملاحظات.",clearCompletedStudy:"مسح الجلسات المكتملة",confirmClearCompletedStudy:"هل تريد حذف جميع جلسات المراجعة المكتملة؟",completedStudyCleared:"تم حذف الجلسات المكتملة.",noCompletedStudy:"لا توجد جلسات مكتملة لمسحها.",
   confirmClearHistory:"هل تريد مسح سجل المراجعة بالكامل؟",confirmClearFavorites:"هل تريد مسح جميع الموارد المفضلة؟",
+ progressNextWeek:"جلسات خلال الأيام السبعة القادمة",progressOverdue:"الجلسات المتأخرة",
   storageError:"تعذّر حفظ التغييرات في هذا المتصفح. تحقّق من مساحة التخزين.",progressRate:"نسبة الإنجاز",progressCompleted:"الجلسات المكتملة",progressMinutes:"دقائق المراجعة المنجزة",progressToday:"جلسات اليوم",
   historyResume:"متابعة المراجعة",
 };

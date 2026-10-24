@@ -139,12 +139,48 @@ function renderOfficialSources() {
   $("#official-source-count").textContent = t("officialSourceCount").replace("{count}", String(matches.length));
   $("#official-source-empty").hidden = matches.length !== 0;
 }
+function renderStudyDashboard() {
+  const root = $("#study-dashboard");
+  if (!root) return;
+  const tasks = getStudyTasks();
+  const completedTasks = tasks.filter(task => task.completed);
+  const attempts = getQuizHistory();
+  const favoriteCount = getFavorites().filter(id => resources.some(item => item.id === id)).length;
+  const completedMinutes = completedTasks.reduce((sum, task) => sum + Number(task.minutes || 0), 0);
+  const average = attempts.length ? Math.round(attempts.reduce((sum, item) => sum + item.percentage, 0) / attempts.length) : null;
+  $("#dashboard-completed").textContent = `${completedTasks.length}/${tasks.length}`;
+  $("#dashboard-quiz-average").textContent = average === null ? "—" : `${average}%`;
+  $("#dashboard-favorites").textContent = String(favoriteCount);
+  $("#dashboard-minutes").textContent = String(completedMinutes);
+  const focus = $("#dashboard-focus");
+  const today = toLocalDateISO();
+  const pending = tasks.filter(task => !task.completed).sort((a, b) => a.date.localeCompare(b.date));
+  const nextTask = pending.find(task => task.date <= today) || pending[0];
+  if (nextTask) {
+    const dueDate = parseLocalCalendarDate(nextTask.date);
+    const dateLabel = dueDate ? dueDate.toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { dateStyle: "medium" }) : nextTask.date;
+    const messageKey = nextTask.date < today ? "dashboardOverdueTask" : nextTask.date === today ? "dashboardTodayTask" : "dashboardNextTask";
+    const message = t(messageKey).replace("{subject}", escapeHTML(nextTask.subject)).replace("{minutes}", String(nextTask.minutes)).replace("{date}", escapeHTML(dateLabel));
+    focus.innerHTML = `<div class="dashboard-focus-copy"><span class="dashboard-focus-icon" aria-hidden="true">✦</span><div><h3>${escapeHTML(t("dashboardFocusTitle"))}</h3><p>${message}</p></div></div><a class="button button-primary button-small" href="#tools">${escapeHTML(t("dashboardOpenPlan"))}</a>`;
+    return;
+  }
+  const recentEntry = getResourceHistory().find(entry => resources.some(item => item.id === entry.resourceId));
+  const recentResource = recentEntry ? resources.find(item => item.id === recentEntry.resourceId) : null;
+  if (recentResource) {
+    focus.innerHTML = `<div class="dashboard-focus-copy"><span class="dashboard-focus-icon" aria-hidden="true">↻</span><div><h3>${escapeHTML(t("dashboardFocusTitle"))}</h3><p>${escapeHTML(t("dashboardContinue").replace("{title}", recentResource.title[language]))}</p></div></div><button class="button button-primary button-small" type="button" data-dashboard-resource="${escapeHTML(recentResource.id)}">${escapeHTML(t("dashboardResume"))}</button>`;
+  } else if (!attempts.length) {
+    focus.innerHTML = `<div class="dashboard-focus-copy"><span class="dashboard-focus-icon" aria-hidden="true">✎</span><div><h3>${escapeHTML(t("dashboardFocusTitle"))}</h3><p>${escapeHTML(t("dashboardStartQuiz"))}</p></div></div><a class="button button-primary button-small" href="#practice">${escapeHTML(t("dashboardPractice"))}</a>`;
+  } else {
+    focus.innerHTML = `<div class="dashboard-focus-copy"><span class="dashboard-focus-icon" aria-hidden="true">☀</span><div><h3>${escapeHTML(t("dashboardFocusTitle"))}</h3><p>${escapeHTML(t("dashboardPlanPrompt"))}</p></div></div><a class="button button-primary button-small" href="#tools">${escapeHTML(t("dashboardOpenPlan"))}</a>`;
+  }
+}
 function renderQuizHistory() {
   const root = $("#quiz-history");
   if (!root) return;
   const attempts = getQuizHistory();
   if (!attempts.length) {
     root.innerHTML = `<div class="quiz-history-empty"><h3>${escapeHTML(t("quizHistoryTitle"))}</h3><p>${escapeHTML(t("quizHistoryEmpty"))}</p></div>`;
+    renderStudyDashboard();
     return;
   }
   const average = Math.round(attempts.reduce((sum, item) => sum + item.percentage, 0) / attempts.length);
@@ -156,6 +192,7 @@ function renderQuizHistory() {
     return `<li class="quiz-attempt"><span><strong>${escapeHTML(levelName(item.level))}</strong><small>${escapeHTML(dateLabel)}</small></span><span class="quiz-attempt-score">${item.score}/${item.total}<small>${item.percentage}%</small></span></li>`;
   }).join("");
   root.innerHTML = `<div class="quiz-history-heading"><div><h3>${escapeHTML(t("quizHistoryTitle"))}</h3><p>${escapeHTML(t("quizHistoryRecent"))}</p></div><button type="button" class="button button-quiet button-small" data-clear-quiz-history>${escapeHTML(t("quizHistoryClear"))}</button></div><div class="quiz-history-metrics"><div><span>${escapeHTML(t("quizHistoryAttempts"))}</span><strong>${attempts.length}</strong></div><div><span>${escapeHTML(t("quizHistoryBest"))}</span><strong>${best}%</strong></div><div><span>${escapeHTML(t("quizHistoryAverage"))}</span><strong>${average}%</strong></div></div><ol class="quiz-attempt-list">${recent}</ol><p class="small-note">${escapeHTML(t("quizHistoryLocal"))}</p>`;
+  renderStudyDashboard();
 }
 function renderQuiz() {
   const levelSelect = $("#quiz-level");
@@ -316,6 +353,7 @@ function renderHistory() {
     if (!resource) return "";
     return `<div class="history-item"><span>${escapeHTML(resource.title[language])}</span><small>${escapeHTML(new Date(entry.viewedAt).toLocaleString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { dateStyle:"medium", timeStyle:"short" }))}</small></div>`;
   }).join("") : `<p class="small-note">${t("historyEmpty")}</p>`;
+  renderStudyDashboard();
 }
 function renderNotes() {
   const root = $("#notes-list");
@@ -327,6 +365,7 @@ function renderFavorites() {
   const ids = getFavorites();
   const saved = ids.map(id => resources.find(item => item.id === id)).filter(Boolean);
   $("#favorites-list").innerHTML = saved.length ? saved.map(item => `<div class="favorite-item"><span>${escapeHTML(item.title[language])}</span><button type="button" data-remove-favorite="${item.id}" aria-label="${t("removed")}">×</button></div>`).join("") : `<p>${t("noFavorites")}</p>`;
+  renderStudyDashboard();
 }
 function getStudyTasks() {
   const value = readJSON("study-plan", []);
@@ -367,6 +406,7 @@ function renderStudyPlan() {
     const dateLabel = parsedDate ? parsedDate.toLocaleDateString(language === "fr" ? "fr-FR" : language === "ar" ? "ar-DZ" : "en", { dateStyle: "medium" }) : task.date;
     return `<article class="study-task ${task.completed ? "is-complete" : ""}"><label class="study-task-check"><input type="checkbox" data-study-toggle="${escapeHTML(task.id)}" ${task.completed ? "checked" : ""}><span class="sr-only">${escapeHTML(t("markStudyTaskDone"))}</span></label><div class="study-task-content"><strong>${escapeHTML(task.subject)}</strong><span>${escapeHTML(dateLabel)} · ${escapeHTML(String(task.minutes))} ${escapeHTML(t("minutesShort"))}</span></div><button type="button" class="study-task-delete" data-study-delete="${escapeHTML(task.id)}" aria-label="${escapeHTML(t("deleteStudyTask"))}">×</button></article>`;
   }).join("") : `<p class="small-note">${escapeHTML(allTasks.length ? t("studyPlanFilterEmpty") : t("studyPlanEmpty"))}</p>`;
+  renderStudyDashboard();
 }
 function updateRemoveButtons() {
   $$(".remove-grade").forEach(button => button.disabled = $$(".grade-row").length === 1);
@@ -446,6 +486,16 @@ $("#year-category-grid")?.addEventListener("click", event => {
 });
 $("#subject-filter")?.addEventListener("change", renderResources);
 $("#type-filter").addEventListener("change", renderResources);
+$("#study-dashboard")?.addEventListener("click", event => {
+  const button = event.target.closest("[data-dashboard-resource]");
+  if (!button) return;
+  const resource = resources.find(item => item.id === button.dataset.dashboardResource);
+  if (!resource) return;
+  recordResourceView(resource.id);
+  renderResourceDetails(resource.id);
+  $("#resource-dialog").showModal();
+  renderHistory();
+});
 $("#resource-grid").addEventListener("click", event => {
   const pdfButton = event.target.closest("[data-read-pdf]");
   if (pdfButton) { renderResourceDetails(pdfButton.dataset.readPdf); $("#resource-dialog").showModal(); $("#resource-dialog-pdf").scrollIntoView({ behavior: "smooth", block: "nearest" }); return; }

@@ -27,7 +27,7 @@
       <button id="theme-toggle" class="icon-button" type="button" aria-label="تبديل الوضع" title="الوضع الليلي">☾</button>
       <button id="keyboard-help-button" class="icon-button keyboard-help-trigger" type="button" data-i18n-title="keyboardHelpLabel" data-i18n-aria-label="keyboardHelpLabel" aria-label="Keyboard shortcuts" title="Keyboard shortcuts">?</button>
       <button id="install-app" class="button button-small button-outline install-app-button" type="button" data-i18n="installApp" hidden>ثبّت التطبيق</button>
-      <a class="button button-small button-outline" href="#tools" data-i18n="start">ابدأ الآن</a>
+      <button id="account-open" class="button button-small button-outline" type="button">حسابي</button><a class="button button-small button-outline" href="#tools" data-i18n="start">ابدأ الآن</a>
     </div>
   </header>
   <main id="main">
@@ -203,6 +203,31 @@
     <iframe id="resource-dialog-pdf" class="resource-pdf-frame" title="PDF viewer" loading="lazy" hidden></iframe>
     <a id="resource-dialog-download" class="button button-outline button-small" hidden></a>
     <div class="resource-dialog-actions"><button id="resource-dialog-reviewed" class="button button-primary button-small" type="button"></button><button id="resource-dialog-add" class="button button-outline button-small" type="button"></button></div>
+  </dialog>
+  <dialog id="account-dialog" class="account-dialog" aria-labelledby="account-title">
+    <div class="account-dialog-heading">
+      <div class="account-avatar" id="account-avatar" aria-hidden="true">N</div>
+      <div><span class="eyebrow" id="account-eyebrow">Profil personnel</span><h2 id="account-title">Mon espace Najahna</h2><p id="account-intro">Personnalise ton profil d’apprentissage.</p></div>
+      <button id="account-close" class="icon-button" type="button" aria-label="Fermer">×</button>
+    </div>
+    <div class="account-status" id="account-status" role="status">Profil local — enregistré sur cet appareil uniquement.</div>
+    <form id="account-form" class="account-form">
+      <label for="account-name" id="account-name-label">Nom affiché</label>
+      <input id="account-name" name="name" autocomplete="nickname" maxlength="60" required>
+      <label for="account-email" id="account-email-label">Adresse e-mail (facultatif)</label>
+      <input id="account-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="toi@exemple.com">
+      <label for="account-grade" id="account-grade-label">Année scolaire</label>
+      <select id="account-grade" name="gradeId"><option value="">Choisir plus tard</option></select>
+      <label for="account-avatar-color" id="account-avatar-color-label">Couleur de l’avatar</label>
+      <select id="account-avatar-color" name="avatarColor"><option value="#176b55">Vert</option><option value="#3457a5">Bleu</option><option value="#8b4b9b">Violet</option><option value="#a45d20">Orange</option><option value="#287a8c">Turquoise</option></select>
+      <div class="account-id-row"><div><span id="account-id-label">Identifiant Najahna</span><strong id="account-id">Créé lors de l’enregistrement</strong></div><button id="account-copy-id" class="button button-outline button-small" type="button" disabled>Copier l’ID</button></div>
+      <button class="button button-primary" id="account-save" type="submit">Enregistrer le profil</button>
+      <button class="button button-outline" id="account-delete" type="button" hidden>Supprimer le profil local</button>
+    </form>
+    <section class="account-security" aria-labelledby="account-security-title">
+      <h3 id="account-security-title">Sécurité du compte</h3>
+      <p id="account-security-copy">La connexion par e-mail et mot de passe, la vérification d’e-mail, la récupération de mot de passe et la synchronisation entre appareils ne sont pas encore activées. Najahna est actuellement un site statique : aucun mot de passe ne sera demandé ni enregistré ici. Le profil ci-dessus reste sur cet appareil.</p>
+    </section>
   </dialog>
   <dialog id="keyboard-shortcuts-dialog" class="keyboard-shortcuts-dialog" aria-labelledby="keyboard-shortcuts-title">
     <div class="keyboard-dialog-heading"><div><span class="eyebrow" data-i18n="keyboardHelpLabel">Keyboard shortcuts</span><h2 id="keyboard-shortcuts-title" data-i18n="keyboardHelpTitle">Navigate faster</h2><p data-i18n="keyboardHelpIntro">Use these shortcuts anywhere on the page, except while typing in a field.</p></div><button id="keyboard-shortcuts-close" class="icon-button" type="button" aria-label="Close guide">×</button></div>

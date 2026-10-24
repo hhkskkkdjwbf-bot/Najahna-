@@ -33,7 +33,7 @@ test("rejects duplicate IDs, non-official domains and missing translations", () 
 test("every source has an explicit reviewed date and source type", () => {
   for (const source of officialSources) {
     assert.match(source.checkedOn, /^2026-10-23$/);
-    assert.ok(["catalog", "publication", "archive"].includes(source.pageType));
+    assert.ok(["catalog", "publication", "archive", "guide"].includes(source.pageType));
   }
 });
 
@@ -77,5 +77,5 @@ test("rejects malformed optional publication dates", () => {
   const sample = officialSources[0];
   const result = validateOfficialSources([{ ...sample, publishedOn: "2023-99-40" }]);
   assert.equal(result.valid, false);
-  assert.ok(result.errors.some(error => error.message === "publishedOn must use YYYY-MM-DD"));
+  assert.ok(result.errors.some(error => error.message === "publishedOn must use a valid YYYY-MM-DD date"));
 });

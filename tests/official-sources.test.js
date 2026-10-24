@@ -63,3 +63,19 @@ test("rejects unknown school years and publications without subject metadata", (
   assert.ok(result.errors.some(error => error.message === "grade and subject must be provided together"));
   assert.ok(result.errors.some(error => error.message === "publication entries require grade and subject metadata"));
 });
+
+test("includes the official ONPS digital-library guide without mislabeling it as a PDF", () => {
+  const guide = officialSources.find(source => source.id === "onps-digital-library-guide");
+  assert.ok(guide);
+  assert.equal(guide.pageType, "guide");
+  assert.equal(guide.publishedOn, "2023-09-25");
+  assert.equal(guide.url, "https://www.onps.dz/1581");
+  assert.match(guide.description.en, /not a textbook PDF/i);
+});
+
+test("rejects malformed optional publication dates", () => {
+  const sample = officialSources[0];
+  const result = validateOfficialSources([{ ...sample, publishedOn: "2023-99-40" }]);
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.some(error => error.message === "publishedOn must use YYYY-MM-DD"));
+});

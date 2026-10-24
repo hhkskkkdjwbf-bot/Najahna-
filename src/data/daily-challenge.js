@@ -141,3 +141,23 @@ for (const [gradeId, subject, prompts, options, answer, explanations] of extra) 
   const localizedChoices = { ar: options.map(option => option.split(" / ")[0]), fr: options.map(option => option.split(" / ").length > 1 ? option.split(" / ")[1] : option), en: options.map(option => { const parts = option.split(" / "); return parts.length > 2 ? parts[2] : parts.length > 1 ? parts[1] : option; }) };
   dailyChallengeBank.push(q(id, gradeId, subject, prompts, [localizedChoices.ar, localizedChoices.fr, localizedChoices.en], answer, explanations));
 }
+
+
+// Second, distinct mathematics item for every school year. These are original practice
+// examples, not ministry-approved questions. The date-based selector rotates between
+// these and the first math item, so the daily challenge is not identical every day.
+const mathVariants = [
+  q("p1-ma-02","primary-1","math",["كم يساوي 4 + 4؟","Combien font 4 + 4 ?","What is 4 + 4?"],[["7","8","9","10"],["7","8","9","10"],["7","8","9","10"]],1,["4 + 4 = 8.","4 + 4 = 8.","4 + 4 = 8."]),
+  q("p2-ma-02","primary-2","math",["كم يساوي 8 − 3؟","Combien font 8 − 3 ?","What is 8 − 3?"],[["4","5","6","11"],["4","5","6","11"],["4","5","6","11"]],1,["8 − 3 = 5.","8 − 3 = 5.","8 − 3 = 5."]),
+  q("p3-ma-02","primary-3","math",["كم يساوي 7 × 3؟","Combien font 7 × 3 ?","What is 7 × 3?"],[["18","20","21","24"],["18","20","21","24"],["18","20","21","24"]],2,["7 × 3 = 21.","7 × 3 = 21.","7 × 3 = 21."]),
+  q("p4-ma-02","primary-4","math",["كم يساوي 36 ÷ 4؟","Combien font 36 ÷ 4 ?","What is 36 ÷ 4?"],[["8","9","10","12"],["8","9","10","12"],["8","9","10","12"]],1,["36 ÷ 4 = 9.","36 ÷ 4 = 9.","36 ÷ 4 = 9."]),
+  q("p5-ma-02","primary-5","math",["مستطيل طوله 5 سم وعرضه 3 سم. ما محيطه؟","Un rectangle mesure 5 cm sur 3 cm. Quel est son périmètre ?","A rectangle is 5 cm by 3 cm. What is its perimeter?"],[["8 cm","15 cm","16 cm","20 cm"],["8 cm","15 cm","16 cm","20 cm"],["8 cm","15 cm","16 cm","20 cm"]],2,["المحيط = 2 × (5 + 3) = 16 سم.","Périmètre = 2 × (5 + 3) = 16 cm.","Perimeter = 2 × (5 + 3) = 16 cm."]),
+  q("m1-ma-02","middle-1","math",["حل المعادلة 3x + 2 = 14.","Résous l’équation 3x + 2 = 14.","Solve the equation 3x + 2 = 14."],[["x = 3","x = 4","x = 5","x = 6"],["x = 3","x = 4","x = 5","x = 6"],["x = 3","x = 4","x = 5","x = 6"]],1,["3x = 12، إذن x = 4.","3x = 12, donc x = 4.","3x = 12, so x = 4."]),
+  q("m2-ma-02","middle-2","math",["ما قيمة 15% من 200؟","Combien vaut 15 % de 200 ?","What is 15% of 200?"],[["15","20","30","45"],["15","20","30","45"],["15","20","30","45"]],2,["0.15 × 200 = 30.","0,15 × 200 = 30.","0.15 × 200 = 30."]),
+  q("m3-ma-02","middle-3","math",["بسّط العبارة (x − 2)(x + 2).","Développe et simplifie (x − 2)(x + 2).","Expand and simplify (x − 2)(x + 2)."],[["x² + 4","x² − 4","x² − 2","2x − 4"],["x² + 4","x² − 4","x² − 2","2x − 4"],["x² + 4","x² − 4","x² − 2","2x − 4"]],1,["نستعمل فرق مربعين: (x − 2)(x + 2) = x² − 4.","Identité remarquable : (x − 2)(x + 2) = x² − 4.","Difference of squares gives x² − 4."]),
+  q("m4-ma-02","middle-4","math",["مثلث قائم ضلعاه القائمان 5 سم و12 سم. ما طول الوتر؟","Un triangle rectangle a des côtés de 5 cm et 12 cm. Quelle est l’hypoténuse ?","A right triangle has legs 5 cm and 12 cm. What is its hypotenuse?"],[["11 cm","12 cm","13 cm","17 cm"],["11 cm","12 cm","13 cm","17 cm"],["11 cm","12 cm","13 cm","17 cm"]],2,["√(5² + 12²) = √169 = 13 سم.","√(5² + 12²) = √169 = 13 cm.","√(5² + 12²) = √169 = 13 cm."]),
+  q("s1-ma-02","secondary-1","math",["إذا كان f(x) = x² − 3، فما قيمة f(2)؟","Si f(x) = x² − 3, combien vaut f(2) ?","If f(x) = x² − 3, what is f(2)?"],[["−1","1","4","7"],["−1","1","4","7"],["−1","1","4","7"]],1,["f(2) = 2² − 3 = 1.","f(2) = 2² − 3 = 1.","f(2) = 2² − 3 = 1."]),
+  q("s2-ma-02","secondary-2","math",["حل المعادلة 2x − 5 = 9.","Résous l’équation 2x − 5 = 9.","Solve the equation 2x − 5 = 9."],[["x = 2","x = 5","x = 7","x = 14"],["x = 2","x = 5","x = 7","x = 14"],["x = 2","x = 5","x = 7","x = 14"]],2,["2x = 14، إذن x = 7.","2x = 14, donc x = 7.","2x = 14, so x = 7."]),
+  q("s3-ma-02","secondary-3","math",["ما حلّا المعادلة x² − 5x + 6 = 0؟","Quelles sont les solutions de x² − 5x + 6 = 0 ?","What are the solutions of x² − 5x + 6 = 0?"],[["1 و6","−2 و−3","2 و3","−2 و3"],["1 et 6","−2 et −3","2 et 3","−2 et 3"],["1 and 6","−2 and −3","2 and 3","−2 and 3"]],2,["نحلل: (x − 2)(x − 3) = 0، إذن x = 2 أو x = 3.","On factorise : (x − 2)(x − 3) = 0, donc x = 2 ou x = 3.","Factor: (x − 2)(x − 3) = 0, so x = 2 or x = 3."])
+];
+dailyChallengeBank.push(...mathVariants);

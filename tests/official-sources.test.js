@@ -52,6 +52,13 @@ test("individual textbook pages carry explicit school-year and subject metadata"
   assert.ok(officialSources.some(source => source.url === "https://www.onps.dz/596"));
 });
 
+test("rejects a grade whose school level conflicts with its declared levels", () => {
+  const sample = officialSources.find(source => source.pageType === "publication");
+  const result = validateOfficialSources([{ ...sample, id: "grade-level-mismatch", grade: "middle-4", levels: ["primary"] }]);
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.some(error => error.message === "grade does not match declared school levels"));
+});
+
 test("rejects unknown school years and publications without subject metadata", () => {
   const sample = officialSources.find(source => source.pageType === "publication");
   const result = validateOfficialSources([

@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { resourceCategories, resourceCategoryMinimumDescriptionLength, validateResourceCategories } from "../src/data/resource-categories.js";
 import { resourceTypes } from "../src/data/resources.js";
 
@@ -27,4 +28,22 @@ test("category validator detects duplicate IDs, missing translations, and short 
   const errors = validateResourceCategories(invalid);
   assert.ok(errors.some(error => error.includes("unique")));
   assert.ok(errors.some(error => error.includes("shorter than")));
+});
+
+test("the page exposes a translated category guide with working filter actions", async () => {
+  const [html, app, french, english, arabic] = await Promise.all([
+    readFile(new URL("../index.html", import.meta.url), "utf8"),
+    readFile(new URL("../assets/js/app.js", import.meta.url), "utf8"),
+    readFile(new URL("../src/i18n/fr.js", import.meta.url), "utf8"),
+    readFile(new URL("../src/i18n/en.js", import.meta.url), "utf8"),
+    readFile(new URL("../src/i18n/ar.js", import.meta.url), "utf8")
+  ]);
+  assert.ok(html.includes('id="resource-category-guide-grid"'));
+  assert.ok(app.includes('data-category-filter="${escapeHTML(category.id)}"'));
+  assert.ok(app.includes('typeFilter.value = button.dataset.categoryFilter'));
+  for (const locale of [french, english, arabic]) {
+    assert.ok(locale.includes("categoryGuideTitle:"));
+    assert.ok(locale.includes("categoryGuideIntro:"));
+    assert.ok(locale.includes("categoryGuideBrowse:"));
+  }
 });

@@ -48,9 +48,10 @@ test("sample resources never claim official downloads and the official PDF entry
   assert.ok(samples.length > 0);
   assert.ok(samples.every(item => !item.downloadUrl && !item.officialSourceUrl && !item.pdfUrl));
   const officialPdfs = resources.filter(item => item.availability === "pdf");
-  assert.equal(officialPdfs.length, 4);
+  assert.equal(officialPdfs.length, 5);
   const expectedPdfIds = [
     "official-primary-framework-2016",
+    "official-primary-french-teaching-guide-2016",
     "official-primary-teaching-guide-2016",
     "official-middle-english-guide-2016",
     "official-secondary-english-curriculum-2015"

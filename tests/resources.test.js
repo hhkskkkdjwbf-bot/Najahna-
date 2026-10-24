@@ -80,12 +80,17 @@ test("sample resources never claim official downloads and the official PDF entry
   }
 
   const localPdfs = resources.filter(item => item.availability === "pdf" && item.sourceName === "Najahna");
-  assert.equal(localPdfs.length, 5);
+  assert.equal(localPdfs.length, 10);
   assert.deepEqual(localPdfs.map(item => item.id).sort(), [
     "najahna-french-5ap-adjectives",
     "najahna-maths-4am-equations",
     "najahna-maths-4am-equations-exercises",
     "najahna-maths-4am-pythagore",
+    "najahna-maths-1am-fractions",
+    "najahna-physics-3am-electricity",
+    "najahna-french-5ap-agreement",
+    "najahna-english-1as-present-simple",
+    "najahna-sciences-4am-respiration",
     "najahna-sciences-4am-nutrition"
   ].sort());
   for (const item of localPdfs) {
@@ -162,7 +167,7 @@ test("metadata validator catches vague descriptions, invalid subjects, and misma
 test("every Najahna-hosted PDF exists, has a PDF signature, and is cached for offline use", () => {
   const localPdfs = resources.filter(item => item.availability === "pdf" && item.sourceName === "Najahna");
   const serviceWorker = readFileSync(resolve(process.cwd(), "service-worker.js"), "utf8");
-  assert.equal(localPdfs.length, 5, "update this integrity test when adding or removing local PDFs");
+  assert.equal(localPdfs.length, 10, "update this integrity test when adding or removing local PDFs");
 
   const uniquePaths = new Set(localPdfs.map(item => item.pdfUrl));
   assert.equal(uniquePaths.size, localPdfs.length, "each local PDF must have a unique path");

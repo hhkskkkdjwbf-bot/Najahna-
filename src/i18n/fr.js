@@ -23,4 +23,5 @@ historyTitle:"Historique de révision",historyIntro:"Les dernières ressources m
   clearNotes:"Effacer toutes les notes",confirmClearNotes:"Supprimer définitivement toutes les notes enregistrées dans ce navigateur ?",notesCleared:"Toutes les notes ont été supprimées.",clearCompletedStudy:"Effacer les séances terminées",confirmClearCompletedStudy:"Supprimer toutes les séances terminées ?",completedStudyCleared:"Séances terminées supprimées.",noCompletedStudy:"Aucune séance terminée à supprimer.",
   confirmClearHistory:"Effacer tout l’historique de révision ?",confirmClearFavorites:"Effacer toutes les ressources favorites ?",
   storageError:"Impossible d’enregistrer les modifications dans ce navigateur. Vérifiez l’espace disponible.",progressRate:"Taux d’avancement",progressCompleted:"Séances terminées",progressMinutes:"Minutes révisées",progressToday:"Séances du jour",
+  historyResume:"Reprendre",
 };

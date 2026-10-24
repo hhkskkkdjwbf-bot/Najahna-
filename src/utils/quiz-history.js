@@ -54,7 +54,7 @@ export function clearQuizHistory(storage = globalThis.localStorage) {
  * Returns null until there is enough history for a meaningful comparison.
  */
 export function getQuizTrend(attempts) {
-  if (!Array.isArray(attempts) || attempts.length < 4) return null;
+  if (!Array.isArray(attempts) || attempts.length < 6) return null;
   const recent = attempts.slice(0, 3);
   const previous = attempts.slice(3, 6);
   if (previous.length < 3) return null;

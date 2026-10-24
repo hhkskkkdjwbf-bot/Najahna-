@@ -62,10 +62,17 @@ function showToast(message) {
   clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove("visible"), 2400);
 }
 function getFavorites() {
-  try { const data = JSON.parse(localStorage.getItem("najahna-favorites") || "[]"); return Array.isArray(data) ? data : []; }
-  catch { return []; }
+  try {
+    const data = JSON.parse(localStorage.getItem("najahna-favorites") || "[]");
+    return Array.isArray(data) ? [...new Set(data.filter(id => typeof id === "string" && id.trim()))] : [];
+  } catch { return []; }
 }
-function saveFavorites(ids) { localStorage.setItem("najahna-favorites", JSON.stringify([...new Set(ids)])); }
+function saveFavorites(ids) {
+  try {
+    localStorage.setItem("najahna-favorites", JSON.stringify([...new Set(ids.filter(id => typeof id === "string" && id.trim()))]));
+    return true;
+  } catch { showToast(t("storageError")); return false; }
+}
 function typeLabel(type) { return t(({lesson:"typeLesson",summary:"typeSummary",exercise:"typeExercise",exam:"typeExam",book:"typeBook",flashcard:"typeFlashcard",mindmap:"typeMindmap"})[type]); }
 
 function renderSchoolCalendar() {
@@ -276,7 +283,16 @@ function renderFavorites() {
 }
 function getStudyTasks() {
   const value = readJSON("study-plan", []);
-  return Array.isArray(value) ? value.filter(task => task && typeof task.id === "string" && typeof task.subject === "string") : [];
+  if (!Array.isArray(value)) return [];
+  const seen = new Set();
+  return value.filter(task => {
+    if (!task || typeof task !== "object" || Array.isArray(task) ||
+        typeof task.id !== "string" || !task.id.trim() || seen.has(task.id) ||
+        typeof task.subject !== "string" || !task.subject.trim() ||
+        !parseLocalCalendarDate(task.date) || ![15, 25, 45, 60, 90].includes(Number(task.minutes))) return false;
+    seen.add(task.id);
+    return true;
+  }).map(task => ({ ...task, completed: task.completed === true }));
 }
 function renderStudyPlan() {
   const list = $("#study-plan-list");

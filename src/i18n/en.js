@@ -23,4 +23,5 @@ historyTitle:"Revision history",historyIntro:"Recently marked resources on this 
   clearNotes:"Clear all notes",confirmClearNotes:"Permanently delete all notes saved in this browser?",notesCleared:"All notes were deleted.",clearCompletedStudy:"Clear completed sessions",confirmClearCompletedStudy:"Delete all completed study sessions?",completedStudyCleared:"Completed sessions deleted.",noCompletedStudy:"There are no completed sessions to clear.",
   confirmClearHistory:"Clear all revision history?",confirmClearFavorites:"Clear all favorite resources?",
   storageError:"Could not save changes in this browser. Check available storage space.",progressRate:"Completion rate",progressCompleted:"Sessions completed",progressMinutes:"Minutes studied",progressToday:"Today's sessions",
+  historyResume:"Resume",
 };

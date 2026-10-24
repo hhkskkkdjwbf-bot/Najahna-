@@ -175,3 +175,12 @@ test("service worker removes only obsolete Najahna shell caches and keeps the cu
   assert.match(serviceWorker, /await self\.skipWaiting\(\)/);
   assert.match(serviceWorker, /await self\.clients\.claim\(\)/);
 });
+
+test("official source cards distinguish publisher verification from downloadable-file availability", () => {
+  assert.match(app, /t\("officialSourceRightsUnknown"\)/);
+  assert.match(app, /t\("officialSourcePageOnly"\)/);
+  assert.match(app, /source\.url/);
+  for (const [lang, content] of [["Arabic",arabic],["French",french],["English",english]]) {
+    assert.ok(content.includes("officialSourcePageOnly"), lang + " translation missing source-page availability status");
+  }
+});

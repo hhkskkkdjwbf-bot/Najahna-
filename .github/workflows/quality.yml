@@ -48,3 +48,9 @@ jobs:
           test -s supabase/migrations/202610240001_secure_learner_accounts.sql
           test -s src/data/curriculum.js
           test -s README.md
+          test -s robots.txt
+          test -s sitemap.xml
+          grep -q 'rel="canonical"' index.html
+          grep -q 'property="og:title"' index.html
+          grep -q 'https://hhkskkkdjwbf.github.io/Najahna-/sitemap.xml' robots.txt
+          grep -q '<urlset' sitemap.xml

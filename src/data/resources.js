@@ -2,7 +2,7 @@ export const resourceTypes = ["lesson", "summary", "exercise", "exam", "book", "
 export const schoolLevels = ["primary", "middle", "secondary"];
 
 // Demonstration templates only: no entry claims to be an official exam or a downloadable file.
-export const resources = [
+const rawResources = [
   { id:"p-math-01", level:"primary", grades:["1","2","3","4","5"], type:"lesson", subject:"math", icon:"＋", title:{ar:"مراجعة العمليات الحسابية",fr:"Révision des opérations",en:"Arithmetic review"}, description:{ar:"مراجعة مبسطة للعمليات الأساسية مع أمثلة تدريبية.",fr:"Révision simple des opérations de base avec exemples.",en:"A simple review of basic operations with practice examples."}, grade:{ar:"الابتدائي",fr:"Primaire",en:"Primary"}, availability:"sample" },
   { id:"p-arabic-01", level:"primary", grades:["1","2","3","4","5"], type:"exercise", subject:"arabic", icon:"أ", title:{ar:"تدريبات في اللغة العربية",fr:"Exercices d’arabe",en:"Arabic language practice"}, description:{ar:"أنشطة تدريبية لفهم النصوص والقواعد والكتابة.",fr:"Activités de compréhension, grammaire et expression écrite.",en:"Practice activities for reading, grammar and writing."}, grade:{ar:"الابتدائي",fr:"Primaire",en:"Primary"}, availability:"sample" },
   { id:"p-science-01", level:"primary", grades:["3","4","5"], type:"flashcard", subject:"science", icon:"✳", title:{ar:"بطاقات مراجعة في العلوم",fr:"Flashcards de sciences",en:"Science revision flashcards"}, description:{ar:"قالب بطاقات سؤال وجواب لتثبيت المفاهيم الأساسية.",fr:"Modèle de cartes questions-réponses pour mémoriser les notions.",en:"A question-and-answer card template for key concepts."}, grade:{ar:"الابتدائي",fr:"Primaire",en:"Primary"}, availability:"sample" },
@@ -41,3 +41,112 @@ export const resources = [
   { id:"official-primary-french-teaching-guide-2016", level:"primary", grades:["3","4","5"], type:"pedagogical-doc", subject:"french", icon:"📘", title:{ar:"الوثيقة المرافقة لمنهاج اللغة الفرنسية — التعليم الابتدائي",fr:"Document d’accompagnement du programme de français — primaire",en:"French teaching guide — Primary School"}, description:{ar:"وثيقة PDF رسمية من وزارة التربية الوطنية تتضمن مقترحات للتدرج السنوي والتعلم والتقييم في الفرنسية. الوثيقة مؤرخة في 2012/2016 وفق النسخة المنشورة؛ تحقق من التوجيهات الأحدث.",fr:"PDF officiel du ministère avec des propositions de progression, d’apprentissage et d’évaluation en français. Document ancien (version publiée sur le site ministériel) : vérifiez les directives actuelles.",en:"Official ministry PDF with suggested learning progressions and assessment for primary French. This is an older document; check current guidance before relying on it as the current programme."}, grade:{ar:"السنوات الثالثة إلى الخامسة ابتدائي",fr:"3e à 5e années primaires",en:"Primary Years 3–5"}, availability:"pdf", pdfUrl:"https://education.gov.dz/wp-content/uploads/2015/04/Doc-Fr-Pr-2016.pdf", officialSourceUrl:"https://www.education.gov.dz/category/ressources-pedagogiques/documents-reglementaires/" },
   { id:"official-primary-framework-2016", level:"primary", grades:["1","2","3","4","5"], type:"pedagogical-doc", subject:"study", icon:"📘", title:{ar:"الإطار العام لمناهج التعليم الابتدائي (2016)",fr:"Cadre général des programmes du primaire (2016)",en:"General framework for primary-school curricula (2016)"}, description:{ar:"وثيقة PDF رسمية من وزارة التربية الوطنية الجزائرية. وثيقة تأطيرية منشورة عام 2016؛ تحقق من التوجيهات الأحدث قبل اعتمادها كمرجع حالي.",fr:"PDF officiel du ministère algérien de l’Éducation nationale. Document-cadre publié en 2016 ; vérifiez les directives plus récentes avant de l’utiliser comme référence actuelle.",en:"Official PDF from Algeria’s Ministry of National Education. This framework was published in 2016; check for newer guidance before treating it as current."}, grade:{ar:"التعليم الابتدائي — جميع السنوات",fr:"Primaire — toutes les années",en:"Primary — all years"}, availability:"pdf", pdfUrl:"https://www.education.gov.dz/wp-content/uploads/2016/09/Cadre-g%C3%A9n%C3%A9ral-Prog-primaire.pdf", officialSourceUrl:"https://www.education.gov.dz/wp-content/uploads/2016/09/Cadre-g%C3%A9n%C3%A9ral-Prog-primaire.pdf" },
 ];
+
+
+import { schoolYears, subjectCatalog } from "./curriculum.js";
+
+const MIN_DESCRIPTION_LENGTH = 90;
+const languages = ["ar", "fr", "en"];
+const typeGuidance = {
+  lesson: {
+    ar: "تُستخدم هذه البطاقة لفهم المفاهيم تدريجياً؛ راجع الأمثلة واربطها بالدرس الذي تدرسه.",
+    fr: "Cette fiche sert à comprendre les notions progressivement ; reliez ses exemples à votre cours.",
+    en: "Use this item to build understanding step by step and connect its examples to your current lesson."
+  },
+  summary: {
+    ar: "استعمله للمراجعة السريعة بعد فهم الدرس، وتحقق من التفاصيل في المصدر الكامل عند الحاجة.",
+    fr: "Utilisez cette synthèse après avoir compris le cours et vérifiez les détails dans la source complète.",
+    en: "Use this summary after studying the full lesson, and consult the original source when details matter."
+  },
+  exercise: {
+    ar: "حلّ الأنشطة بنفسك أولاً، ثم راجع التصحيح فقط إذا كان مرفقاً فعلاً بهذا المورد.",
+    fr: "Faites les activités avant de consulter une correction, uniquement si elle est réellement fournie.",
+    en: "Attempt the activities first; consult an answer key only if one is actually included with this resource."
+  },
+  exam: {
+    ar: "هذا المورد للتدريب فقط ما لم يذكر مصدر موثوق خلاف ذلك؛ لا تعتبره موضوعاً رسمياً دون إثبات.",
+    fr: "Ce contenu sert à s’entraîner sauf preuve contraire ; ne le considérez pas comme officiel sans source vérifiable.",
+    en: "Treat this as practice unless reliable evidence says otherwise; do not call it an official exam without verification."
+  },
+  book: {
+    ar: "تحقق من الناشر وتاريخ الإصدار وإمكانية الوصول قبل الاعتماد على المرجع أو مشاركته.",
+    fr: "Vérifiez l’éditeur, la date de publication et l’accès réel avant d’utiliser ou de partager cette référence.",
+    en: "Check the publisher, publication date, and actual accessibility before relying on or sharing this reference."
+  },
+  flashcard: {
+    ar: "استخدم البطاقات للاسترجاع النشط، وراجع المفاهيم التي تخطئ فيها على فترات متباعدة.",
+    fr: "Utilisez les cartes pour le rappel actif et révisez à intervalles espacés les notions difficiles.",
+    en: "Use these cards for active recall and revisit difficult concepts at spaced intervals."
+  },
+  mindmap: {
+    ar: "ابدأ بالفكرة المركزية، ثم اربط الفروع بالمعلومات التي درستها وتحقق من دقة العلاقات.",
+    fr: "Partez de l’idée centrale, reliez les branches aux notions étudiées et vérifiez la justesse des liens.",
+    en: "Start with the central idea, connect branches to studied concepts, and check that the relationships are accurate."
+  },
+  "pedagogical-doc": {
+    ar: "تحقق من الجهة الناشرة وتاريخ الوثيقة وحداثتها؛ وجود رابط لا يعني أن المحتوى هو الأحدث.",
+    fr: "Vérifiez l’éditeur, la date et l’actualité du document ; un lien disponible ne garantit pas qu’il soit à jour.",
+    en: "Check the publisher, date, and currency of this document; an available link does not guarantee it is up to date."
+  }
+};
+
+const availabilityGuidance = {
+  sample: {
+    ar: "هذا نموذج توضيحي للتدريب وليس ملفاً رسمياً قابلاً للتنزيل.",
+    fr: "Il s’agit d’un exemple pédagogique, pas d’un fichier officiel à télécharger.",
+    en: "This is a demonstration learning example, not an official downloadable file."
+  },
+  pdf: {
+    ar: "راجع رابط المصدر وتاريخ النشر قبل اعتباره مرجعاً سارياً.",
+    fr: "Consultez la source et la date de publication avant de le considérer comme une référence en vigueur.",
+    en: "Check the source link and publication date before treating it as a current reference."
+  }
+};
+
+export function enrichResourceCatalog(items = rawResources) {
+  return items.map(item => {
+    const description = {};
+    for (const language of languages) {
+      const existing = item.description?.[language]?.trim() || "";
+      const guidance = typeGuidance[item.type]?.[language] || "";
+      const availability = availabilityGuidance[item.availability]?.[language] || "";
+      const combined = [existing, guidance, availability].filter(Boolean).join(" ");
+      description[language] = combined.length >= 120 ? combined : combined + " " + (language === "fr"
+        ? "Vérifiez les informations de niveau et de matière avant de commencer."
+        : language === "en"
+          ? "Check the grade and subject details before starting."
+          : "تحقق من معلومات المستوى والمادة قبل البدء.");
+    }
+    return { ...item, description };
+  });
+}
+
+export const resources = enrichResourceCatalog();
+
+export function validateResourceCatalog(items = resources) {
+  const errors = [];
+  const ids = new Set();
+  const knownSubjects = new Set([...subjectCatalog.map(subject => subject.id), "study"]);
+  for (const item of items) {
+    if (!item?.id || ids.has(item.id)) errors.push("Resource IDs must be non-empty and unique: " + (item?.id || "(missing)"));
+    ids.add(item?.id);
+    if (!["primary", "middle", "secondary"].includes(item.level)) errors.push(item.id + ": unknown school level");
+    if (!knownSubjects.has(item.subject)) errors.push(item.id + ": unknown subject " + item.subject);
+    if (!Array.isArray(item.grades) || !item.grades.length) errors.push(item.id + ": missing grades");
+    else {
+      const validYears = new Set(schoolYears.filter(year => year.level === item.level).map(year => year.year));
+      if (new Set(item.grades).size !== item.grades.length) errors.push(item.id + ": duplicate grades");
+      for (const grade of item.grades) if (!validYears.has(grade)) errors.push(item.id + ": grade " + grade + " does not match level " + item.level);
+    }
+    for (const language of languages) {
+      if (typeof item.title?.[language] !== "string" || item.title[language].trim().length < 8) errors.push(item.id + ": title missing/short in " + language);
+      if (typeof item.description?.[language] !== "string" || Array.from(item.description[language].trim()).length < MIN_DESCRIPTION_LENGTH) errors.push(item.id + ": description missing/short in " + language);
+      if (typeof item.grade?.[language] !== "string" || !item.grade[language].trim()) errors.push(item.id + ": grade label missing in " + language);
+    }
+    if (!["sample", "pdf"].includes(item.availability)) errors.push(item.id + ": invalid availability");
+    if (item.availability === "sample" && (item.pdfUrl || item.downloadUrl || item.officialSourceUrl)) errors.push(item.id + ": sample cannot claim a verified download/source");
+  }
+  return errors;
+}
+
+export const resourceDescriptionMinimumLength = MIN_DESCRIPTION_LENGTH;

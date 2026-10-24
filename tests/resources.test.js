@@ -98,15 +98,15 @@ test("resource enrichment adds type and availability guidance without changing s
 
 test("metadata validator catches vague descriptions, invalid subjects, and mismatched grades", () => {
   const [source] = enrichResourceCatalog([{
-    id: "invalid-metadata", level: "primary", grades: ["4"], type: "lesson", subject: "unknown-subject",
+    id: "invalid-metadata", level: "primary", grades: ["5"], type: "lesson", subject: "unknown-subject",
     title: { ar: "عنوان تجريبي", fr: "Titre de démonstration", en: "Demonstration title" },
     description: { ar: "وصف", fr: "Description", en: "Description" },
-    grade: { ar: "الابتدائي", fr: "Primaire", en: "Primary" }, availability: "sample"
+    grade: { ar: "السنة الخامسة ابتدائي", fr: "5e année primaire", en: "Primary Year 5" }, availability: "sample"
   }]);
   source.description = { ar: "قصير", fr: "Court", en: "Short" };
   const errors = validateResourceCatalog([source]);
   assert.ok(errors.some(error => error.includes("unknown subject")));
-  assert.ok(errors.some(error => error.includes("grade 4 does not match level primary")) === false, "grade 4 is valid for primary; use a different level to test mismatch");
+  assert.ok(!errors.some(error => error.includes("does not match level primary")), "grade 5 is valid for primary");
   source.level = "middle";
   assert.ok(validateResourceCatalog([source]).some(error => error.includes("does not match level middle")));
   assert.ok(validateResourceCatalog([source]).some(error => error.includes("description missing/short")));

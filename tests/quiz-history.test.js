@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { clearQuizHistory, getQuizHistory, recordQuizAttempt } from "../src/utils/quiz-history.js";
+import { clearQuizHistory, getQuizHistory, recordQuizAttempt, getQuizTrend } from "../src/utils/quiz-history.js";
 
 function memoryStorage() {
   const data = new Map();
@@ -47,4 +47,21 @@ test("normalizes corrupted percentages and removes duplicate attempt IDs", () =>
 test("quiz history reads safely when browser storage is unavailable", () => {
   assert.deepEqual(getQuizHistory(null), []);
   assert.equal(clearQuizHistory({ removeItem() { throw new Error("blocked"); } }), false);
+});
+
+
+test("quiz trend compares the latest three attempts with the previous three", () => {
+  const attempts = [
+    { score: 9, total: 10 }, { score: 8, total: 10 }, { score: 10, total: 10 },
+    { score: 4, total: 10 }, { score: 5, total: 10 }, { score: 3, total: 10 }
+  ];
+  assert.deepEqual(getQuizTrend(attempts), { change: 50, direction: "up" });
+  assert.deepEqual(getQuizTrend([...attempts.slice(3), ...attempts.slice(0, 3)]), { change: -50, direction: "down" });
+  assert.equal(getQuizTrend(attempts.slice(0, 5)), null);
+  assert.equal(getQuizTrend(null), null);
+});
+
+test("quiz trend reports stable performance when both groups match", () => {
+  const attempts = Array.from({ length: 6 }, () => ({ score: 7, total: 10 }));
+  assert.deepEqual(getQuizTrend(attempts), { change: 0, direction: "stable" });
 });
